@@ -731,5 +731,48 @@ function deleteProduct(id) {
 }
 render();
 </script>
+
+<!-- GameVault Admin Login -->
+<div id="gv-login" style="max-width:360px;margin:30px auto;padding:24px;background:#180f29;color:white;border:1px solid #7040a0;border-radius:16px;font-family:Arial,sans-serif">
+  <h2 style="color:#b88aff">GameVault Login</h2>
+  <p>Sign in to your GameVault account.</p>
+  <input id="gv-email" type="email" placeholder="Email address" style="box-sizing:border-box;width:100%;padding:12px;margin:8px 0">
+  <input id="gv-password" type="password" placeholder="Password" style="box-sizing:border-box;width:100%;padding:12px;margin:8px 0">
+  <button id="gv-signin" style="width:100%;padding:12px;background:#8138ec;color:white;border:0;border-radius:8px">Sign in</button>
+  <p id="gv-message" style="overflow-wrap:anywhere"></p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const GAMEVAULT_SUPABASE_URL =
+    "https://hhopviwrhbebfkljzmiv.supabase.co";
+
+  const GAMEVAULT_SUPABASE_KEY = "sb_publishable_qzbuNv6A5xkxXTJH2rWYZQ__iDDAVwT";
+
+  const gvSupabase = window.supabase.createClient(
+    GAMEVAULT_SUPABASE_URL,
+    GAMEVAULT_SUPABASE_KEY
+  );
+
+  document.getElementById("gv-signin").addEventListener("click", async () => {
+    const email = document.getElementById("gv-email").value.trim();
+    const password = document.getElementById("gv-password").value;
+    const message = document.getElementById("gv-message");
+
+    message.textContent = "Signing in...";
+
+    const { data, error } = await gvSupabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      message.textContent = error.message;
+      return;
+    }
+
+    message.textContent = "Login successful! GameVault authentication is working.";
+  });
+</script>
 </body>
 </html>
