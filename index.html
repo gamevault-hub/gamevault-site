@@ -168,7 +168,6 @@ el.innerHTML=products.map(p=>`<div class="line"><span>${escapeHTML(p.name)} · $
 }
 function deleteProduct(id){const i=products.findIndex(p=>p.id===id);if(i>=0)products.splice(i,1);cart=cart.filter(p=>p.id!==id);render();}
 render();
-
 <style>
   .gv-controller-scene {
     display: flex;
@@ -282,6 +281,5 @@ render();
     <span class="gv-button gv-b4"></span>
   </div>
 </div>
-
 </body>
 </html>
