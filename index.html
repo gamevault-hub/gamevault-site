@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10091d">
+<title>GameVault | Digital Gaming Store</title>
+<style>
+:root{--bg:#0b0712;--panel:#171022;--purple:#9b5cff;--text:#f7f2ff;--muted:#b7a9c9}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
+header{padding:20px 5%;display:flex;justify-content:space-between;align-items:center;background:#120b20;border-bottom:1px solid #39244e;position:sticky;top:0;z-index:5}
+.logo{font-size:23px;font-weight:900;letter-spacing:1px}.logo span{color:var(--purple)}
+button{background:var(--purple);color:white;border:0;border-radius:9px;padding:11px 15px;font-weight:bold;cursor:pointer}
+button:hover{filter:brightness(1.15)}
+.hero{padding:45px 6%;text-align:center;background:radial-gradient(ellipse at top,#432068 0%,#180d29 48%,#0b0712 80%)}
+.hero h1{font-size:clamp(34px,8vw,58px);margin:12px 0}
+.hero h1 span{color:#bd91ff}
+.hero p{color:var(--muted);line-height:1.6}
+.pill{display:inline-block;border:1px solid #68419a;border-radius:30px;padding:8px 13px;color:#d9bdff;font-size:12px}
+.search{width:min(100%,540px);margin:22px auto;display:flex;gap:8px}
+input,select{background:#20152d;border:1px solid #49335d;color:white;padding:13px;border-radius:9px;min-width:0}
+.search input{flex:1}
+main{max-width:1200px;margin:auto;padding:25px 5%}
+h2{font-size:23px}
+.categories{display:flex;gap:9px;flex-wrap:wrap;margin:17px 0 24px}
+.categories button{background:#20152d;border:1px solid #49335d}
+.categories button.active{background:var(--purple);border-color:var(--purple)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:15px}
+.card{background:var(--panel);border:1px solid #30203e;border-radius:15px;overflow:hidden;transition:.2s}
+.card:hover{transform:translateY(-3px);border-color:var(--purple)}
+.art{height:130px;display:grid;place-items:center;font-size:42px;background:radial-gradient(circle at 50% 20%,#593184,#21122f 65%,#130c1d);position:relative}
+.art small{position:absolute;bottom:9px;left:10px;font-size:10px;letter-spacing:2px;color:#e4ceff}
+.info{padding:13px}
+.info h3{font-size:15px;margin:2px 0 8px}
+.info p{font-size:12px;color:var(--muted);min-height:29px;line-height:1.4}
+.price{font-weight:900;margin:12px 0;color:#d5b3ff}
+.info button{width:100%;font-size:12px}
+.section{margin-top:35px}
+.notice{padding:15px;border:1px solid #49335d;border-radius:12px;color:var(--muted);font-size:13px;line-height:1.6}
+footer{text-align:center;padding:30px;color:var(--muted);font-size:12px;border-top:1px solid #30203e;margin-top:40px}
+#cartPanel,#adminPanel{display:none;background:#171022;border:1px solid #49335d;border-radius:14px;padding:18px;margin:20px 0}
+.line{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #30203e}
+.line button{padding:7px 10px}
+.admin-form{display:grid;gap:10px;margin:15px 0}
+.admin-form input,.admin-form select{width:100%}
+.empty{color:var(--muted);padding:15px 0}
+@media(min-width:750px){.art{height:165px}.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">GAME<span>VAULT</span></div>
+  <button onclick="toggleCart()">🛒 Cart (<span id="count">0</span>)</button>
+</header>
+
+<section class="hero">
+  <span class="pill">YOUR DIGITAL GAMING DESTINATION</span>
+  <h1>Unlock Your <span>Next Level.</span></h1>
+  <p>Game top-ups, digital gaming products and more.<br>Everything you need, in one vault.</p>
+  <div class="search">
+    <input id="search" placeholder="Search games and products..." oninput="render()">
+    <button onclick="render()">Search</button>
+  </div>
+</section>
+
+<main>
+  <div id="cartPanel">
+    <h2>Your Cart</h2>
+    <div id="cartItems"></div>
+    <div class="line"><strong>Total</strong><strong id="total">₦0</strong></div>
+    <p class="notice">Demo checkout only. No payment will be collected and no products will be delivered.</p>
+    <button onclick="alert('This demo has no live payment system yet.')">Proceed to Checkout</button>
+    <button onclick="toggleCart()" style="background:#30203e">Close</button>
+  </div>
+
+  <section>
+    <h2>Explore the Vault</h2>
+    <div class="categories" id="categories"></div>
+    <div class="grid" id="products"></div>
+  </section>
+
+  <section class="section">
+    <h2>Inside GameVault</h2>
+    <div class="notice">🎮 Gaming top-ups · Digital products · Account listings<br>💜 A premium, mobile-friendly shopping experience.<br>🔒 Secure payments and automatic delivery can be connected when the backend is built.</div>
+  </section>
+
+  <section class="section">
+    <button onclick="toggleAdmin()">Admin Panel ⚙️</button>
+    <div id="adminPanel">
+      <h2>Store Admin — Demo</h2>
+      <p class="notice">This demo panel is not password-protected. Do not enter private information. Products added here stay in this browser only.</p>
+      <div class="admin-form">
+        <input id="newName" placeholder="Product name">
+        <select id="newCategory">
+          <option>Free Fire</option><option>COD Mobile</option>
+          <option>PUBG Mobile</option><option>Mobile Legends</option>
+          <option>Digital Products</option>
+        </select>
+        <input id="newPrice" type="number" placeholder="Price in naira">
+        <button onclick="addProduct()">Add Product</button>
+      </div>
+      <div id="adminList"></div>
+    </div>
+  </section>
+</main>
+
+<footer>GAMEVAULT © 2026 · Built for gamers.<br>Demo storefront — real payments and delivery are not connected.</footer>
+
+<script>
+const products=[
+{id:1,name:"Free Fire Diamonds",cat:"Free Fire",price:1500,icon:"💎",desc:"Diamonds top-up"},
+{id:2,name:"Free Fire Weekly",cat:"Free Fire",price:2200,icon:"🔥",desc:"Membership listing"},
+{id:3,name:"COD Mobile CP",cat:"COD Mobile",price:1800,icon:"🎯",desc:"CP top-up"},
+{id:4,name:"CODM Battle Pass",cat:"COD Mobile",price:3500,icon:"🪖",desc:"Battle Pass listing"},
+{id:5,name:"PUBG Mobile UC",cat:"PUBG Mobile",price:2000,icon:"🪙",desc:"UC top-up"},
+{id:6,name:"PUBG Royale Pass",cat:"PUBG Mobile",price:4500,icon:"🏆",desc:"Pass listing"},
+{id:7,name:"MLBB Diamonds",cat:"Mobile Legends",price:1200,icon:"💠",desc:"Diamonds top-up"},
+{id:8,name:"Gaming Account",cat:"Accounts",price:5000,icon:"🎮",desc:"Demo account listing"},
+{id:9,name:"Digital Subscription",cat:"Digital Products",price:2500,icon:"✨",desc:"Digital product listing"},
+{id:10,name:"TikTok Coins",cat:"Digital Products",price:1000,icon:"📱",desc:"Coins listing"}
+];
+let cart=[];
+let active="All";
+const money=n=>"₦"+Number(n).toLocaleString("en-NG");
+function renderCategories(){
+const cats=["All",...new Set(products.map(p=>p.cat))];
+document.getElementById("categories").innerHTML=cats.map(c=>
+`<button class="${active===c?"active":""}" onclick="active=${JSON.stringify(c)};render()">${c}</button>`
+).join("");
+}
+function render(){
+renderCategories();
+const q=document.getElementById("search").value.toLowerCase();
+const shown=products.filter(p=>(active==="All"||p.cat===active)&&(p.name+" "+p.cat+" "+p.desc).toLowerCase().includes(q));
+document.getElementById("products").innerHTML=shown.length?shown.map(p=>`
+<div class="card">
+<div class="art">${p.icon}<small>GAMEVAULT</small></div>
+<div class="info"><h3>${escapeHTML(p.name)}</h3><p>${escapeHTML(p.desc)} · ${escapeHTML(p.cat)}</p>
+<div class="price">${money(p.price)}</div>
+<button onclick="addCart(${p.id})">Add to Cart</button></div></div>`).join(""):'<p class="empty">No products found. Try another search.</p>';
+document.getElementById("count").textContent=cart.reduce((s,x)=>s+x.qty,0);
+renderCart();renderAdmin();
+}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function addCart(id){let p=products.find(x=>x.id===id);let item=cart.find(x=>x.id===id);if(item)item.qty++;else cart.push({...p,qty:1});render();}
+function renderCart(){
+document.getElementById("cartItems").innerHTML=cart.length?cart.map(x=>`<div class="line"><span>${escapeHTML(x.name)} × ${x.qty}</span><span>${money(x.price*x.qty)} <button onclick="removeCart(${x.id})">−</button></span></div>`).join(""):'<p class="empty">Your cart is empty.</p>';
+document.getElementById("total").textContent=money(cart.reduce((s,x)=>s+x.price*x.qty,0));
+}
+function removeCart(id){let x=cart.find(p=>p.id===id);if(x){x.qty--;if(x.qty<=0)cart=cart.filter(p=>p.id!==id);}render();}
+function toggleCart(){let p=document.getElementById("cartPanel");p.style.display=p.style.display==="block"?"none":"block";renderCart();if(p.style.display==="block")p.scrollIntoView({behavior:"smooth",block:"start"});}
+function toggleAdmin(){let p=document.getElementById("adminPanel");p.style.display=p.style.display==="block"?"none":"block";renderAdmin();}
+function addProduct(){
+const name=document.getElementById("newName").value.trim();
+const cat=document.getElementById("newCategory").value;
+const price=Number(document.getElementById("newPrice").value);
+if(!name||!Number.isFinite(price)||price<=0){alert("Enter a product name and a valid price.");return;}
+products.push({id:Date.now(),name,cat,price,icon:"🎮",desc:"Store listing"});
+document.getElementById("newName").value="";
+document.getElementById("newPrice").value="";
+render();
+}
+function renderAdmin(){
+const el=document.getElementById("adminList");if(!el)return;
+el.innerHTML=products.map(p=>`<div class="line"><span>${escapeHTML(p.name)} · ${money(p.price)}</span><button onclick="deleteProduct(${p.id})">Remove</button></div>`).join("");
+}
+function deleteProduct(id){const i=products.findIndex(p=>p.id===id);if(i>=0)products.splice(i,1);cart=cart.filter(p=>p.id!==id);render();}
+render();
+</script>
+</body>
+</html>
