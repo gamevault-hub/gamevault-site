@@ -6,15 +6,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#10091d">
-<meta name="description" content="GameVault digital gaming store. Browse game top-ups, accounts, skins and digital subscriptions.">
+<meta name="description" content="GameVault gaming top-ups, gaming accounts, skins and digital subscriptions.">
 <title>GameVault | Digital Gaming Store</title>
+
 <style>
 :root {
   --bg:#0b0712;
   --panel:#171022;
   --panel2:#21152f;
   --purple:#9b5cff;
-  --purple-light:#bd91ff;
+  --light:#bd91ff;
   --text:#f7f2ff;
   --muted:#b7a9c9;
   --border:#39244e;
@@ -27,6 +28,7 @@ body {
   color:var(--text);
   font-family:Arial,sans-serif;
 }
+body.modal-open { overflow:hidden; }
 button,input,select { font:inherit; }
 button {
   background:var(--purple);
@@ -37,34 +39,77 @@ button {
   font-weight:bold;
   cursor:pointer;
 }
-button:hover { filter:brightness(1.13); }
+button:hover { filter:brightness(1.12); }
+button:disabled { opacity:.6; cursor:wait; }
 button:focus-visible,input:focus-visible,select:focus-visible {
-  outline:2px solid var(--purple-light);
+  outline:2px solid var(--light);
   outline-offset:3px;
 }
-header {
-  padding:15px 5%;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  background:#120b20;
-  border-bottom:1px solid var(--border);
+
+/* HEADER */
+.gv-header {
   position:sticky;
   top:0;
-  z-index:5;
+  z-index:10;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:15px 5%;
+  background:linear-gradient(110deg,#10091d,#1d1033,#120b20);
+  border-bottom:1px solid #52346d;
+  box-shadow:0 5px 25px #0005;
+  flex-wrap:wrap;
 }
 .logo {
   font-size:22px;
   font-weight:900;
   letter-spacing:1px;
+  cursor:pointer;
   white-space:nowrap;
 }
-.logo span { color:var(--purple-light); }
-.header-actions { display:flex; gap:8px; align-items:center; }
-.secondary-button { background:#30203e; }
+.logo span { color:var(--light); }
+.logo small {
+  display:block;
+  margin-top:4px;
+  color:#a99abf;
+  font-size:9px;
+  letter-spacing:2px;
+}
+.header-actions {
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.header-actions button {
+  padding:10px 12px;
+  font-size:12px;
+}
+.gv-nav {
+  background:#241637;
+  border:1px solid #39254e;
+  color:#e9ddff;
+}
+.gv-login {
+  background:transparent;
+  border:1px solid #9a63dc;
+}
+.gv-signup {
+  background:linear-gradient(120deg,#963df5,#6527c9);
+  border:1px solid #b681ff;
+}
+.gv-count {
+  display:inline-block;
+  padding:2px 6px;
+  background:#513078;
+  border-radius:20px;
+}
+
+/* HERO */
 .hero {
-  padding:35px 5% 30px;
+  padding:42px 5% 35px;
   text-align:center;
   background:radial-gradient(ellipse at top,#432068 0%,#180d29 48%,#0b0712 82%);
 }
@@ -79,9 +124,9 @@ header {
 }
 .hero h1 {
   font-size:clamp(32px,7vw,55px);
-  margin:15px 0 10px;
+  margin:17px 0 10px;
 }
-.hero h1 span { color:var(--purple-light); }
+.hero h1 span { color:var(--light); }
 .hero p {
   color:var(--muted);
   line-height:1.6;
@@ -95,27 +140,22 @@ header {
   align-items:center;
   gap:10px;
   padding:7px 8px 7px 14px;
-  background:#171022;
+  background:var(--panel);
   border:1px solid #49335d;
   border-radius:14px;
-  box-shadow:0 8px 28px #00000030;
 }
-.search:focus-within {
-  border-color:var(--purple);
-  box-shadow:0 0 18px #9b5cff25;
-}
-.search-icon { color:var(--purple-light); font-size:24px; }
+.search:focus-within { border-color:var(--purple); }
+.search-icon { color:var(--light); font-size:24px; }
 .search input {
   flex:1;
-  width:100%;
   min-width:0;
+  width:100%;
   padding:11px 0;
   background:transparent;
   border:0;
-  outline:none;
   color:white;
+  outline:none;
 }
-.search input:focus { outline:none; }
 .search input::placeholder { color:var(--muted); }
 .search .clear-search {
   padding:7px 12px;
@@ -123,6 +163,8 @@ header {
   color:#e4ceff;
   font-size:21px;
 }
+
+/* STORE */
 main { max-width:1200px; margin:auto; padding:25px 5%; }
 h2 { font-size:22px; }
 .section-heading {
@@ -147,12 +189,8 @@ h2 { font-size:22px; }
   border:1px solid var(--border);
   border-radius:15px;
   color:var(--text);
-  transition:transform .18s,border-color .18s;
 }
-.category-card:hover {
-  transform:translateY(-2px);
-  border-color:var(--purple);
-}
+.category-card:hover { border-color:var(--purple); }
 .category-icon {
   display:block;
   font-size:31px;
@@ -194,7 +232,6 @@ h2 { font-size:22px; }
   border:1px solid var(--border);
   padding:16px;
   border-radius:13px;
-  min-height:75px;
 }
 .game-card:hover { border-color:var(--purple); }
 .game-card span { margin-right:8px; }
@@ -216,11 +253,7 @@ h2 { font-size:22px; }
   background:radial-gradient(circle at 50% 20%,#593184,#21122f 65%,#130c1d);
   position:relative;
 }
-.art img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
+.art img { width:100%; height:100%; object-fit:cover; }
 .art img.image-missing { display:none; }
 .art-fallback {
   display:none;
@@ -236,7 +269,7 @@ h2 { font-size:22px; }
   left:9px;
   font-size:9px;
   letter-spacing:1.5px;
-  color:#fff;
+  color:white;
   text-shadow:0 1px 4px #000;
   pointer-events:none;
 }
@@ -287,7 +320,8 @@ h2 { font-size:22px; }
 .line > span { flex:1; min-width:140px; }
 .line button { padding:8px 10px; }
 .admin-form { display:grid; gap:10px; margin:15px 0; }
-.admin-form input,.admin-form select {
+.admin-form input,.admin-form select,
+.admin-price-edit input {
   width:100%;
   background:#20152d;
   border:1px solid #49335d;
@@ -295,7 +329,6 @@ h2 { font-size:22px; }
   padding:12px;
   border-radius:9px;
 }
-.admin-product-price { color:#d5b3ff; }
 .admin-price-edit {
   display:flex;
   flex-wrap:wrap;
@@ -308,12 +341,9 @@ h2 { font-size:22px; }
   max-width:100%;
   min-width:0;
   padding:9px;
-  background:#20152d;
-  border:1px solid #49335d;
-  color:white;
-  border-radius:8px;
 }
 .admin-price-edit button { padding:9px 12px; }
+.admin-product-price { color:#d5b3ff; }
 footer {
   text-align:center;
   padding:28px 5%;
@@ -323,20 +353,105 @@ footer {
   border-top:1px solid #30203e;
   margin-top:25px;
 }
+
+/* LOGIN / SIGN-UP MODAL */
+.gv-modal {
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:100;
+  padding:20px;
+  align-items:center;
+  justify-content:center;
+  background:#05020be8;
+  overflow-y:auto;
+}
+.gv-modal.open { display:flex; }
+.gv-modal-card {
+  position:relative;
+  width:100%;
+  max-width:420px;
+  margin:auto;
+  padding:25px;
+  background:linear-gradient(145deg,#21132f,#100a19);
+  border:1px solid #7040a0;
+  border-radius:20px;
+  box-shadow:0 20px 80px #0009;
+}
+.gv-close {
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:38px;
+  height:38px;
+  padding:0;
+  background:#30203e;
+  font-size:23px;
+}
+.gv-brand {
+  text-align:center;
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:1px;
+  margin:10px 0 5px;
+}
+.gv-brand span { color:var(--light); }
+.gv-subtitle {
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.5;
+  margin:0 0 20px;
+}
+.gv-tabs {
+  display:flex;
+  gap:8px;
+  margin-bottom:17px;
+}
+.gv-tabs button { flex:1; }
+.gv-tab-inactive { background:#30213f; }
+.gv-field {
+  display:block;
+  width:100%;
+  margin:10px 0;
+  padding:13px;
+  background:#0f0918;
+  color:white;
+  border:1px solid #49335d;
+  border-radius:10px;
+}
+.gv-field::placeholder { color:#a99abf; }
+.gv-submit { width:100%; margin-top:8px; }
+#gv-message {
+  min-height:20px;
+  overflow-wrap:anywhere;
+  font-size:13px;
+  line-height:1.5;
+  color:#d9bdff;
+}
+.gv-demo-note {
+  font-size:11px;
+  line-height:1.5;
+  color:var(--muted);
+  text-align:center;
+}
+
 @media(min-width:650px) {
-  .game-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
-  .grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:15px; }
+  .game-grid,.grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .grid { gap:15px; }
   .art { height:160px; }
 }
 @media(min-width:950px) {
   .category-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
   .game-grid,.grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
 }
-@media(max-width:360px) {
-  header { padding:12px 4%; }
-  .logo { font-size:18px; }
-  .header-actions button { padding:9px; font-size:12px; }
-  .info { padding:9px; }
+@media(max-width:480px) {
+  .gv-header { padding:12px; gap:12px; }
+  .logo { font-size:19px; }
+  .header-actions { width:100%; justify-content:space-between; }
+  .header-actions button { padding:10px 9px; font-size:11px; }
+  .hero { padding-top:32px; }
+  .gv-modal-card { padding:22px 18px; }
 }
 @media(prefers-reduced-motion:reduce) {
   *,*:before,*:after {
@@ -347,14 +462,25 @@ footer {
 }
 </style>
 </head>
+
 <body>
-<header>
-  <div class="logo">GAME<span>VAULT</span></div>
+
+<header class="gv-header">
+  <div class="logo" onclick="goHome()" role="button" tabindex="0"
+       onkeydown="if(event.key==='Enter')goHome()">
+    GAME<span>VAULT</span>
+    <small>YOUR DIGITAL GAMING HUB</small>
+  </div>
   <div class="header-actions">
-    <button class="secondary-button" type="button" onclick="goHome()">Home</button>
-    <button type="button" onclick="toggleCart()">🛒 Cart (<span id="count">0</span>)</button>
+    <button class="gv-nav" type="button" onclick="goHome()">⌂ Home</button>
+    <button class="gv-nav" type="button" onclick="toggleCart()">
+      🛒 Cart <span class="gv-count" id="count">0</span>
+    </button>
+    <button class="gv-login" type="button" onclick="openAuth('login')">Log In</button>
+    <button class="gv-signup" type="button" onclick="openAuth('signup')">Sign Up ↗</button>
   </div>
 </header>
+
 <section class="hero">
   <span class="pill">YOUR DIGITAL GAMING DESTINATION</span>
   <h1>Unlock Your <span>Next Level.</span></h1>
@@ -363,26 +489,37 @@ footer {
     <span class="search-icon" aria-hidden="true">⌕</span>
     <input id="search" type="search"
       placeholder="Search games, top-ups, accounts..."
-      aria-label="Search all products"
-      oninput="handleSearch()">
+      aria-label="Search all products" oninput="handleSearch()">
     <button class="clear-search" type="button"
       onclick="clearSearch()" aria-label="Clear search">×</button>
   </div>
 </section>
+
 <main>
   <div id="cartPanel">
     <h2>Your Cart</h2>
     <div id="cartItems"></div>
-    <p class="notice">Demo checkout only. Customer prices are hidden. No payment will be collected and no products will be delivered.</p>
-    <button type="button" onclick="alert('This demo has no live payment system yet.')">Proceed to Checkout</button>
-    <button type="button" class="secondary-button" onclick="toggleCart()">Close</button>
+    <p class="notice">
+      Demo checkout only. Customer prices are hidden. No payment will be
+      collected and no products will be delivered.
+    </p>
+    <button type="button"
+      onclick="alert('Live payments and delivery are not connected yet.')">
+      Proceed to Checkout
+    </button>
+    <button type="button" class="gv-nav" onclick="toggleCart()">Close</button>
   </div>
+
   <section id="storeView"></section>
+
   <section class="section">
     <button type="button" onclick="toggleAdmin()">Admin Panel ⚙️</button>
     <div id="adminPanel">
       <h2>Store Admin — Demo</h2>
-      <p class="notice">This demo panel is not password-protected. Products and prices are not saved to a database. Do not enter private information.</p>
+      <p class="notice">
+        This demo panel is not password-protected. Products and prices are
+        not saved to a database. Do not enter private information.
+      </p>
       <div class="admin-form">
         <input id="newName" placeholder="Product name" maxlength="100">
         <select id="newGroup" onchange="updateGameOptions()">
@@ -398,7 +535,8 @@ footer {
           <option>Mobile Legends</option>
           <option>Other Games</option>
         </select>
-        <input id="newPrice" type="number" min="1" step="1" placeholder="Admin price in naira">
+        <input id="newPrice" type="number" min="1" step="1"
+          placeholder="Admin price in naira">
         <input id="newDesc" placeholder="Short product description" maxlength="180">
         <button type="button" onclick="addProduct()">Add Product</button>
       </div>
@@ -407,11 +545,60 @@ footer {
     </div>
   </section>
 </main>
+
 <footer>
   GAMEVAULT © 2026 · Built for gamers.<br>
   Demo storefront — real payments, database and automatic delivery are not connected.
 </footer>
+
+<!-- LOGIN AND SIGN-UP POPUP -->
+<div id="gv-modal" class="gv-modal" role="dialog"
+  aria-modal="true" aria-labelledby="gv-heading"
+  onclick="if(event.target===this)closeAuth()">
+  <div class="gv-modal-card">
+    <button class="gv-close" type="button" onclick="closeAuth()"
+      aria-label="Close login popup">×</button>
+
+    <div class="gv-brand">GAME<span>VAULT</span></div>
+    <p class="gv-subtitle">Sign in or create your GameVault account.</p>
+
+    <div class="gv-tabs">
+      <button type="button" id="gv-login-tab"
+        onclick="setGvMode('login')">Log In</button>
+      <button type="button" id="gv-signup-tab"
+        class="gv-tab-inactive" onclick="setGvMode('signup')">Sign Up</button>
+    </div>
+
+    <h2 id="gv-heading">Welcome back!</h2>
+
+    <form id="gv-auth-form">
+      <label for="gv-email">Email address</label>
+      <input class="gv-field" id="gv-email" type="email"
+        placeholder="you@example.com" autocomplete="email" required>
+
+      <label for="gv-password">Password</label>
+      <input class="gv-field" id="gv-password" type="password"
+        placeholder="At least 6 characters" minlength="6"
+        autocomplete="current-password" required>
+
+      <button class="gv-submit" id="gv-submit" type="submit">Log In</button>
+    </form>
+
+    <p id="gv-message" role="status" aria-live="polite"></p>
+    <p class="gv-demo-note">
+      Never share your password or verification codes with anyone.
+    </p>
+  </div>
+</div>
+
 <script>
+"use strict";
+
+/* PRODUCT CATALOG
+   Prices are used by the demo admin only and are not displayed to customers.
+   Image filenames must exist in the repository beside index.html,
+   or update each image path below.
+*/
 const products = [
   {id:1,name:"Free Fire Diamonds",group:"topups",game:"Free Fire",price:1500,icon:"💎",image:"1e84951ea4e43a94485c30851c151ad2.jpg",desc:"Diamonds top-up"},
   {id:2,name:"Free Fire Weekly",group:"topups",game:"Free Fire",price:2200,icon:"🔥",image:"IMG_2377.jpeg",desc:"Weekly membership"},
@@ -421,26 +608,40 @@ const products = [
   {id:6,name:"PUBG Royale Pass",group:"topups",game:"PUBG Mobile",price:4500,icon:"🏆",image:"IMG_2380.jpeg",desc:"Royale Pass listing"},
   {id:7,name:"MLBB Diamonds",group:"topups",game:"Mobile Legends",price:1200,icon:"💠",image:"IMG_2381.jpeg",desc:"Diamonds top-up"},
   {id:8,name:"Gaming Account",group:"accounts",game:"Other Games",price:5000,icon:"🎮",desc:"Demo account listing"},
-  {id:10,name:"TikTok Coins",group:"subscriptions",game:"General",price:1000,icon:"📱",image:"IMG_2383.jpeg",desc:"Coins listing"}
+  {id:9,name:"Digital Subscription",group:"subscriptions",game:"General",price:1500,icon:"✨",desc:"Digital subscription listing"},
+  {id:10,name:"TikTok Coins",group:"subscriptions",game:"General",price:1000,icon:"📱",image:"IMG_2383.jpeg",desc:"Coins listing"},
+  {id:11,name:"Spotify Premium",group:"subscriptions",game:"General",price:1500,icon:"🎵",desc:"Subscription listing"},
+  {id:12,name:"Snapchat+",group:"subscriptions",game:"General",price:1500,icon:"👻",desc:"Subscription listing"},
+  {id:13,name:"YouTube Premium",group:"subscriptions",game:"General",price:2000,icon:"▶️",desc:"Subscription listing"},
+  {id:14,name:"Netflix",group:"subscriptions",game:"General",price:2500,icon:"🎬",desc:"Subscription listing"},
+  {id:15,name:"ChatGPT Subscription",group:"subscriptions",game:"General",price:3000,icon:"🤖",desc:"Subscription listing"}
 ];
+
 const groupInfo = [
   {id:"topups",title:"Game Top-Ups",icon:"💎",desc:"Diamonds, CP, UC and game currencies"},
-  {id:"accounts",title:"Gaming Accounts",icon:"🎮",desc:"Choose a game to browse its accounts"},
+  {id:"accounts",title:"Gaming Accounts",icon:"🎮",desc:"Choose a game to browse accounts"},
   {id:"skins",title:"Skins & Bundles",icon:"🛡️",desc:"Browse cosmetics and bundles by game"},
-  {id:"subscriptions",title:"Digital Subscriptions",icon:"✨",desc:"Subscriptions, coins and other digital services"}
+  {id:"subscriptions",title:"Digital Subscriptions",icon:"✨",desc:"Subscriptions, coins and digital services"}
 ];
-const gameOptions = ["Free Fire","COD Mobile","PUBG Mobile","Mobile Legends","Other Games"];
+
+const gameOptions = [
+  "Free Fire","COD Mobile","PUBG Mobile","Mobile Legends","Other Games"
+];
+
 let cart = [];
 let activeView = "home";
 let activeGroup = "";
 let activeGame = "";
-let nextId = 11;
+let nextId = 16;
+
 const money = n => "₦" + Number(n).toLocaleString("en-NG");
+
 function escapeHTML(value) {
   return String(value).replace(/[&<>"']/g, c => ({
     "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
   }[c]));
 }
+
 function goHome() {
   activeView = "home";
   activeGroup = "";
@@ -449,6 +650,7 @@ function goHome() {
   render();
   window.scrollTo({top:0,behavior:"smooth"});
 }
+
 function openGroup(group) {
   document.getElementById("search").value = "";
   activeGroup = group;
@@ -456,33 +658,28 @@ function openGroup(group) {
   activeView = ["topups","accounts","skins"].includes(group)
     ? "games" : "products";
   render();
-  document.getElementById("storeView").scrollIntoView({behavior:"smooth",block:"start"});
+  document.getElementById("storeView").scrollIntoView({
+    behavior:"smooth",block:"start"
+  });
 }
-function openGame(group, game) {
+
+function openGame(group,game) {
   activeGroup = group;
   activeGame = game;
   activeView = "products";
   document.getElementById("search").value = "";
   render();
+  document.getElementById("storeView").scrollIntoView({
+    behavior:"smooth",block:"start"
+  });
 }
-function clearSearch(shouldRender = true) {
+
+function clearSearch(shouldRender=true) {
   document.getElementById("search").value = "";
-  if (shouldRender) {
-    if (activeGroup && ["topups","accounts","skins"].includes(activeGroup) && !activeGame) {
-      activeView = "games";
-    } else if (activeGroup) {
-      activeView = "products";
-    } else {
-      activeView = "home";
-    }
-    render();
-  }
-}
-function handleSearch() {
-  const query = document.getElementById("search").value.trim();
-  if (query) {
-    activeView = "search";
-  } else if (activeGroup && ["topups","accounts","skins"].includes(activeGroup) && !activeGame) {
+  if (!shouldRender) return;
+
+  if (activeGroup && ["topups","accounts","skins"].includes(activeGroup)
+      && !activeGame) {
     activeView = "games";
   } else if (activeGroup) {
     activeView = "products";
@@ -491,6 +688,22 @@ function handleSearch() {
   }
   render();
 }
+
+function handleSearch() {
+  const query = document.getElementById("search").value.trim();
+  if (query) {
+    activeView = "search";
+  } else if (activeGroup && ["topups","accounts","skins"].includes(activeGroup)
+      && !activeGame) {
+    activeView = "games";
+  } else if (activeGroup) {
+    activeView = "products";
+  } else {
+    activeView = "home";
+  }
+  render();
+}
+
 function renderBreadcrumb() {
   let html = '<div class="breadcrumbs"><button type="button" onclick="goHome()">Home</button>';
   if (activeGroup) {
@@ -498,39 +711,43 @@ function renderBreadcrumb() {
     if (group) html += '<span>›</span><span>' + escapeHTML(group.title) + '</span>';
   }
   if (activeGame) html += '<span>›</span><span>' + escapeHTML(activeGame) + '</span>';
-  html += '</div>';
-  return html;
+  return html + '</div>';
 }
+
 function renderHome() {
   return `
-    <div class="section-heading">
-      <h2>Explore the Vault</h2>
-    </div>
-    <p class="muted">Choose a category to get started. Products are organized inside their categories.</p>
+    <div class="section-heading"><h2>Explore the Vault</h2></div>
+    <p class="muted">Choose a category to get started.</p>
     <div class="category-grid">
       ${groupInfo.map(g => `
-        <button class="category-card" type="button" onclick="openGroup('${g.id}')">
+        <button class="category-card" type="button"
+          onclick="openGroup('${g.id}')">
           <span class="category-icon">${g.icon}</span>
           <strong>${escapeHTML(g.title)}</strong>
           <small>${escapeHTML(g.desc)}</small>
         </button>
       `).join("")}
     </div>
-    <div class="notice">💜 Browse by category or search for a particular product across GameVault.</div>
+    <div class="notice">💜 Browse by category or search for a product.</div>
   `;
 }
+
 function renderGames() {
   const games = activeGroup === "accounts"
     ? gameOptions
-    : gameOptions.filter(game => products.some(p => p.group === activeGroup && p.game === game));
+    : gameOptions.filter(game =>
+        products.some(p => p.group === activeGroup && p.game === game)
+      );
   const title = groupInfo.find(g => g.id === activeGroup)?.title || "Choose a Game";
+
   return `
     ${renderBreadcrumb()}
     <h2>Choose a game</h2>
-    <p class="muted">Select a game under ${escapeHTML(title)} to see the relevant listings.</p>
+    <p class="muted">Select a game under ${escapeHTML(title)}.</p>
     <div class="game-grid">
       ${games.map(game => `
-        <button class="game-card" type="button" onclick="openGame('${activeGroup}','${game}')">
+        <button class="game-card" type="button"
+          onclick="openGame('${activeGroup}','${game}')">
           <span>🎮</span><strong>${escapeHTML(game)}</strong>
         </button>
       `).join("")}
@@ -538,84 +755,107 @@ function renderGames() {
     </div>
   `;
 }
+
 function productCard(p) {
   const art = p.image
-    ? `<img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.classList.add('image-missing');this.nextElementSibling.classList.add('visible')">
+    ? `<img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}"
+          loading="lazy"
+          onerror="this.classList.add('image-missing');this.nextElementSibling.classList.add('visible')">
        <span class="art-fallback">${escapeHTML(p.icon || "🎮")}</span>`
     : `<span class="art-fallback visible">${escapeHTML(p.icon || "🎮")}</span>`;
+
+  const group = groupInfo.find(g => g.id === p.group);
+  const label = p.game === "General" ? (group?.title || "Digital Product") : p.game;
+
   return `
     <article class="card">
-      <div class="art">
-        ${art}
-        <small>GAMEVAULT</small>
-      </div>
+      <div class="art">${art}<small>GAMEVAULT</small></div>
       <div class="info">
         <h3>${escapeHTML(p.name)}</h3>
-        <p>${escapeHTML(p.desc || "Store listing")} · ${escapeHTML(p.game === "General" ? groupInfo.find(g => g.id === p.group)?.title || "Digital Product" : p.game)}</p>
+        <p>${escapeHTML(p.desc || "Store listing")} · ${escapeHTML(label)}</p>
         <button type="button" onclick="addCart(${Number(p.id)})">Add to Cart</button>
       </div>
     </article>
   `;
 }
+
 function renderProducts() {
   const group = groupInfo.find(g => g.id === activeGroup);
   let shown = products.filter(p => p.group === activeGroup);
   if (activeGame) shown = shown.filter(p => p.game === activeGame);
   const title = activeGame || group?.title || "Products";
+
   return `
     ${renderBreadcrumb()}
     <div class="section-heading"><h2>${escapeHTML(title)}</h2></div>
     <p class="muted">Browse available listings in this section.</p>
     <div class="grid">
-      ${shown.length ? shown.map(productCard).join("") : '<p class="empty">No products are listed here yet. Check another game or come back later.</p>'}
+      ${shown.length
+        ? shown.map(productCard).join("")
+        : '<p class="empty">No products are listed here yet.</p>'}
     </div>
   `;
 }
+
 function renderSearch() {
   const query = document.getElementById("search").value.trim().toLowerCase();
   const shown = products.filter(p =>
-    [p.name,p.game,p.group,p.desc,groupInfo.find(g => g.id === p.group)?.title || ""]
+    [p.name,p.game,p.group,p.desc,
+      groupInfo.find(g => g.id === p.group)?.title || ""]
       .join(" ").toLowerCase().includes(query)
   );
+
   return `
     <h2>Search Results</h2>
-    <p class="muted">${shown.length} matching product${shown.length === 1 ? "" : "s"}. Results can come from any category.</p>
+    <p class="muted">${shown.length} matching product${shown.length === 1 ? "" : "s"}.</p>
     <div class="grid">
-      ${shown.length ? shown.map(productCard).join("") : '<p class="empty">No products found. Try a different search term.</p>'}
+      ${shown.length
+        ? shown.map(productCard).join("")
+        : '<p class="empty">No products found. Try another search.</p>'}
     </div>
   `;
 }
+
 function render() {
   const view = document.getElementById("storeView");
   if (activeView === "home") view.innerHTML = renderHome();
   else if (activeView === "games") view.innerHTML = renderGames();
   else if (activeView === "search") view.innerHTML = renderSearch();
   else view.innerHTML = renderProducts();
+
   document.getElementById("count").textContent =
-    cart.reduce((sum,item) => sum + item.qty, 0);
+    cart.reduce((sum,item) => sum + item.qty,0);
+
   renderCart();
   renderAdmin();
 }
+
 function addCart(id) {
   const product = products.find(p => p.id === id);
   if (!product) return;
+
   const item = cart.find(p => p.id === id);
   if (item) item.qty++;
   else cart.push({...product,qty:1});
   render();
 }
+
 function renderCart() {
   const el = document.getElementById("cartItems");
   if (!el) return;
+
   el.innerHTML = cart.length
     ? cart.map(item => `
       <div class="line">
         <span>${escapeHTML(item.name)} × ${item.qty}</span>
-        <button type="button" class="secondary-button" onclick="removeCart(${Number(item.id)})" aria-label="Remove one ${escapeHTML(item.name)}">−</button>
+        <button type="button" class="gv-nav"
+          onclick="removeCart(${Number(item.id)})"
+          aria-label="Remove one ${escapeHTML(item.name)}">−</button>
       </div>
     `).join("")
     : '<p class="empty">Your cart is empty.</p>';
 }
+
 function removeCart(id) {
   const item = cart.find(p => p.id === id);
   if (!item) return;
@@ -623,6 +863,7 @@ function removeCart(id) {
   if (item.qty <= 0) cart = cart.filter(p => p.id !== id);
   render();
 }
+
 function toggleCart() {
   const panel = document.getElementById("cartPanel");
   panel.style.display = panel.style.display === "block" ? "none" : "block";
@@ -631,17 +872,21 @@ function toggleCart() {
     panel.scrollIntoView({behavior:"smooth",block:"start"});
   }
 }
+
 function toggleAdmin() {
   const panel = document.getElementById("adminPanel");
   panel.style.display = panel.style.display === "block" ? "none" : "block";
   renderAdmin();
 }
+
 function updateGameOptions() {
   const group = document.getElementById("newGroup").value;
   const gameSelect = document.getElementById("newGame");
   gameSelect.innerHTML = "";
+
   if (group === "subscriptions") {
-    gameSelect.innerHTML = '<option value="General">General / Not game-specific</option>';
+    gameSelect.innerHTML =
+      '<option value="General">General / Not game-specific</option>';
   } else {
     gameOptions.forEach(game => {
       const option = document.createElement("option");
@@ -651,6 +896,7 @@ function updateGameOptions() {
     });
   }
 }
+
 function addProduct() {
   const name = document.getElementById("newName").value.trim();
   const group = document.getElementById("newGroup").value;
@@ -658,28 +904,28 @@ function addProduct() {
   const priceInput = document.getElementById("newPrice").value.trim();
   const price = Number(priceInput);
   const desc = document.getElementById("newDesc").value.trim();
+
   if (!name || priceInput === "" || !Number.isFinite(price) || price <= 0) {
     alert("Enter a product name and a valid price.");
     return;
   }
+
   products.push({
-    id:nextId++,
-    name,
-    group,
-    game,
-    price,
-    icon:"🎮",
+    id:nextId++,name,group,game,price,icon:"🎮",
     desc:desc || "Store listing"
   });
+
   document.getElementById("newName").value = "";
   document.getElementById("newPrice").value = "";
   document.getElementById("newDesc").value = "";
   render();
-  alert("Product added to this demo page. It is not saved to a database.");
+  alert("Product added to this demo page. It is not saved permanently.");
 }
+
 function renderAdmin() {
   const el = document.getElementById("adminList");
   if (!el) return;
+
   el.innerHTML = products.map(p => {
     const group = groupInfo.find(g => g.id === p.group);
     return `
@@ -688,79 +934,89 @@ function renderAdmin() {
           <strong>${escapeHTML(p.name)}</strong><br>
           <small class="muted">${escapeHTML(group?.title || p.group)} · ${escapeHTML(p.game)}</small>
           <div class="admin-price-edit">
-            <input
-              id="price-${Number(p.id)}"
-              type="number"
-              min="1"
-              step="1"
-              value="${Number(p.price)}"
+            <input id="price-${Number(p.id)}" type="number"
+              min="1" step="1" value="${Number(p.price)}"
               aria-label="New price for ${escapeHTML(p.name)}">
-            <button type="button" onclick="saveProductPrice(${Number(p.id)})">Save Price</button>
+            <button type="button"
+              onclick="saveProductPrice(${Number(p.id)})">Save Price</button>
           </div>
-          <small class="admin-product-price">Current price: ${money(p.price)}</small>
+          <small class="admin-product-price">Admin price: ${money(p.price)}</small>
         </span>
-        <button type="button" class="secondary-button" onclick="deleteProduct(${Number(p.id)})">Remove</button>
+        <button type="button" class="gv-nav"
+          onclick="deleteProduct(${Number(p.id)})">Remove</button>
       </div>
     `;
   }).join("");
 }
+
 function saveProductPrice(id) {
   const product = products.find(p => p.id === id);
   const input = document.getElementById("price-" + id);
+
   if (!product || !input || input.value.trim() === "") {
     alert("Enter a valid product price.");
     return;
   }
+
   const newPrice = Number(input.value);
   if (!Number.isFinite(newPrice) || newPrice <= 0) {
     alert("The price must be greater than ₦0.");
     return;
   }
+
   product.price = newPrice;
   renderAdmin();
-  alert("Price updated to " + money(newPrice) + ". This demo does not save changes permanently.");
+  alert("Price updated to " + money(newPrice) +
+    ". This demo does not save changes permanently.");
 }
+
 function deleteProduct(id) {
   const product = products.find(p => p.id === id);
   if (!product) return;
   if (!confirm("Remove " + product.name + " from this demo store?")) return;
+
   const index = products.findIndex(p => p.id === id);
   if (index >= 0) products.splice(index,1);
   cart = cart.filter(p => p.id !== id);
   render();
 }
+
+/* LOGIN POPUP CONTROLS */
+function openAuth(mode="login") {
+  const modal = document.getElementById("gv-modal");
+  modal.classList.add("open");
+  document.body.classList.add("modal-open");
+  setGvMode(mode);
+  setTimeout(() => document.getElementById("gv-email").focus(),0);
+}
+
+function closeAuth() {
+  document.getElementById("gv-modal").classList.remove("open");
+  document.body.classList.remove("modal-open");
+}
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeAuth();
+});
+
 render();
 </script>
 
-
-<!-- GameVault Login and Sign Up -->
-<div id="gv-login" style="max-width:360px;margin:30px auto;padding:24px;background:#180f29;color:white;border:1px solid #7040a0;border-radius:16px;font-family:Arial,sans-serif">
-  <h2 style="color:#b88aff">GameVault</h2>
-  <div style="display:flex;gap:10px;margin-bottom:16px">
-    <button type="button" id="gv-login-tab" style="flex:1;padding:12px;background:#8138ec;color:white;border:0;border-radius:8px">Login</button>
-    <button type="button" id="gv-signup-tab" style="flex:1;padding:12px;background:#30213f;color:white;border:0;border-radius:8px">Sign Up</button>
-  </div>
-  <p id="gv-heading">Welcome back!</p>
-  <form id="gv-auth-form">
-    <input id="gv-email" type="email" placeholder="Email address" required style="box-sizing:border-box;width:100%;padding:12px;margin:8px 0">
-    <input id="gv-password" type="password" placeholder="Password (at least 6 characters)" minlength="6" required style="box-sizing:border-box;width:100%;padding:12px;margin:8px 0">
-    <button id="gv-submit" type="submit" style="width:100%;padding:12px;background:#8138ec;color:white;border:0;border-radius:8px">Login</button>
-  </form>
-  <p id="gv-message" style="overflow-wrap:anywhere"></p>
-</div>
+<!-- Supabase JavaScript library must load before the authentication script. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-  const GAMEVAULT_SUPABASE_URL =
-    "https://hhopviwrhbebfkljzmiv.supabase.co";
+/*
+  Replace the placeholder below with your Supabase PUBLISHABLE key.
+  Never put a service_role or secret key in frontend code.
+*/
+const GAMEVAULT_SUPABASE_URL =
+  "https://hhopviwrhbebfkljzmiv.supabase.co";
 
-  const GAMEVAULT_SUPABASE_KEY = "sb_publishable_qzbuNv6A5xkxXTJH2rWYZQ__iDDAVwT";
+const GAMEVAULT_SUPABASE_KEY =
+  "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
 
-
-const gvSupabase = window.supabase.createClient(
-  GAMEVAULT_SUPABASE_URL,
-  GAMEVAULT_SUPABASE_KEY
-);
-
+let gvSupabase = null;
 let gvMode = "login";
 
 const gvForm = document.getElementById("gv-auth-form");
@@ -769,31 +1025,57 @@ const gvSignupTab = document.getElementById("gv-signup-tab");
 const gvHeading = document.getElementById("gv-heading");
 const gvSubmit = document.getElementById("gv-submit");
 const gvMessage = document.getElementById("gv-message");
+const gvPassword = document.getElementById("gv-password");
 
 function setGvMode(mode) {
-  gvMode = mode;
-  const signingUp = mode === "signup";
+  gvMode = mode === "signup" ? "signup" : "login";
+  const signingUp = gvMode === "signup";
 
   gvHeading.textContent = signingUp
     ? "Create your GameVault account"
     : "Welcome back!";
 
-  gvSubmit.textContent = signingUp ? "Create Account" : "Login";
+  gvSubmit.textContent = signingUp ? "Create Account" : "Log In";
+  gvLoginTab.classList.toggle("gv-tab-inactive", signingUp);
+  gvSignupTab.classList.toggle("gv-tab-inactive", !signingUp);
 
-  gvLoginTab.style.background = signingUp ? "#30213f" : "#8138ec";
-  gvSignupTab.style.background = signingUp ? "#8138ec" : "#30213f";
-
+  gvPassword.autocomplete = signingUp ? "new-password" : "current-password";
   gvMessage.textContent = "";
 }
 
-gvLoginTab.addEventListener("click", () => setGvMode("login"));
-gvSignupTab.addEventListener("click", () => setGvMode("signup"));
+function initSupabase() {
+  if (!window.supabase || !window.supabase.createClient) {
+    gvMessage.textContent =
+      "The authentication library did not load. Check your internet connection and refresh.";
+    return;
+  }
 
-gvForm.addEventListener("submit", async (event) => {
+  if (GAMEVAULT_SUPABASE_KEY === "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE") {
+    gvMessage.textContent =
+      "Setup needed: add your Supabase publishable key to the code first.";
+    return;
+  }
+
+  try {
+    gvSupabase = window.supabase.createClient(
+      GAMEVAULT_SUPABASE_URL,
+      GAMEVAULT_SUPABASE_KEY
+    );
+  } catch (error) {
+    gvMessage.textContent = "Supabase setup failed. Check your project URL and publishable key.";
+  }
+}
+
+gvForm.addEventListener("submit", async event => {
   event.preventDefault();
 
+  if (!gvSupabase) {
+    initSupabase();
+    if (!gvSupabase) return;
+  }
+
   const email = document.getElementById("gv-email").value.trim();
-  const password = document.getElementById("gv-password").value;
+  const password = gvPassword.value;
 
   gvSubmit.disabled = true;
   gvMessage.textContent = "Please wait...";
@@ -802,12 +1084,9 @@ gvForm.addEventListener("submit", async (event) => {
     let result;
 
     if (gvMode === "signup") {
-      result = await gvSupabase.auth.signUp({ email, password });
+      result = await gvSupabase.auth.signUp({email,password});
     } else {
-      result = await gvSupabase.auth.signInWithPassword({
-        email,
-        password
-      });
+      result = await gvSupabase.auth.signInWithPassword({email,password});
     }
 
     if (result.error) {
@@ -817,20 +1096,24 @@ gvForm.addEventListener("submit", async (event) => {
 
     if (gvMode === "signup" && !result.data.session) {
       gvMessage.textContent =
-        "Account created! Check your email to confirm your account, then log in.";
+        "Account created! Check your email to confirm it, then log in.";
       return;
     }
 
-    gvMessage.textContent =
-      gvMode === "signup"
-        ? "Account created! You're signed in."
-        : "Login successful! You're signed in.";
+    gvMessage.textContent = gvMode === "signup"
+      ? "Account created and signed in successfully."
+      : "Login successful! You're signed in.";
+
   } catch (error) {
-    gvMessage.textContent = "Something went wrong. Please try again.";
+    gvMessage.textContent =
+      "Something went wrong. Check your connection and try again.";
   } finally {
     gvSubmit.disabled = false;
   }
 });
+
+initSupabase();
 </script>
+
 </body>
 </html>
