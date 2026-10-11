@@ -6,168 +6,729 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#10091d">
+<meta name="description" content="GameVault digital gaming store. Browse game top-ups, accounts, skins and digital subscriptions.">
 <title>GameVault | Digital Gaming Store</title>
 <style>
-:root{--bg:#0b0712;--panel:#171022;--purple:#9b5cff;--text:#f7f2ff;--muted:#b7a9c9}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
-header{padding:20px 5%;display:flex;justify-content:space-between;align-items:center;background:#120b20;border-bottom:1px solid #39244e;position:sticky;top:0;z-index:5}
-.logo{font-size:23px;font-weight:900;letter-spacing:1px}.logo span{color:var(--purple)}
-button{background:var(--purple);color:white;border:0;border-radius:9px;padding:11px 15px;font-weight:bold;cursor:pointer}
-button:hover{filter:brightness(1.15)}
-.hero{padding:45px 6%;text-align:center;background:radial-gradient(ellipse at top,#432068 0%,#180d29 48%,#0b0712 80%)}
-.hero h1{font-size:clamp(34px,8vw,58px);margin:12px 0}
-.hero h1 span{color:#bd91ff}
-.hero p{color:var(--muted);line-height:1.6}
-.pill{display:inline-block;border:1px solid #68419a;border-radius:30px;padding:8px 13px;color:#d9bdff;font-size:12px}
-.search{width:min(100%,540px);margin:22px auto;display:flex;gap:8px}
-input,select{background:#20152d;border:1px solid #49335d;color:white;padding:13px;border-radius:9px;min-width:0}
-.search input{flex:1}
-main{max-width:1200px;margin:auto;padding:25px 5%}
-h2{font-size:23px}
-.categories{display:flex;gap:9px;flex-wrap:wrap;margin:17px 0 24px}
-.categories button{background:#20152d;border:1px solid #49335d}
-.categories button.active{background:var(--purple);border-color:var(--purple)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:15px}
-.card{background:var(--panel);border:1px solid #30203e;border-radius:15px;overflow:hidden;transition:.2s}
-.card:hover{transform:translateY(-3px);border-color:var(--purple)}
-.art{height:130px;display:grid;place-items:center;font-size:42px;background:radial-gradient(circle at 50% 20%,#593184,#21122f 65%,#130c1d);position:relative}
-.art small{position:absolute;bottom:9px;left:10px;font-size:10px;letter-spacing:2px;color:#e4ceff}
-.info{padding:13px}
-.info h3{font-size:15px;margin:2px 0 8px}
-.info p{font-size:12px;color:var(--muted);min-height:29px;line-height:1.4}
-.price{font-weight:900;margin:12px 0;color:#d5b3ff}
-.info button{width:100%;font-size:12px}
-.section{margin-top:35px}
-.notice{padding:15px;border:1px solid #49335d;border-radius:12px;color:var(--muted);font-size:13px;line-height:1.6}
-footer{text-align:center;padding:30px;color:var(--muted);font-size:12px;border-top:1px solid #30203e;margin-top:40px}
-#cartPanel,#adminPanel{display:none;background:#171022;border:1px solid #49335d;border-radius:14px;padding:18px;margin:20px 0}
-.line{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #30203e}
-.line button{padding:7px 10px}
-.admin-form{display:grid;gap:10px;margin:15px 0}
-.admin-form input,.admin-form select{width:100%}
-.empty{color:var(--muted);padding:15px 0}
-@media(min-width:750px){.art{height:165px}.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+:root {
+  --bg:#0b0712;
+  --panel:#171022;
+  --panel2:#21152f;
+  --purple:#9b5cff;
+  --purple-light:#bd91ff;
+  --text:#f7f2ff;
+  --muted:#b7a9c9;
+  --border:#39244e;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+button,input,select { font:inherit; }
+button {
+  background:var(--purple);
+  color:white;
+  border:0;
+  border-radius:10px;
+  padding:11px 15px;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:hover { filter:brightness(1.13); }
+button:focus-visible,input:focus-visible,select:focus-visible {
+  outline:2px solid var(--purple-light);
+  outline-offset:3px;
+}
+header {
+  padding:15px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  background:#120b20;
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+.logo {
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:1px;
+  white-space:nowrap;
+}
+.logo span { color:var(--purple-light); }
+.header-actions { display:flex; gap:8px; align-items:center; }
+.secondary-button { background:#30203e; }
+.hero {
+  padding:35px 5% 30px;
+  text-align:center;
+  background:radial-gradient(ellipse at top,#432068 0%,#180d29 48%,#0b0712 82%);
+}
+.pill {
+  display:inline-block;
+  border:1px solid #68419a;
+  border-radius:30px;
+  padding:8px 13px;
+  color:#d9bdff;
+  font-size:11px;
+  letter-spacing:1px;
+}
+.hero h1 {
+  font-size:clamp(32px,7vw,55px);
+  margin:15px 0 10px;
+}
+.hero h1 span { color:var(--purple-light); }
+.hero p {
+  color:var(--muted);
+  line-height:1.6;
+  margin:0 auto;
+  max-width:560px;
+}
+.search {
+  width:min(100%,590px);
+  margin:23px auto 0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:7px 8px 7px 14px;
+  background:#171022;
+  border:1px solid #49335d;
+  border-radius:14px;
+  box-shadow:0 8px 28px #00000030;
+}
+.search:focus-within {
+  border-color:var(--purple);
+  box-shadow:0 0 18px #9b5cff25;
+}
+.search-icon { color:var(--purple-light); font-size:24px; }
+.search input {
+  flex:1;
+  width:100%;
+  min-width:0;
+  padding:11px 0;
+  background:transparent;
+  border:0;
+  outline:none;
+  color:white;
+}
+.search input:focus { outline:none; }
+.search input::placeholder { color:var(--muted); }
+.search .clear-search {
+  padding:7px 12px;
+  background:#30203e;
+  color:#e4ceff;
+  font-size:21px;
+}
+main { max-width:1200px; margin:auto; padding:25px 5%; }
+h2 { font-size:22px; }
+.section-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.muted { color:var(--muted); line-height:1.6; }
+.category-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin:18px 0 28px;
+}
+.category-card {
+  min-width:0;
+  text-align:left;
+  padding:18px 14px;
+  background:linear-gradient(145deg,#21152f,#140d1e);
+  border:1px solid var(--border);
+  border-radius:15px;
+  color:var(--text);
+  transition:transform .18s,border-color .18s;
+}
+.category-card:hover {
+  transform:translateY(-2px);
+  border-color:var(--purple);
+}
+.category-icon {
+  display:block;
+  font-size:31px;
+  margin-bottom:12px;
+}
+.category-card strong { display:block; font-size:15px; }
+.category-card small {
+  display:block;
+  margin-top:8px;
+  color:var(--muted);
+  line-height:1.5;
+  font-weight:normal;
+}
+.breadcrumbs {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  margin:8px 0 20px;
+  color:var(--muted);
+  font-size:13px;
+}
+.breadcrumbs button {
+  padding:5px 8px;
+  background:#21152f;
+  color:#d9bdff;
+  font-size:12px;
+}
+.game-grid,.grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin:18px 0 25px;
+}
+.game-card {
+  text-align:left;
+  background:var(--panel);
+  color:var(--text);
+  border:1px solid var(--border);
+  padding:16px;
+  border-radius:13px;
+  min-height:75px;
+}
+.game-card:hover { border-color:var(--purple); }
+.game-card span { margin-right:8px; }
+.card {
+  min-width:0;
+  background:var(--panel);
+  border:1px solid #30203e;
+  border-radius:14px;
+  overflow:hidden;
+  transition:transform .18s,border-color .18s;
+}
+.card:hover { transform:translateY(-2px); border-color:var(--purple); }
+.art {
+  height:125px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  font-size:39px;
+  background:radial-gradient(circle at 50% 20%,#593184,#21122f 65%,#130c1d);
+  position:relative;
+}
+.art img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.art img.image-missing { display:none; }
+.art-fallback {
+  display:none;
+  position:absolute;
+  inset:0;
+  place-items:center;
+  font-size:39px;
+}
+.art-fallback.visible { display:grid; }
+.art small {
+  position:absolute;
+  bottom:8px;
+  left:9px;
+  font-size:9px;
+  letter-spacing:1.5px;
+  color:#fff;
+  text-shadow:0 1px 4px #000;
+  pointer-events:none;
+}
+.info { padding:12px; }
+.info h3 { font-size:14px; line-height:1.4; margin:2px 0 7px; }
+.info p {
+  font-size:12px;
+  color:var(--muted);
+  min-height:30px;
+  line-height:1.5;
+  margin:0 0 12px;
+}
+.info button { width:100%; font-size:12px; padding:10px 7px; }
+.empty {
+  color:var(--muted);
+  padding:18px 0;
+  line-height:1.6;
+  grid-column:1/-1;
+}
+.notice {
+  padding:15px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+  background:#120c1b;
+}
+.section { margin-top:32px; }
+#cartPanel,#adminPanel {
+  display:none;
+  background:var(--panel);
+  border:1px solid #49335d;
+  border-radius:14px;
+  padding:17px;
+  margin:18px 0 25px;
+}
+.line {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:flex-start;
+  flex-wrap:wrap;
+  padding:12px 0;
+  border-bottom:1px solid #30203e;
+  font-size:13px;
+}
+.line > span { flex:1; min-width:140px; }
+.line button { padding:8px 10px; }
+.admin-form { display:grid; gap:10px; margin:15px 0; }
+.admin-form input,.admin-form select {
+  width:100%;
+  background:#20152d;
+  border:1px solid #49335d;
+  color:white;
+  padding:12px;
+  border-radius:9px;
+}
+.admin-product-price { color:#d5b3ff; }
+.admin-price-edit {
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  align-items:center;
+  margin-top:9px;
+}
+.admin-price-edit input {
+  width:125px;
+  max-width:100%;
+  min-width:0;
+  padding:9px;
+  background:#20152d;
+  border:1px solid #49335d;
+  color:white;
+  border-radius:8px;
+}
+.admin-price-edit button { padding:9px 12px; }
+footer {
+  text-align:center;
+  padding:28px 5%;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.8;
+  border-top:1px solid #30203e;
+  margin-top:25px;
+}
+@media(min-width:650px) {
+  .game-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:15px; }
+  .art { height:160px; }
+}
+@media(min-width:950px) {
+  .category-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .game-grid,.grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
+}
+@media(max-width:360px) {
+  header { padding:12px 4%; }
+  .logo { font-size:18px; }
+  .header-actions button { padding:9px; font-size:12px; }
+  .info { padding:9px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*:before,*:after {
+    animation:none!important;
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
+}
 </style>
 </head>
 <body>
 <header>
   <div class="logo">GAME<span>VAULT</span></div>
-  <button onclick="toggleCart()">🛒 Cart (<span id="count">0</span>)</button>
+  <div class="header-actions">
+    <button class="secondary-button" type="button" onclick="goHome()">Home</button>
+    <button type="button" onclick="toggleCart()">🛒 Cart (<span id="count">0</span>)</button>
+  </div>
 </header>
-
 <section class="hero">
   <span class="pill">YOUR DIGITAL GAMING DESTINATION</span>
   <h1>Unlock Your <span>Next Level.</span></h1>
-  <p>Game top-ups, digital gaming products and more.<br>Everything you need, in one vault.</p>
+  <p>Find your game, choose your product, and explore the vault.</p>
   <div class="search">
-    <input id="search" placeholder="Search games and products..." oninput="render()">
-    <button onclick="render()">Search</button>
+    <span class="search-icon" aria-hidden="true">⌕</span>
+    <input id="search" type="search"
+      placeholder="Search games, top-ups, accounts..."
+      aria-label="Search all products"
+      oninput="handleSearch()">
+    <button class="clear-search" type="button"
+      onclick="clearSearch()" aria-label="Clear search">×</button>
   </div>
 </section>
-
 <main>
   <div id="cartPanel">
     <h2>Your Cart</h2>
     <div id="cartItems"></div>
-    <div class="line"><strong>Total</strong><strong id="total">₦0</strong></div>
-    <p class="notice">Demo checkout only. No payment will be collected and no products will be delivered.</p>
-    <button onclick="alert('This demo has no live payment system yet.')">Proceed to Checkout</button>
-    <button onclick="toggleCart()" style="background:#30203e">Close</button>
+    <p class="notice">Demo checkout only. Customer prices are hidden. No payment will be collected and no products will be delivered.</p>
+    <button type="button" onclick="alert('This demo has no live payment system yet.')">Proceed to Checkout</button>
+    <button type="button" class="secondary-button" onclick="toggleCart()">Close</button>
   </div>
-
-  <section>
-    <h2>Explore the Vault</h2>
-    <div class="categories" id="categories"></div>
-    <div class="grid" id="products"></div>
-  </section>
-
+  <section id="storeView"></section>
   <section class="section">
-    <h2>Inside GameVault</h2>
-    <div class="notice">🎮 Gaming top-ups · Digital products · Account listings<br>💜 A premium, mobile-friendly shopping experience.<br>🔒 Secure payments and automatic delivery can be connected when the backend is built.</div>
-  </section>
-
-  <section class="section">
-    <button onclick="toggleAdmin()">Admin Panel ⚙️</button>
+    <button type="button" onclick="toggleAdmin()">Admin Panel ⚙️</button>
     <div id="adminPanel">
       <h2>Store Admin — Demo</h2>
-      <p class="notice">This demo panel is not password-protected. Do not enter private information. Products added here stay in this browser only.</p>
+      <p class="notice">This demo panel is not password-protected. Products and prices are not saved to a database. Do not enter private information.</p>
       <div class="admin-form">
-        <input id="newName" placeholder="Product name">
-        <select id="newCategory">
-          <option>Free Fire</option><option>COD Mobile</option>
-          <option>PUBG Mobile</option><option>Mobile Legends</option>
-          <option>Digital Products</option>
+        <input id="newName" placeholder="Product name" maxlength="100">
+        <select id="newGroup" onchange="updateGameOptions()">
+          <option value="topups">Game Top-Ups</option>
+          <option value="accounts">Gaming Accounts</option>
+          <option value="skins">Skins & Bundles</option>
+          <option value="subscriptions">Digital Subscriptions</option>
         </select>
-        <input id="newPrice" type="number" placeholder="Price in naira">
-        <button onclick="addProduct()">Add Product</button>
+        <select id="newGame">
+          <option>Free Fire</option>
+          <option>COD Mobile</option>
+          <option>PUBG Mobile</option>
+          <option>Mobile Legends</option>
+          <option>Other Games</option>
+        </select>
+        <input id="newPrice" type="number" min="1" step="1" placeholder="Admin price in naira">
+        <input id="newDesc" placeholder="Short product description" maxlength="180">
+        <button type="button" onclick="addProduct()">Add Product</button>
       </div>
+      <h3>Manage Products</h3>
       <div id="adminList"></div>
     </div>
   </section>
 </main>
-
-<footer>GAMEVAULT © 2026 · Built for gamers.<br>Demo storefront — real payments and delivery are not connected.</footer>
-
+<footer>
+  GAMEVAULT © 2026 · Built for gamers.<br>
+  Demo storefront — real payments, database and automatic delivery are not connected.
+</footer>
 <script>
-const products=[
-{id:1,name:"Free Fire Diamonds",cat:"Free Fire",price:1500,icon: "💎", image: "1e84951ea4e43a94485c30851c151ad2.jpg", desc:"Diamonds top-up"},
-{id:2,name:"Free Fire Weekly",cat:"Free Fire",price:2200,icon:"🔥",image:"IMG_2377.jpeg",desc:"Membership listing · Free Fire"},
-{id:3,name:"COD Mobile CP",cat:"COD Mobile",price:1800,icon:"🎯",image:"IMG_2374.jpeg",desc:"CP top-up"},
-{id:4,name:"CODM Battle Pass",cat:"COD Mobile",price:3500,icon:"🪖",image:"IMG_2376.jpeg",desc:"Battle Pass listing · COD Mobile"},
-{id:5,name:"PUBG UC",cat:"PUBG Mobile",price:1800,icon:"🎮",image:"IMG_2379.jpeg",desc:"UC top-up"},
-{id:6,name:"PUBG Royale Pass",cat:"PUBG Mobile",price:4500,icon:"🏆",image:"IMG_2380.jpeg",desc:"Pass listing"},
-{id:7,name:"MLBB Diamonds",cat:"Mobile Legends",price:1200,icon:"💠",image:"IMG_2381.jpeg",desc:"Diamonds top-up"},
-{id:8,name:"Gaming Account",cat:"Accounts",price:5000,icon:"🎮",desc:"Demo account listing"},
-{id:9,name:"Digital Subscription",cat:"Digital Products",price:2500,icon:"✨",desc:"Digital product listing"},
-{id:10,name:"TikTok Coins",cat:"Digital Products",price:1000,icon:"📱",image:"IMG_2383.jpeg",desc:"Coins listing"}
+const products = [
+  {id:1,name:"Free Fire Diamonds",group:"topups",game:"Free Fire",price:1500,icon:"💎",image:"1e84951ea4e43a94485c30851c151ad2.jpg",desc:"Diamonds top-up"},
+  {id:2,name:"Free Fire Weekly",group:"topups",game:"Free Fire",price:2200,icon:"🔥",image:"IMG_2377.jpeg",desc:"Weekly membership"},
+  {id:3,name:"COD Mobile CP",group:"topups",game:"COD Mobile",price:1800,icon:"🎯",image:"IMG_2374.jpeg",desc:"CP top-up"},
+  {id:4,name:"CODM Battle Pass",group:"topups",game:"COD Mobile",price:3500,icon:"🪖",image:"IMG_2376.jpeg",desc:"Battle Pass listing"},
+  {id:5,name:"PUBG UC",group:"topups",game:"PUBG Mobile",price:1800,icon:"🎮",image:"IMG_2379.jpeg",desc:"UC top-up"},
+  {id:6,name:"PUBG Royale Pass",group:"topups",game:"PUBG Mobile",price:4500,icon:"🏆",image:"IMG_2380.jpeg",desc:"Royale Pass listing"},
+  {id:7,name:"MLBB Diamonds",group:"topups",game:"Mobile Legends",price:1200,icon:"💠",image:"IMG_2381.jpeg",desc:"Diamonds top-up"},
+  {id:8,name:"Gaming Account",group:"accounts",game:"Other Games",price:5000,icon:"🎮",desc:"Demo account listing"},
+  {id:10,name:"TikTok Coins",group:"subscriptions",game:"General",price:1000,icon:"📱",image:"IMG_2383.jpeg",desc:"Coins listing"}
 ];
-let cart=[];
-let active="All";
-const money=n=>"₦"+Number(n).toLocaleString("en-NG");
-function renderCategories(){
-const cats=["All",...new Set(products.map(p=>p.cat))];
-document.getElementById("categories").innerHTML=cats.map(c=>
-`<button class="${active===c?"active":""}" onclick="active=${JSON.stringify(c)};render()">${c}</button>`
-).join("");
+const groupInfo = [
+  {id:"topups",title:"Game Top-Ups",icon:"💎",desc:"Diamonds, CP, UC and game currencies"},
+  {id:"accounts",title:"Gaming Accounts",icon:"🎮",desc:"Choose a game to browse its accounts"},
+  {id:"skins",title:"Skins & Bundles",icon:"🛡️",desc:"Browse cosmetics and bundles by game"},
+  {id:"subscriptions",title:"Digital Subscriptions",icon:"✨",desc:"Subscriptions, coins and other digital services"}
+];
+const gameOptions = ["Free Fire","COD Mobile","PUBG Mobile","Mobile Legends","Other Games"];
+let cart = [];
+let activeView = "home";
+let activeGroup = "";
+let activeGame = "";
+let nextId = 11;
+const money = n => "₦" + Number(n).toLocaleString("en-NG");
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
 }
-function render(){
-renderCategories();
-const q=document.getElementById("search").value.toLowerCase();
-const shown=products.filter(p=>(active==="All"||p.cat===active)&&(p.name+" "+p.cat+" "+p.desc).toLowerCase().includes(q));
-document.getElementById("products").innerHTML=shown.length?shown.map(p=>`
-<div class="card">
-<div class="art">${p.image ? '<img src="' + p.image + '" alt="' + escapeHTML(p.name) + '" style="width:100%;height:100%;object-fit:cover;" loading="lazy">' : p.icon}<small>GAMEVAULT</small></div>
-<div class="info"><h3>${escapeHTML(p.name)}</h3><p>${escapeHTML(p.desc)} · ${escapeHTML(p.cat)}</p>
-<div class="price">${money(p.price)}</div>
-<button onclick="addCart(${p.id})">Add to Cart</button></div></div>`).join(""):'<p class="empty">No products found. Try another search.</p>';
-document.getElementById("count").textContent=cart.reduce((s,x)=>s+x.qty,0);
-renderCart();renderAdmin();
+function goHome() {
+  activeView = "home";
+  activeGroup = "";
+  activeGame = "";
+  clearSearch(false);
+  render();
+  window.scrollTo({top:0,behavior:"smooth"});
 }
-function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-function addCart(id){let p=products.find(x=>x.id===id);let item=cart.find(x=>x.id===id);if(item)item.qty++;else cart.push({...p,qty:1});render();}
-function renderCart(){
-document.getElementById("cartItems").innerHTML=cart.length?cart.map(x=>`<div class="line"><span>${escapeHTML(x.name)} × ${x.qty}</span><span>${money(x.price*x.qty)} <button onclick="removeCart(${x.id})">−</button></span></div>`).join(""):'<p class="empty">Your cart is empty.</p>';
-document.getElementById("total").textContent=money(cart.reduce((s,x)=>s+x.price*x.qty,0));
+function openGroup(group) {
+  document.getElementById("search").value = "";
+  activeGroup = group;
+  activeGame = "";
+  activeView = ["topups","accounts","skins"].includes(group)
+    ? "games" : "products";
+  render();
+  document.getElementById("storeView").scrollIntoView({behavior:"smooth",block:"start"});
 }
-function removeCart(id){let x=cart.find(p=>p.id===id);if(x){x.qty--;if(x.qty<=0)cart=cart.filter(p=>p.id!==id);}render();}
-function toggleCart(){let p=document.getElementById("cartPanel");p.style.display=p.style.display==="block"?"none":"block";renderCart();if(p.style.display==="block")p.scrollIntoView({behavior:"smooth",block:"start"});}
-function toggleAdmin(){let p=document.getElementById("adminPanel");p.style.display=p.style.display==="block"?"none":"block";renderAdmin();}
-function addProduct(){
-const name=document.getElementById("newName").value.trim();
-const cat=document.getElementById("newCategory").value;
-const price=Number(document.getElementById("newPrice").value);
-if(!name||!Number.isFinite(price)||price<=0){alert("Enter a product name and a valid price.");return;}
-products.push({id:Date.now(),name,cat,price,icon:"🎮",desc:"Store listing"});
-document.getElementById("newName").value="";
-document.getElementById("newPrice").value="";
-render();
+function openGame(group, game) {
+  activeGroup = group;
+  activeGame = game;
+  activeView = "products";
+  document.getElementById("search").value = "";
+  render();
 }
-function renderAdmin(){
-const el=document.getElementById("adminList");if(!el)return;
-el.innerHTML=products.map(p=>`<div class="line"><span>${escapeHTML(p.name)} · ${money(p.price)}</span><button onclick="deleteProduct(${p.id})">Remove</button></div>`).join("");
+function clearSearch(shouldRender = true) {
+  document.getElementById("search").value = "";
+  if (shouldRender) {
+    if (activeGroup && ["topups","accounts","skins"].includes(activeGroup) && !activeGame) {
+      activeView = "games";
+    } else if (activeGroup) {
+      activeView = "products";
+    } else {
+      activeView = "home";
+    }
+    render();
+  }
 }
-function deleteProduct(id){const i=products.findIndex(p=>p.id===id);if(i>=0)products.splice(i,1);cart=cart.filter(p=>p.id!==id);render();}
+function handleSearch() {
+  const query = document.getElementById("search").value.trim();
+  if (query) {
+    activeView = "search";
+  } else if (activeGroup && ["topups","accounts","skins"].includes(activeGroup) && !activeGame) {
+    activeView = "games";
+  } else if (activeGroup) {
+    activeView = "products";
+  } else {
+    activeView = "home";
+  }
+  render();
+}
+function renderBreadcrumb() {
+  let html = '<div class="breadcrumbs"><button type="button" onclick="goHome()">Home</button>';
+  if (activeGroup) {
+    const group = groupInfo.find(g => g.id === activeGroup);
+    if (group) html += '<span>›</span><span>' + escapeHTML(group.title) + '</span>';
+  }
+  if (activeGame) html += '<span>›</span><span>' + escapeHTML(activeGame) + '</span>';
+  html += '</div>';
+  return html;
+}
+function renderHome() {
+  return `
+    <div class="section-heading">
+      <h2>Explore the Vault</h2>
+    </div>
+    <p class="muted">Choose a category to get started. Products are organized inside their categories.</p>
+    <div class="category-grid">
+      ${groupInfo.map(g => `
+        <button class="category-card" type="button" onclick="openGroup('${g.id}')">
+          <span class="category-icon">${g.icon}</span>
+          <strong>${escapeHTML(g.title)}</strong>
+          <small>${escapeHTML(g.desc)}</small>
+        </button>
+      `).join("")}
+    </div>
+    <div class="notice">💜 Browse by category or search for a particular product across GameVault.</div>
+  `;
+}
+function renderGames() {
+  const games = activeGroup === "accounts"
+    ? gameOptions
+    : gameOptions.filter(game => products.some(p => p.group === activeGroup && p.game === game));
+  const title = groupInfo.find(g => g.id === activeGroup)?.title || "Choose a Game";
+  return `
+    ${renderBreadcrumb()}
+    <h2>Choose a game</h2>
+    <p class="muted">Select a game under ${escapeHTML(title)} to see the relevant listings.</p>
+    <div class="game-grid">
+      ${games.map(game => `
+        <button class="game-card" type="button" onclick="openGame('${activeGroup}','${game}')">
+          <span>🎮</span><strong>${escapeHTML(game)}</strong>
+        </button>
+      `).join("")}
+      ${games.length ? "" : '<p class="empty">No games have products in this category yet.</p>'}
+    </div>
+  `;
+}
+function productCard(p) {
+  const art = p.image
+    ? `<img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.classList.add('image-missing');this.nextElementSibling.classList.add('visible')">
+       <span class="art-fallback">${escapeHTML(p.icon || "🎮")}</span>`
+    : `<span class="art-fallback visible">${escapeHTML(p.icon || "🎮")}</span>`;
+  return `
+    <article class="card">
+      <div class="art">
+        ${art}
+        <small>GAMEVAULT</small>
+      </div>
+      <div class="info">
+        <h3>${escapeHTML(p.name)}</h3>
+        <p>${escapeHTML(p.desc || "Store listing")} · ${escapeHTML(p.game === "General" ? groupInfo.find(g => g.id === p.group)?.title || "Digital Product" : p.game)}</p>
+        <button type="button" onclick="addCart(${Number(p.id)})">Add to Cart</button>
+      </div>
+    </article>
+  `;
+}
+function renderProducts() {
+  const group = groupInfo.find(g => g.id === activeGroup);
+  let shown = products.filter(p => p.group === activeGroup);
+  if (activeGame) shown = shown.filter(p => p.game === activeGame);
+  const title = activeGame || group?.title || "Products";
+  return `
+    ${renderBreadcrumb()}
+    <div class="section-heading"><h2>${escapeHTML(title)}</h2></div>
+    <p class="muted">Browse available listings in this section.</p>
+    <div class="grid">
+      ${shown.length ? shown.map(productCard).join("") : '<p class="empty">No products are listed here yet. Check another game or come back later.</p>'}
+    </div>
+  `;
+}
+function renderSearch() {
+  const query = document.getElementById("search").value.trim().toLowerCase();
+  const shown = products.filter(p =>
+    [p.name,p.game,p.group,p.desc,groupInfo.find(g => g.id === p.group)?.title || ""]
+      .join(" ").toLowerCase().includes(query)
+  );
+  return `
+    <h2>Search Results</h2>
+    <p class="muted">${shown.length} matching product${shown.length === 1 ? "" : "s"}. Results can come from any category.</p>
+    <div class="grid">
+      ${shown.length ? shown.map(productCard).join("") : '<p class="empty">No products found. Try a different search term.</p>'}
+    </div>
+  `;
+}
+function render() {
+  const view = document.getElementById("storeView");
+  if (activeView === "home") view.innerHTML = renderHome();
+  else if (activeView === "games") view.innerHTML = renderGames();
+  else if (activeView === "search") view.innerHTML = renderSearch();
+  else view.innerHTML = renderProducts();
+  document.getElementById("count").textContent =
+    cart.reduce((sum,item) => sum + item.qty, 0);
+  renderCart();
+  renderAdmin();
+}
+function addCart(id) {
+  const product = products.find(p => p.id === id);
+  if (!product) return;
+  const item = cart.find(p => p.id === id);
+  if (item) item.qty++;
+  else cart.push({...product,qty:1});
+  render();
+}
+function renderCart() {
+  const el = document.getElementById("cartItems");
+  if (!el) return;
+  el.innerHTML = cart.length
+    ? cart.map(item => `
+      <div class="line">
+        <span>${escapeHTML(item.name)} × ${item.qty}</span>
+        <button type="button" class="secondary-button" onclick="removeCart(${Number(item.id)})" aria-label="Remove one ${escapeHTML(item.name)}">−</button>
+      </div>
+    `).join("")
+    : '<p class="empty">Your cart is empty.</p>';
+}
+function removeCart(id) {
+  const item = cart.find(p => p.id === id);
+  if (!item) return;
+  item.qty--;
+  if (item.qty <= 0) cart = cart.filter(p => p.id !== id);
+  render();
+}
+function toggleCart() {
+  const panel = document.getElementById("cartPanel");
+  panel.style.display = panel.style.display === "block" ? "none" : "block";
+  renderCart();
+  if (panel.style.display === "block") {
+    panel.scrollIntoView({behavior:"smooth",block:"start"});
+  }
+}
+function toggleAdmin() {
+  const panel = document.getElementById("adminPanel");
+  panel.style.display = panel.style.display === "block" ? "none" : "block";
+  renderAdmin();
+}
+function updateGameOptions() {
+  const group = document.getElementById("newGroup").value;
+  const gameSelect = document.getElementById("newGame");
+  gameSelect.innerHTML = "";
+  if (group === "subscriptions") {
+    gameSelect.innerHTML = '<option value="General">General / Not game-specific</option>';
+  } else {
+    gameOptions.forEach(game => {
+      const option = document.createElement("option");
+      option.value = game;
+      option.textContent = game;
+      gameSelect.appendChild(option);
+    });
+  }
+}
+function addProduct() {
+  const name = document.getElementById("newName").value.trim();
+  const group = document.getElementById("newGroup").value;
+  const game = document.getElementById("newGame").value;
+  const priceInput = document.getElementById("newPrice").value.trim();
+  const price = Number(priceInput);
+  const desc = document.getElementById("newDesc").value.trim();
+  if (!name || priceInput === "" || !Number.isFinite(price) || price <= 0) {
+    alert("Enter a product name and a valid price.");
+    return;
+  }
+  products.push({
+    id:nextId++,
+    name,
+    group,
+    game,
+    price,
+    icon:"🎮",
+    desc:desc || "Store listing"
+  });
+  document.getElementById("newName").value = "";
+  document.getElementById("newPrice").value = "";
+  document.getElementById("newDesc").value = "";
+  render();
+  alert("Product added to this demo page. It is not saved to a database.");
+}
+function renderAdmin() {
+  const el = document.getElementById("adminList");
+  if (!el) return;
+  el.innerHTML = products.map(p => {
+    const group = groupInfo.find(g => g.id === p.group);
+    return `
+      <div class="line">
+        <span>
+          <strong>${escapeHTML(p.name)}</strong><br>
+          <small class="muted">${escapeHTML(group?.title || p.group)} · ${escapeHTML(p.game)}</small>
+          <div class="admin-price-edit">
+            <input
+              id="price-${Number(p.id)}"
+              type="number"
+              min="1"
+              step="1"
+              value="${Number(p.price)}"
+              aria-label="New price for ${escapeHTML(p.name)}">
+            <button type="button" onclick="saveProductPrice(${Number(p.id)})">Save Price</button>
+          </div>
+          <small class="admin-product-price">Current price: ${money(p.price)}</small>
+        </span>
+        <button type="button" class="secondary-button" onclick="deleteProduct(${Number(p.id)})">Remove</button>
+      </div>
+    `;
+  }).join("");
+}
+function saveProductPrice(id) {
+  const product = products.find(p => p.id === id);
+  const input = document.getElementById("price-" + id);
+  if (!product || !input || input.value.trim() === "") {
+    alert("Enter a valid product price.");
+    return;
+  }
+  const newPrice = Number(input.value);
+  if (!Number.isFinite(newPrice) || newPrice <= 0) {
+    alert("The price must be greater than ₦0.");
+    return;
+  }
+  product.price = newPrice;
+  renderAdmin();
+  alert("Price updated to " + money(newPrice) + ". This demo does not save changes permanently.");
+}
+function deleteProduct(id) {
+  const product = products.find(p => p.id === id);
+  if (!product) return;
+  if (!confirm("Remove " + product.name + " from this demo store?")) return;
+  const index = products.findIndex(p => p.id === id);
+  if (index >= 0) products.splice(index,1);
+  cart = cart.filter(p => p.id !== id);
+  render();
+}
 render();
 </script>
 </body>
