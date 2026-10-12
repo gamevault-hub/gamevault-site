@@ -315,13 +315,7 @@ $("authForm").addEventListener("submit",async e => {
   setStatus("authMessage","Please wait...");
   try {
     const result = authMode === "signup"
-await supabaseClient.auth.signUp({
-  email,
-  password,
-  options: {
-    emailRedirectTo: 'https://gamevault-hub.github.io/gamevault-site/'
-  }
-})
+      ? await supabaseClient.auth.signUp({email,password})
       : await supabaseClient.auth.signInWithPassword({email,password});
     if (result.error) return setStatus("authMessage",result.error.message,"error");
     if (authMode === "signup" && !result.data.session) {
