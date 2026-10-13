@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,44 +9,21 @@
 <title>GameVault | Digital Gaming Store</title>
 
 <style>
-:root {
-  --bg:#090510;
-  --panel:#120b1d;
-  --panel2:#1b102b;
-  --purple:#a855f7;
-  --purple2:#7c3aed;
-  --light:#d8b4fe;
-  --text:#faf5ff;
-  --muted:#aa9bbd;
-  --border:#35204b;
-  --success:#72e6a2;
-  --danger:#ff7588;
-  --glow:rgba(168,85,247,.26);
-  --radius:18px;
+:root{
+  --bg:#090510;--panel:#120b1d;--panel2:#1b102b;
+  --purple:#a855f7;--purple2:#7c3aed;--light:#d8b4fe;
+  --text:#faf5ff;--muted:#aa9bbd;--border:#35204b;
+  --success:#72e6a2;--danger:#ff7588;--radius:18px
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:90px}
 body{
-  margin:0;
-  color:var(--text);
-  background:
-    radial-gradient(ellipse at 10% 0%,rgba(126,34,206,.14),transparent 38%),
-    radial-gradient(ellipse at 100% 35%,rgba(88,28,135,.12),transparent 35%),
-    var(--bg);
-  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  min-height:100vh;
-  overflow-x:hidden;
+  margin:0;color:var(--text);min-height:100vh;overflow-x:hidden;
+  background:radial-gradient(ellipse at 10% 0%,#7e22ce24,transparent 38%),
+  radial-gradient(ellipse at 100% 35%,#581c8720,transparent 35%),var(--bg);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 }
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:-1;
-  background:
-    radial-gradient(circle at 50% 0%,rgba(168,85,247,.09),transparent 45%),
-    radial-gradient(circle at 0% 80%,rgba(91,33,182,.07),transparent 35%);
-}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(circle at 50% 0%,#a855f715,transparent 45%)}
 button,input,select{font:inherit}
 button,a{touch-action:manipulation}
 button{cursor:pointer}
@@ -59,597 +35,167 @@ a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--light);outline-offset:3px}
 
 .gv-header{
-  position:sticky;
-  top:0;
-  z-index:20;
-  background:rgba(10,5,18,.82);
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
-  border-bottom:1px solid rgba(168,85,247,.23);
-  box-shadow:0 8px 30px rgba(0,0,0,.15);
-  padding:13px 5%;
-  display:flex;
-  align-items:center;
-  gap:16px;
+  position:sticky;top:0;z-index:20;padding:13px 5%;display:flex;
+  align-items:center;gap:16px;background:#0a0512d9;
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid #a855f738;box-shadow:0 8px 30px #0003
 }
-.logo{
-  font-size:22px;
-  font-weight:950;
-  letter-spacing:-1.1px;
-  cursor:pointer;
-  white-space:nowrap;
-}
-.logo span{
-  color:var(--light);
-  text-shadow:0 0 12px rgba(168,85,247,.75),0 0 30px rgba(168,85,247,.4);
-}
-.header-actions{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin-left:auto;
-}
+.logo{font-size:22px;font-weight:950;letter-spacing:-1.1px;cursor:pointer;white-space:nowrap}
+.logo span{color:var(--light);text-shadow:0 0 12px #a855f7bf,0 0 30px #a855f766}
+.header-actions{display:flex;align-items:center;gap:8px;margin-left:auto}
 .btn{
-  position:relative;
-  overflow:hidden;
-  border:1px solid rgba(168,85,247,.23);
-  background:linear-gradient(145deg,rgba(35,20,52,.96),rgba(19,11,30,.96));
-  color:var(--text);
-  border-radius:12px;
-  padding:10px 14px;
-  font-weight:750;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:7px;
-  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease,background .2s ease;
+  border:1px solid #a855f73b;background:linear-gradient(145deg,#231434,#130b1e);
+  color:var(--text);border-radius:12px;padding:10px 14px;font-weight:750;
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  transition:.2s ease
 }
-.btn:hover{
-  border-color:var(--purple);
-  box-shadow:0 0 18px rgba(168,85,247,.13);
-}
+.btn:hover{border-color:var(--purple);box-shadow:0 0 18px #a855f722}
 .btn:active{transform:scale(.97)}
-.btn.primary{
-  background:linear-gradient(135deg,#b15cff 0%,#8738e8 52%,#6d28d9 100%);
-  color:white;
-  border:1px solid #c084fc;
-  box-shadow:0 4px 17px rgba(147,51,234,.25),inset 0 1px rgba(255,255,255,.18);
-}
-.btn.primary:hover{
-  box-shadow:0 0 10px rgba(192,132,252,.48),0 0 30px rgba(147,51,234,.32);
-  border-color:#e9d5ff;
-}
+.btn.primary{background:linear-gradient(135deg,#b15cff,#8738e8 52%,#6d28d9);color:white;border-color:#c084fc;box-shadow:0 4px 17px #9333ea40}
 .btn.danger{color:var(--danger)}
-.btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 .icon-btn{width:42px;height:42px;padding:0;font-size:19px}
 
-main{max-width:1250px;margin:auto;padding:24px 5% 100px}
+main{max-width:1250px;margin:auto;padding:24px 5% 110px}
 .hero{
-  position:relative;
-  isolation:isolate;
-  overflow:hidden;
-  padding:46px 25px 30px;
-  margin:0 -10px 15px;
-  border:1px solid rgba(168,85,247,.17);
-  border-radius:25px;
-  background:
-    radial-gradient(ellipse at 78% 10%,rgba(147,51,234,.25),transparent 42%),
-    radial-gradient(ellipse at 10% 100%,rgba(91,33,182,.15),transparent 45%),
-    linear-gradient(140deg,rgba(25,12,40,.88),rgba(11,6,19,.75) 70%);
-  box-shadow:inset 0 1px rgba(255,255,255,.035),0 12px 50px rgba(0,0,0,.15);
+  position:relative;isolation:isolate;overflow:hidden;padding:46px 25px 30px;
+  margin:0 -10px 15px;border:1px solid #a855f72d;border-radius:25px;
+  background:radial-gradient(ellipse at 78% 10%,#9333ea40,transparent 42%),
+  radial-gradient(ellipse at 10% 100%,#5b21b624,transparent 45%),
+  linear-gradient(140deg,#190c28e0,#0b0613c9 70%);
+  box-shadow:inset 0 1px #ffffff09,0 12px 50px #0003
 }
-.hero::before{
-  content:"";
-  position:absolute;
-  z-index:-1;
-  width:240px;
-  height:240px;
-  right:-100px;
-  top:-120px;
-  border-radius:50%;
-  background:#a855f7;
-  filter:blur(110px);
-  opacity:.3;
-  animation:heroGlow 7s ease-in-out infinite alternate;
-}
-.hero::after{
-  content:"";
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  height:1px;
-  background:linear-gradient(90deg,transparent,#a855f7,transparent);
-  opacity:.6;
-}
-@keyframes heroGlow{
-  from{transform:translate(-15px,0);opacity:.2}
-  to{transform:translate(-70px,40px);opacity:.42}
-}
-.eyebrow{
-  color:var(--light);
-  font-size:11px;
-  font-weight:850;
-  letter-spacing:2.4px;
-  text-transform:uppercase;
-  display:inline-flex;
-  align-items:center;
-  gap:9px;
-}
-.eyebrow::before{
-  content:"";
-  width:18px;
-  height:2px;
-  background:var(--purple);
-  border-radius:2px;
-  box-shadow:0 0 9px var(--purple);
-}
-.hero h1{
-  font-size:clamp(36px,6.5vw,64px);
-  line-height:1.03;
-  letter-spacing:-2px;
-  margin:17px 0;
-  font-weight:950;
-}
-.hero h1 span{
-  color:#c084fc!important;
-  text-shadow:0 0 24px rgba(168,85,247,.3);
-}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,#a855f7,transparent)}
+.eyebrow{color:var(--light);font-size:11px;font-weight:850;letter-spacing:2.4px;text-transform:uppercase;display:inline-flex;align-items:center;gap:9px}
+.eyebrow::before{content:"";width:18px;height:2px;background:var(--purple);border-radius:2px;box-shadow:0 0 9px var(--purple)}
+.hero h1{font-size:clamp(36px,6.5vw,64px);line-height:1.03;letter-spacing:-2px;margin:17px 0;font-weight:950}
+.hero h1 span{color:#c084fc;text-shadow:0 0 24px #a855f74d}
 .hero p{color:#c4b5d6;max-width:540px;line-height:1.8;font-size:15px}
 .search{display:flex;gap:9px;max-width:620px;margin:25px 0 12px}
-
-input,select{
-  width:100%;
-  min-width:0;
-  background:rgba(10,5,18,.85);
-  border:1px solid #38214e;
-  border-radius:12px;
-  padding:13px 14px;
-  color:var(--text);
-  outline:none;
-  transition:border-color .2s ease,box-shadow .2s ease,background .2s ease;
-}
+input,select{width:100%;min-width:0;background:#0a0518dc;border:1px solid #38214e;border-radius:12px;padding:13px 14px;color:var(--text);outline:none;transition:.2s}
 input::placeholder{color:#776586}
-input:focus,select:focus{
-  border-color:#a855f7;
-  background:#10081b;
-  box-shadow:0 0 0 3px rgba(168,85,247,.12),0 0 18px rgba(168,85,247,.08);
-}
+input:focus,select:focus{border-color:var(--purple);box-shadow:0 0 0 3px #a855f720}
 input:disabled{opacity:.65}
-input[type="file"]{font-size:12px}
+input[type=file]{font-size:12px}
 .search input{flex:1;min-width:0}
-
-.section-heading{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  margin:34px 0 17px;
-}
-.section-heading h2{
-  font-size:21px;
-  letter-spacing:-.5px;
-  margin:0;
-  font-weight:850;
-}
+.section-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:34px 0 17px}
+.section-heading h2{font-size:21px;letter-spacing:-.5px;margin:0;font-weight:850}
 .section-heading h2::first-letter{color:var(--light)}
-.categories{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:13px;
-}
+.categories{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
 .category{
-  position:relative;
-  overflow:hidden;
-  text-align:left;
-  background:linear-gradient(145deg,rgba(31,17,47,.96),rgba(16,9,26,.98));
-  border:1px solid rgba(168,85,247,.19);
-  border-radius:17px;
-  padding:19px;
-  color:var(--text);
-  min-height:120px;
-  transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
+  position:relative;overflow:hidden;text-align:left;background:linear-gradient(145deg,#1f112ff5,#10091afe);
+  border:1px solid #a855f731;border-radius:17px;padding:19px;color:var(--text);
+  min-height:120px;transition:.22s
 }
-.category::after{
-  content:"";
-  position:absolute;
-  right:-38px;
-  bottom:-55px;
-  width:105px;
-  height:105px;
-  border-radius:50%;
-  background:rgba(147,51,234,.14);
-  filter:blur(28px);
-  transition:opacity .2s ease;
-}
-.category:hover{
-  transform:translateY(-3px);
-  border-color:rgba(192,132,252,.65);
-  box-shadow:0 8px 30px rgba(91,33,182,.13);
-}
-.category .emoji{
-  font-size:26px;
-  display:block;
-  margin-bottom:13px;
-  filter:drop-shadow(0 0 9px rgba(168,85,247,.28));
-}
+.category:hover{transform:translateY(-3px);border-color:#c084fcaa;box-shadow:0 8px 30px #5b21b622}
+.category .emoji{font-size:26px;display:block;margin-bottom:13px}
 .category strong{display:block;font-size:14px;margin-bottom:6px}
 .category small{color:var(--muted);line-height:1.5;display:block}
-
-.product-grid{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:15px;
-}
-.product{
-  position:relative;
-  overflow:hidden;
-  background:linear-gradient(155deg,rgba(28,16,42,.98),rgba(15,8,24,.98));
-  border:1px solid rgba(168,85,247,.19);
-  border-radius:17px;
-  min-width:0;
-  box-shadow:0 5px 20px rgba(0,0,0,.12);
-  transition:transform .24s ease,border-color .24s ease,box-shadow .24s ease;
-}
-.product:hover{
-  transform:translateY(-4px);
-  border-color:rgba(192,132,252,.7);
-  box-shadow:0 10px 35px rgba(91,33,182,.17),0 0 15px rgba(168,85,247,.07);
-}
-.product img{
-  display:block;
-  width:100%;
-  aspect-ratio:1.2;
-  object-fit:cover;
-  background:#1b102b;
-  transition:transform .45s ease,filter .3s ease;
-}
-.product:hover img{transform:scale(1.045);filter:saturate(1.08)}
+.product-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.product{overflow:hidden;background:linear-gradient(155deg,#1c102afa,#0f0818fa);border:1px solid #a855f731;border-radius:17px;min-width:0;transition:.24s}
+.product:hover{transform:translateY(-4px);border-color:#c084fcaa;box-shadow:0 10px 35px #5b21b62b}
+.product img{display:block;width:100%;aspect-ratio:1.2;object-fit:cover;background:var(--panel2)}
 .product-info{padding:14px}
-.product-info h3{
-  font-size:14px;
-  line-height:1.5;
-  margin:0 0 13px;
-  font-weight:800;
-}
-.product-bottom{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:8px;
-}
+.product-info h3{font-size:14px;line-height:1.5;margin:0 0 13px;font-weight:800}
+.product-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .price{font-weight:800;color:var(--light);font-size:12px}
-.product-bottom .btn{padding:9px 10px;font-size:11px;border-radius:10px}
-
+.product-bottom .btn{padding:9px 10px;font-size:11px}
 .page-title{margin:10px 0 24px}
-.page-title h1{
-  font-size:clamp(27px,5vw,36px);
-  letter-spacing:-1px;
-  margin:10px 0 8px;
-  font-weight:900;
-}
+.page-title h1{font-size:clamp(27px,5vw,36px);letter-spacing:-1px;margin:10px 0 8px;font-weight:900}
 .page-title p{line-height:1.7}
 .panel{
-  position:relative;
-  background:
-    radial-gradient(ellipse at 100% 0%,rgba(126,34,206,.07),transparent 42%),
-    linear-gradient(145deg,rgba(26,15,40,.96),rgba(15,8,24,.98));
-  border:1px solid rgba(168,85,247,.19);
-  border-radius:19px;
-  padding:21px;
-  margin-bottom:17px;
-  box-shadow:0 7px 25px rgba(0,0,0,.12),inset 0 1px rgba(255,255,255,.02);
+  background:radial-gradient(ellipse at 100% 0%,#7e22ce12,transparent 42%),
+  linear-gradient(145deg,#1a0f28f5,#0f0818fa);
+  border:1px solid #a855f731;border-radius:19px;padding:21px;margin-bottom:17px;
+  box-shadow:0 7px 25px #0002,inset 0 1px #ffffff05
 }
 .panel h2,.panel h3{margin-top:0;letter-spacing:-.3px}
 .panel p{line-height:1.7}
 .page-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
 .page-grid .panel{margin-bottom:0}
 
-.profile-top{display:flex;align-items:center;gap:17px;margin-bottom:24px}
+/* Premium profile */
+.profile-hero{
+  position:relative;overflow:hidden;padding:24px;
+  border:1px solid #a855f75c;border-radius:23px;
+  background:radial-gradient(ellipse at 100% 0%,#9333ea40,transparent 48%),
+  linear-gradient(145deg,#211332,#100a1b);
+  box-shadow:0 0 30px #a855f718,inset 0 1px #ffffff0a;margin-bottom:17px
+}
+.profile-hero::after{content:"";position:absolute;left:10%;right:10%;bottom:0;height:1px;background:linear-gradient(90deg,transparent,#c084fc,transparent)}
+.profile-top{display:flex;align-items:center;gap:17px;margin-bottom:20px;position:relative;z-index:1}
 .avatar,.avatar-placeholder{
-  width:82px;
-  height:82px;
-  flex:0 0 82px;
-  border-radius:50%;
-  border:2px solid #c084fc;
-  box-shadow:0 0 0 4px rgba(168,85,247,.09),0 0 24px rgba(168,85,247,.2);
+  width:86px;height:86px;flex:0 0 86px;border-radius:50%;
+  border:2px solid #c084fc;box-shadow:0 0 0 5px #a855f71a,0 0 25px #a855f744
 }
 .avatar{object-fit:cover;background:var(--panel2)}
-.avatar-placeholder{
-  background:linear-gradient(145deg,#2a1742,#13091f);
-  display:grid;
-  place-items:center;
-  font-size:30px;
-  color:var(--light);
-}
-.member-tag{
-  display:inline-flex;
-  padding:6px 10px;
-  border-radius:30px;
-  background:linear-gradient(110deg,#a855f725,#7c3aed15);
-  border:1px solid rgba(168,85,247,.27);
-  color:var(--light);
-  font-size:10px;
-  letter-spacing:.7px;
-  font-weight:850;
-}
+.avatar-placeholder{background:linear-gradient(145deg,#2a1742,#13091f);display:grid;place-items:center;font-size:30px;color:var(--light)}
+.member-tag{display:inline-flex;padding:6px 10px;border-radius:30px;background:linear-gradient(110deg,#a855f729,#7c3aed20);border:1px solid #a855f746;color:var(--light);font-size:10px;letter-spacing:.7px;font-weight:850}
+.profile-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:18px}
+.profile-stat{border:1px solid #a855f72b;background:#09051070;border-radius:14px;padding:14px;min-width:0}
+.profile-stat strong{display:block;font-size:13px;overflow-wrap:anywhere}
+.profile-stat span{display:block;color:var(--muted);font-size:10px;margin-bottom:7px}
+.profile-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}
+.profile-action{border:1px solid #a855f733;background:linear-gradient(145deg,#1b102b,#10091a);border-radius:16px;padding:16px;min-width:0}
+.profile-action .action-icon{font-size:22px;margin-bottom:10px}
+.profile-action strong{display:block;font-size:13px;margin-bottom:7px}
+.profile-action p{font-size:11px;color:var(--muted);line-height:1.6;margin:0 0 13px}
 .form-stack{display:grid;gap:14px}
 .form-stack label{display:grid;gap:8px;font-size:12px;color:#c4b5d6;font-weight:700}
-.notice{
-  padding:14px;
-  border-radius:12px;
-  background:linear-gradient(110deg,rgba(168,85,247,.12),rgba(124,58,237,.06));
-  border:1px solid rgba(168,85,247,.2);
-  color:var(--light);
-  font-size:12px;
-  line-height:1.7;
-}
-.status{
-  padding:6px 10px;
-  border-radius:9px;
-  font-size:11px;
-  background:rgba(168,85,247,.13);
-  border:1px solid rgba(168,85,247,.2);
-  color:var(--light);
-  white-space:nowrap;
-}
-.list-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  padding:15px 0;
-  border-bottom:1px solid rgba(168,85,247,.14);
-}
+.notice{padding:14px;border-radius:12px;background:linear-gradient(110deg,#a855f71f,#7c3aed10);border:1px solid #a855f733;color:var(--light);font-size:12px;line-height:1.7}
+.status{padding:6px 10px;border-radius:9px;font-size:11px;background:#a855f721;border:1px solid #a855f733;color:var(--light);white-space:nowrap}
+.status.success{color:var(--success);border-color:#72e6a244;background:#72e6a211}
+.list-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 0;border-bottom:1px solid #a855f724}
 .list-row:last-child{border-bottom:0}
 .empty{text-align:center;padding:38px 15px;color:var(--muted);line-height:1.7}
-.cart-line{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  padding:17px 0;
-  border-bottom:1px solid rgba(168,85,247,.14);
-}
+.cart-line{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:17px 0;border-bottom:1px solid #a855f724}
 .cart-line strong{display:block;margin-bottom:6px}
-.total{
-  display:flex;
-  justify-content:space-between;
-  font-size:18px;
-  font-weight:850;
-  padding:20px 0;
-}
-.footer{
-  border-top:1px solid rgba(168,85,247,.18);
-  padding:27px 5%;
-  color:var(--muted);
-  text-align:center;
-  font-size:12px;
-  background:rgba(10,5,18,.45);
-}
-
-.modal{
-  position:fixed;
-  inset:0;
-  background:rgba(3,1,8,.78);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  z-index:60;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:18px;
-}
-.modal-card{
-  width:min(440px,100%);
-  max-height:90vh;
-  overflow:auto;
-  padding:24px;
-  background:
-    radial-gradient(ellipse at 100% 0%,rgba(126,34,206,.17),transparent 45%),
-    #120b1d;
-  border:1px solid rgba(192,132,252,.36);
-  border-radius:22px;
-  box-shadow:0 0 60px rgba(91,33,182,.22),0 25px 80px rgba(0,0,0,.45);
-}
+.total{display:flex;justify-content:space-between;font-size:18px;font-weight:850;padding:20px 0}
+.footer{border-top:1px solid #a855f72e;padding:27px 5%;color:var(--muted);text-align:center;font-size:12px;background:#0a051274}
+.modal{position:fixed;inset:0;background:#030108c7;backdrop-filter:blur(12px);z-index:60;display:flex;align-items:center;justify-content:center;padding:18px}
+.modal-card{width:min(440px,100%);max-height:90vh;overflow:auto;padding:24px;background:radial-gradient(ellipse at 100% 0%,#7e22ce2b,transparent 45%),#120b1d;border:1px solid #c084fc5c;border-radius:22px;box-shadow:0 0 60px #5b21b638,0 25px 80px #0007}
 .modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.modal-head h2{margin-top:0;font-size:21px;letter-spacing:-.5px}
+.modal-head h2{margin-top:0;font-size:21px}
 #authForm{margin-top:20px}
-
-#toast{
-  position:fixed;
-  bottom:calc(95px + env(safe-area-inset-bottom));
-  left:50%;
-  transform:translateX(-50%);
-  z-index:90;
-  background:rgba(27,16,43,.96);
-  backdrop-filter:blur(18px);
-  border:1px solid rgba(192,132,252,.4);
-  box-shadow:0 0 28px rgba(147,51,234,.17),0 12px 35px rgba(0,0,0,.35);
-  padding:13px 18px;
-  border-radius:14px;
-  max-width:90%;
-  width:max-content;
-  font-size:13px;
-  text-align:center;
-}
-.menu-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);z-index:39}
-.drawer{
-  position:fixed;
-  z-index:40;
-  top:0;
-  left:0;
-  bottom:0;
-  width:min(320px,86vw);
-  overflow-y:auto;
-  background:linear-gradient(155deg,#170d25,#0c0613 80%);
-  border-right:1px solid rgba(168,85,247,.27);
-  box-shadow:15px 0 60px rgba(0,0,0,.3);
-  padding:20px;
-  transform:translateX(-105%);
-  transition:transform .25s ease;
-}
+#toast{position:fixed;bottom:calc(95px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:90;background:#1b102bf5;backdrop-filter:blur(18px);border:1px solid #c084fc66;box-shadow:0 0 28px #9333ea2b,0 12px 35px #0006;padding:13px 18px;border-radius:14px;max-width:90%;width:max-content;font-size:13px;text-align:center}
+.menu-backdrop{position:fixed;inset:0;background:#000a;backdrop-filter:blur(4px);z-index:39}
+.drawer{position:fixed;z-index:40;top:0;left:0;bottom:0;width:min(320px,86vw);overflow-y:auto;background:linear-gradient(155deg,#170d25,#0c0613 80%);border-right:1px solid #a855f744;box-shadow:15px 0 60px #0005;padding:20px;transform:translateX(-105%);transition:transform .25s}
 .drawer.open{transform:translateX(0)}
 .drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.drawer a,.drawer button{
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  text-align:left;
-  border:1px solid transparent;
-  border-radius:12px;
-  padding:13px;
-  background:transparent;
-  color:var(--text);
-  font-size:13px;
-  cursor:pointer;
-  transition:background .18s ease,border-color .18s ease;
-}
-.drawer a:hover,.drawer button:hover{
-  background:rgba(168,85,247,.1);
-  border-color:rgba(168,85,247,.15);
-}
+.drawer a,.drawer button{width:100%;display:flex;align-items:center;gap:12px;text-align:left;border:1px solid transparent;border-radius:12px;padding:13px;background:transparent;color:var(--text);font-size:13px;cursor:pointer}
+.drawer a:hover,.drawer button:hover{background:#a855f71a;border-color:#a855f726}
 .drawer-label{font-size:10px;color:#9f8ab4;letter-spacing:1.8px;margin:22px 0 8px;font-weight:800}
-hr{border:0;border-top:1px solid rgba(168,85,247,.17);margin:15px 0}
-
-/* Premium glowing SVG navigation */
-.bottom-nav{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  z-index:30;
-  display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
-  padding:9px 5px calc(9px + env(safe-area-inset-bottom));
-  background:rgba(11,6,19,.88);
-  backdrop-filter:blur(26px);
-  -webkit-backdrop-filter:blur(26px);
-  border-top:1px solid rgba(168,85,247,.24);
-  box-shadow:0 -10px 35px rgba(0,0,0,.2);
-}
-.bottom-nav a{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:5px;
-  min-width:0;
-  padding:7px 1px;
-  border-radius:12px;
-  color:#8f7ba5;
-  font-size:10px;
-  font-weight:750;
-  transition:color .2s ease,background .2s ease,box-shadow .2s ease;
-}
-.bottom-nav a .nav-icon{
-  display:grid;
-  place-items:center;
-  width:25px;
-  height:25px;
-  line-height:1;
-}
-.bottom-nav a .nav-icon svg{
-  display:block;
-  width:22px;
-  height:22px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:1.8;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-  transition:transform .2s ease,filter .2s ease;
-}
-.bottom-nav a.active{
-  color:#d8b4fe;
-  background:linear-gradient(180deg,rgba(168,85,247,.13),rgba(124,58,237,.035));
-  box-shadow:inset 0 1px rgba(192,132,252,.12);
-}
-.bottom-nav a.active .nav-icon svg{
-  transform:translateY(-1px);
-  filter:drop-shadow(0 0 6px rgba(192,132,252,.8));
-}
-.bottom-nav a:active{background:rgba(168,85,247,.2)}
-.bottom-nav a:active .nav-icon svg{transform:scale(.92)}
-.bottom-nav a:focus-visible{outline:2px solid var(--light);outline-offset:2px}
-
-@media(min-width:901px){
-  .bottom-nav{
-    left:50%;
-    right:auto;
-    transform:translateX(-50%);
-    width:min(560px,70vw);
-    border:1px solid rgba(168,85,247,.27);
-    border-bottom:0;
-    border-radius:19px 19px 0 0;
-  }
-}
-@media(max-width:900px){
-  .product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .categories{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
+hr{border:0;border-top:1px solid #a855f72b;margin:15px 0}
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding:9px 5px calc(9px + env(safe-area-inset-bottom));background:#0b0619e8;backdrop-filter:blur(26px);border-top:1px solid #a855f740;box-shadow:0 -10px 35px #0004}
+.bottom-nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:0;padding:7px 1px;border-radius:12px;color:#8f7ba5;font-size:10px;font-weight:750}
+.bottom-nav a .nav-icon{display:grid;place-items:center;width:25px;height:25px}
+.bottom-nav a .nav-icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.bottom-nav a.active{color:#d8b4fe;background:linear-gradient(180deg,#a855f722,#7c3aed09)}
+.bottom-nav a.active .nav-icon svg{filter:drop-shadow(0 0 6px #c084fccc)}
+@media(min-width:901px){.bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:min(560px,70vw);border:1px solid #a855f744;border-bottom:0;border-radius:19px 19px 0 0}}
+@media(max-width:900px){.product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.categories{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){
-  .gv-header{padding:11px 4%;gap:9px}
-  .logo{font-size:19px}
-  .header-actions{gap:5px}
-  .header-actions .btn{padding:9px;font-size:11px}
-  main{padding:15px 4% calc(112px + env(safe-area-inset-bottom))}
-  .hero{
-    padding:32px 17px 23px;
-    margin:0 -2px 15px;
-    border-radius:21px;
-  }
-  .hero h1{font-size:clamp(35px,10vw,48px);letter-spacing:-1.5px}
-  .hero p{font-size:13px}
-  .eyebrow{font-size:10px;letter-spacing:1.7px}
-  .search{gap:7px}
-  .search input{font-size:12px;padding:12px 10px}
-  .search .btn{padding:10px;font-size:12px}
-  .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
-  .product{border-radius:15px}
-  .product-info{padding:11px}
-  .product-info h3{font-size:13px;line-height:1.45}
-  .product-bottom{align-items:stretch;flex-direction:column;gap:9px}
-  .product-bottom .btn{width:100%;font-size:11px;padding:10px}
-  .categories{gap:10px}
-  .category{padding:15px;min-height:115px;border-radius:15px}
-  .category strong{font-size:13px}
-  .category small{font-size:11px}
-  .section-heading{margin:29px 0 15px}
-  .section-heading h2{font-size:18px}
-  .page-grid{grid-template-columns:1fr}
-  .panel{padding:16px;border-radius:17px}
-  .icon-btn{width:38px;height:38px}
-  .bottom-nav{gap:1px}
-  .bottom-nav a{font-size:9px}
-  .bottom-nav a .nav-icon{width:24px;height:24px}
-  .bottom-nav a .nav-icon svg{width:21px;height:21px}
-  .profile-top{gap:12px}
-  .avatar,.avatar-placeholder{width:68px;height:68px;flex-basis:68px}
-  .page-title h1{font-size:29px}
-  .cart-line{align-items:flex-start}
-  .cart-line .btn{padding:9px}
+ .gv-header{padding:11px 4%;gap:9px}.logo{font-size:19px}.header-actions{gap:5px}.header-actions .btn{padding:9px;font-size:11px}
+ main{padding:15px 4% calc(112px + env(safe-area-inset-bottom))}
+ .hero{padding:32px 17px 23px;margin:0 -2px 15px;border-radius:21px}
+ .hero h1{font-size:clamp(35px,10vw,48px);letter-spacing:-1.5px}.hero p{font-size:13px}.eyebrow{font-size:10px;letter-spacing:1.7px}
+ .search{gap:7px}.search input{font-size:12px;padding:12px 10px}.search .btn{padding:10px;font-size:12px}
+ .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.product{border-radius:15px}.product-info{padding:11px}
+ .product-info h3{font-size:13px}.product-bottom{align-items:stretch;flex-direction:column;gap:9px}.product-bottom .btn{width:100%;font-size:11px;padding:10px}
+ .categories{gap:10px}.category{padding:15px;min-height:115px;border-radius:15px}.category strong{font-size:13px}.category small{font-size:11px}
+ .section-heading{margin:29px 0 15px}.section-heading h2{font-size:18px}
+ .page-grid{grid-template-columns:1fr}.panel{padding:16px;border-radius:17px}
+ .icon-btn{width:38px;height:38px}.bottom-nav{gap:1px}.bottom-nav a{font-size:9px}
+ .bottom-nav a .nav-icon{width:24px;height:24px}.bottom-nav a .nav-icon svg{width:21px;height:21px}
+ .profile-top{gap:12px}.avatar,.avatar-placeholder{width:68px;height:68px;flex-basis:68px}
+ .profile-hero{padding:17px}.profile-stats{gap:7px}.profile-stat{padding:10px 8px}.profile-stat strong{font-size:11px}
+ .profile-actions{grid-template-columns:1fr}.profile-action{padding:14px}
+ .page-title h1{font-size:29px}.cart-line{align-items:flex-start}.cart-line .btn{padding:9px}
 }
-@media(max-width:360px){
-  .logo{font-size:17px}
-  .gv-header{gap:7px}
-  .header-actions .btn{padding:8px;font-size:10px}
-  .hero{padding:27px 14px 20px}
-  .category{padding:12px}
-  .bottom-nav a{font-size:8px}
-}
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    animation-duration:.01ms!important;
-    animation-iteration-count:1!important;
-    scroll-behavior:auto!important;
-    transition-duration:.01ms!important;
-  }
-}
+@media(max-width:360px){.logo{font-size:17px}.gv-header{gap:7px}.header-actions .btn{padding:8px;font-size:10px}.hero{padding:27px 14px 20px}.category{padding:12px}.bottom-nav a{font-size:8px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 </style>
 </head>
-
 <body>
 <header class="gv-header">
   <button class="btn icon-btn" aria-label="Open menu" onclick="toggleMenu(true)">☰</button>
@@ -687,49 +233,23 @@ hr{border:0;border-top:1px solid rgba(168,85,247,.17);margin:15px 0}
 </aside>
 
 <main><section id="view"></section></main>
-
-<footer class="footer">
-  GameVault · Your digital gaming store
-  <div style="margin-top:7px">Secure account access · Digital products · Customer support</div>
-</footer>
+<footer class="footer">GameVault · Your digital gaming store<div style="margin-top:7px">Secure account access · Digital products · Customer support</div></footer>
 
 <nav class="bottom-nav" aria-label="Main navigation">
-  <a href="?page=home" data-bottom-page="home" onclick="navigate('home');return false" aria-label="Home">
-    <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7"></path><path d="M5 9v11h14V9"></path><path d="M9 20v-7h6v7"></path></svg></span>
-    <span>Home</span>
-  </a>
-  <a href="?page=categories" data-bottom-page="categories" onclick="navigate('categories');return false" aria-label="Categories">
-    <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg></span>
-    <span>Categories</span>
-  </a>
-  <a href="?page=wallet" data-bottom-page="wallet" onclick="navigate('wallet');return false" aria-label="Wallet">
-    <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="15" rx="2.5"></rect><path d="M3 9h18"></path><path d="M16 14h2"></path><path d="M6 5V4a2 2 0 0 1 2-2h10"></path></svg></span>
-    <span>Wallet</span>
-  </a>
-  <a href="?page=orders" data-bottom-page="orders" onclick="navigate('orders');return false" aria-label="Orders">
-    <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v5h4"></path><path d="M9 12h7"></path><path d="M9 16h7"></path></svg></span>
-    <span>Orders</span>
-  </a>
-  <a href="?page=profile" data-bottom-page="profile" onclick="navigate('profile');return false" aria-label="Profile">
-    <span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg></span>
-    <span>Profile</span>
-  </a>
+  <a href="?page=home" data-bottom-page="home" onclick="navigate('home');return false" aria-label="Home"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7"></path><path d="M5 9v11h14V9"></path><path d="M9 20v-7h6v7"></path></svg></span><span>Home</span></a>
+  <a href="?page=categories" data-bottom-page="categories" onclick="navigate('categories');return false" aria-label="Categories"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg></span><span>Categories</span></a>
+  <a href="?page=wallet" data-bottom-page="wallet" onclick="navigate('wallet');return false" aria-label="Wallet"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="15" rx="2.5"></rect><path d="M3 9h18"></path><path d="M16 14h2"></path><path d="M6 5V4a2 2 0 0 1 2-2h10"></path></svg></span><span>Wallet</span></a>
+  <a href="?page=orders" data-bottom-page="orders" onclick="navigate('orders');return false" aria-label="Orders"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"></path><path d="M15 3v5h4"></path><path d="M9 12h7"></path><path d="M9 16h7"></path></svg></span><span>Orders</span></a>
+  <a href="?page=profile" data-bottom-page="profile" onclick="navigate('profile');return false" aria-label="Profile"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg></span><span>Profile</span></a>
 </nav>
 
 <div id="authModal" class="modal hidden">
   <div class="modal-card">
-    <div class="modal-head">
-      <h2 id="authTitle">Welcome to GameVault</h2>
-      <button class="btn icon-btn" onclick="closeAuth()" aria-label="Close sign-in">×</button>
-    </div>
+    <div class="modal-head"><h2 id="authTitle">Welcome to GameVault</h2><button class="btn icon-btn" onclick="closeAuth()" aria-label="Close sign-in">×</button></div>
     <p class="muted small" id="authDescription">Sign in to your account.</p>
     <form class="form-stack" id="authForm">
-      <label>Email
-        <input type="email" id="authEmail" autocomplete="email" required>
-      </label>
-      <label>Password
-        <input type="password" id="authPassword" minlength="6" autocomplete="current-password" required>
-      </label>
+      <label>Email<input type="email" id="authEmail" autocomplete="email" required></label>
+      <label>Password<input type="password" id="authPassword" minlength="6" autocomplete="current-password" required></label>
       <button class="btn primary" type="submit" id="authSubmit">Sign In</button>
     </form>
     <p class="small muted" id="authSwitchText">New to GameVault?</p>
@@ -738,848 +258,418 @@ hr{border:0;border-top:1px solid rgba(168,85,247,.17);margin:15px 0}
     <p class="small muted">If email confirmation is enabled, follow the confirmation link sent to your email.</p>
   </div>
 </div>
-
 <div id="toast" class="hidden" role="status" aria-live="polite"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 "use strict";
 
-const SUPABASE_URL = "https://hhopviwrhbebfkljzmiv.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_qzbuNv6A5xkxXTJH2rWYZQ__iDDAVwT";
-const SITE_URL = "https://gamevault-hub.github.io/gamevault-site/";
+const SUPABASE_URL="https://hhopviwrhbebfkljzmiv.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_qzbuNv6A5xkxXTJH2rWYZQ__iDDAVwT";
+const SITE_URL="https://gamevault-hub.github.io/gamevault-site/";
 
-let supabaseClient = null;
-let currentUser = null;
-let currentProfile = null;
-let authMode = "login";
-let currentPage = new URLSearchParams(location.search).get("page") || "home";
-let searchTerm = "";
-let toastTimer = null;
-let profileSaveInProgress = false;
+let supabaseClient=null,currentUser=null,currentProfile=null,authMode="login";
+let currentPage=new URLSearchParams(location.search).get("page")||"home";
+let searchTerm="",toastTimer=null,profileSaveInProgress=false;
+const view=document.getElementById("view");
 
-const view = document.getElementById("view");
-
-const products = [
-  {id:"ff-diamonds",name:"Free Fire Diamonds",category:"topups",game:"Free Fire",description:"Top up diamonds for your Free Fire account.",image:"1e84951ea4e43a94485c30851c151ad2.jpg"},
-  {id:"ff-weekly",name:"Free Fire Weekly Membership",category:"topups",game:"Free Fire",description:"Weekly membership top-up.",image:"IMG_2377.jpeg"},
-  {id:"codm-cp",name:"COD Mobile CP",category:"topups",game:"Call of Duty Mobile",description:"CODM points for in-game purchases.",image:"IMG_2374.jpeg"},
-  {id:"codm-pass",name:"COD Mobile Battle Pass",category:"topups",game:"Call of Duty Mobile",description:"Battle Pass top-up.",image:"IMG_2376.jpeg"},
-  {id:"pubg-uc",name:"PUBG Mobile UC",category:"topups",game:"PUBG Mobile",description:"UC for your PUBG Mobile account.",image:"IMG_2379.jpeg"},
-  {id:"pubg-pass",name:"PUBG Royale Pass",category:"topups",game:"PUBG Mobile",description:"Royale Pass top-up.",image:"IMG_2380.jpeg"},
-  {id:"mlbb-diamonds",name:"MLBB Diamonds",category:"topups",game:"Mobile Legends",description:"Diamonds for Mobile Legends.",image:"IMG_2381.jpeg"},
-  {id:"gaming-account",name:"Gaming Account",category:"accounts",game:"Gaming Accounts",description:"Browse available gaming account listings.",image:""},
-  {id:"digital-sub",name:"Digital Subscription",category:"subscriptions",game:"Digital Services",description:"Digital subscription listings.",image:""},
-  {id:"tiktok-coins",name:"TikTok Coins",category:"topups",game:"TikTok",description:"TikTok coin top-up.",image:"IMG_2383.jpeg"},
-  {id:"spotify",name:"Spotify Premium",category:"subscriptions",game:"Spotify",description:"Spotify subscription listing.",image:"IMG_2412.jpeg"},
-  {id:"snapchat",name:"Snapchat+",category:"subscriptions",game:"Snapchat",description:"Snapchat+ subscription listing.",image:"IMG_2385.jpeg"},
-  {id:"youtube",name:"YouTube Premium",category:"subscriptions",game:"YouTube",description:"YouTube Premium subscription listing.",image:"IMG_2413.jpeg"},
-  {id:"netflix",name:"Netflix Subscription",category:"subscriptions",game:"Netflix",description:"Netflix subscription listing.",image:"IMG_2416.jpeg"},
-  {id:"chatgpt",name:"ChatGPT Subscription",category:"subscriptions",game:"ChatGPT",description:"ChatGPT subscription listing.",image:"IMG_2414.jpeg"}
+const products=[
+{id:"ff-diamonds",name:"Free Fire Diamonds",category:"topups",game:"Free Fire",description:"Top up diamonds for your Free Fire account.",image:"1e84951ea4e43a94485c30851c151ad2.jpg"},
+{id:"ff-weekly",name:"Free Fire Weekly Membership",category:"topups",game:"Free Fire",description:"Weekly membership top-up.",image:"IMG_2377.jpeg"},
+{id:"codm-cp",name:"COD Mobile CP",category:"topups",game:"Call of Duty Mobile",description:"CODM points for in-game purchases.",image:"IMG_2374.jpeg"},
+{id:"codm-pass",name:"COD Mobile Battle Pass",category:"topups",game:"Call of Duty Mobile",description:"Battle Pass top-up.",image:"IMG_2376.jpeg"},
+{id:"pubg-uc",name:"PUBG Mobile UC",category:"topups",game:"PUBG Mobile",description:"UC for your PUBG Mobile account.",image:"IMG_2379.jpeg"},
+{id:"pubg-pass",name:"PUBG Royale Pass",category:"topups",game:"PUBG Mobile",description:"Royale Pass top-up.",image:"IMG_2380.jpeg"},
+{id:"mlbb-diamonds",name:"MLBB Diamonds",category:"topups",game:"Mobile Legends",description:"Diamonds for Mobile Legends.",image:"IMG_2381.jpeg"},
+{id:"gaming-account",name:"Gaming Account",category:"accounts",game:"Gaming Accounts",description:"Browse available gaming account listings.",image:""},
+{id:"digital-sub",name:"Digital Subscription",category:"subscriptions",game:"Digital Services",description:"Digital subscription listings.",image:""},
+{id:"tiktok-coins",name:"TikTok Coins",category:"topups",game:"TikTok",description:"TikTok coin top-up.",image:"IMG_2383.jpeg"},
+{id:"spotify",name:"Spotify Premium",category:"subscriptions",game:"Spotify",description:"Spotify subscription listing.",image:"IMG_2412.jpeg"},
+{id:"snapchat",name:"Snapchat+",category:"subscriptions",game:"Snapchat",description:"Snapchat+ subscription listing.",image:"IMG_2385.jpeg"},
+{id:"youtube",name:"YouTube Premium",category:"subscriptions",game:"YouTube",description:"YouTube Premium subscription listing.",image:"IMG_2413.jpeg"},
+{id:"netflix",name:"Netflix Subscription",category:"subscriptions",game:"Netflix",description:"Netflix subscription listing.",image:"IMG_2416.jpeg"},
+{id:"chatgpt",name:"ChatGPT Subscription",category:"subscriptions",game:"ChatGPT",description:"ChatGPT subscription listing.",image:"IMG_2414.jpeg"}
+];
+const categories=[
+{id:"topups",name:"Game Top-Ups",emoji:"🎮",description:"Diamonds, CP, UC and more"},
+{id:"accounts",name:"Gaming Accounts",emoji:"👤",description:"Browse gaming account listings"},
+{id:"skins",name:"Skins & Bundles",emoji:"✨",description:"Limited skins and bundles"},
+{id:"subscriptions",name:"App Subscriptions",emoji:"📱",description:"Digital apps and memberships"}
 ];
 
-const categories = [
-  {id:"topups",name:"Game Top-Ups",emoji:"🎮",description:"Diamonds, CP, UC and more"},
-  {id:"accounts",name:"Gaming Accounts",emoji:"👤",description:"Browse gaming account listings"},
-  {id:"skins",name:"Skins & Bundles",emoji:"✨",description:"Limited skins and bundles"},
-  {id:"subscriptions",name:"App Subscriptions",emoji:"📱",description:"Digital apps and memberships"}
-];
-
-let cart = loadCart();
-
+let cart=loadCart();
 function escapeHTML(value){
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[char]));
+ return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
-
 function notify(message){
-  const toast = document.getElementById("toast");
-  toast.textContent = message;
-  toast.classList.remove("hidden");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.add("hidden"), 3500);
+ const toast=document.getElementById("toast");toast.textContent=message;toast.classList.remove("hidden");
+ clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.add("hidden"),3500);
 }
-
 function toggleMenu(open){
-  document.getElementById("drawer").classList.toggle("open",open);
-  document.getElementById("menuBackdrop").classList.toggle("hidden",!open);
+ document.getElementById("drawer").classList.toggle("open",open);
+ document.getElementById("menuBackdrop").classList.toggle("hidden",!open);
 }
-
-function navigate(page, options = {}){
-  const allowed = ["home","categories","products","topups","accounts","skins","subscriptions","cart","wallet","profile","orders","security"];
-  if(!allowed.includes(page)) page = "home";
-  currentPage = page;
-
-  const url = new URL(location.href);
-  if(page === "home") url.searchParams.delete("page");
-  else url.searchParams.set("page",page);
-
-  if(options.replace) history.replaceState({page}, "", url);
-  else history.pushState({page}, "", url);
-
-  toggleMenu(false);
-  renderPage();
-  window.scrollTo({top:0,behavior:"auto"});
+function navigate(page,options={}){
+ const allowed=["home","categories","products","topups","accounts","skins","subscriptions","cart","wallet","profile","orders","security"];
+ if(!allowed.includes(page))page="home";
+ currentPage=page;
+ const url=new URL(location.href);
+ if(page==="home")url.searchParams.delete("page");else url.searchParams.set("page",page);
+ if(options.replace)history.replaceState({page},"",url);else history.pushState({page},"",url);
+ toggleMenu(false);renderPage();window.scrollTo({top:0,behavior:"auto"});
 }
-
-window.addEventListener("popstate", () => {
-  currentPage = new URLSearchParams(location.search).get("page") || "home";
-  renderPage();
+window.addEventListener("popstate",()=>{
+ currentPage=new URLSearchParams(location.search).get("page")||"home";renderPage();
 });
-
+document.querySelectorAll(".drawer a[data-page]").forEach(link=>{
+ link.addEventListener("click",event=>{
+  event.preventDefault();navigate(link.dataset.page);
+ });
+});
 function updateBottomNavigation(){
-  document.querySelectorAll("[data-bottom-page]").forEach(link=>{
-    const page=link.dataset.bottomPage;
-    const active = page===currentPage ||
-      (page==="categories" && ["topups","accounts","skins","subscriptions","products"].includes(currentPage));
-    link.classList.toggle("active",active);
-    if(active) link.setAttribute("aria-current","page");
-    else link.removeAttribute("aria-current");
-  });
+ document.querySelectorAll("[data-bottom-page]").forEach(link=>{
+  const p=link.dataset.bottomPage;
+  const active=p===currentPage||(p==="categories"&&["topups","accounts","skins","subscriptions","products"].includes(currentPage));
+  link.classList.toggle("active",active);
+  if(active)link.setAttribute("aria-current","page");else link.removeAttribute("aria-current");
+ });
 }
-
 function loadCart(){
-  try {
-    const saved=JSON.parse(localStorage.getItem("gv_cart") || "[]");
-    return Array.isArray(saved)?saved.filter(item=>item&&typeof item.id==="string"&&Number.isFinite(item.qty)&&item.qty>0):[];
-  } catch { return []; }
+ try{const saved=JSON.parse(localStorage.getItem("gv_cart")||"[]");return Array.isArray(saved)?saved.filter(i=>i&&typeof i.id==="string"&&Number.isFinite(i.qty)&&i.qty>0):[];}catch{return [];}
 }
-
 function saveCart(){
-  try { localStorage.setItem("gv_cart",JSON.stringify(cart)); }
-  catch(error){ console.warn("Cart storage unavailable",error); }
-  document.getElementById("cartCount").textContent = cart.reduce((sum,item)=>sum+item.qty,0);
+ try{localStorage.setItem("gv_cart",JSON.stringify(cart));}catch(e){console.warn("Cart storage unavailable",e);}
+ document.getElementById("cartCount").textContent=cart.reduce((s,i)=>s+i.qty,0);
 }
-
 function addToCart(id){
-  const product = products.find(p=>p.id===id);
-  if(!product) return;
-  const existing = cart.find(item=>item.id===id);
-  if(existing) existing.qty++;
-  else cart.push({id,qty:1});
-  saveCart();
-  notify(product.name+" added to cart.");
+ const p=products.find(p=>p.id===id);if(!p)return;
+ const old=cart.find(i=>i.id===id);if(old)old.qty++;else cart.push({id,qty:1});
+ saveCart();notify(p.name+" added to cart.");
 }
-
 function changeQty(id,delta){
-  const item = cart.find(row=>row.id===id);
-  if(!item) return;
-  item.qty += delta;
-  cart = cart.filter(row=>row.qty>0);
-  saveCart();
-  renderPage();
+ const item=cart.find(i=>i.id===id);if(!item)return;
+ item.qty+=delta;cart=cart.filter(i=>i.qty>0);saveCart();renderPage();
 }
-
-function removeFromCart(id){
-  cart = cart.filter(item=>item.id!==id);
-  saveCart();
-  renderPage();
+function removeFromCart(id){cart=cart.filter(i=>i.id!==id);saveCart();renderPage();}
+function productCard(p){
+ const image=p.image?`<img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.style.display='none'">`:`<div style="aspect-ratio:1.2;display:grid;place-items:center;font-size:42px;background:var(--panel2)">🎮</div>`;
+ return `<article class="product">${image}<div class="product-info"><h3>${escapeHTML(p.name)}</h3><div class="product-bottom"><span class="price">View options</span><button class="btn primary" onclick="addToCart('${escapeHTML(p.id)}')">Add to cart</button></div></div></article>`;
 }
-
-function productCard(product){
-  const image = product.image
-    ? `<img src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}" loading="lazy" onerror="this.style.display='none'">`
-    : `<div style="aspect-ratio:1.2;display:grid;place-items:center;font-size:42px;background:var(--panel2)">🎮</div>`;
-
-  return `<article class="product">
-    ${image}
-    <div class="product-info">
-      <h3>${escapeHTML(product.name)}</h3>
-      <div class="product-bottom">
-        <span class="price">View options</span>
-        <button class="btn primary" onclick="addToCart('${escapeHTML(product.id)}')">Add to cart</button>
-      </div>
-    </div>
-  </article>`;
-}
-
 function categoryCards(){
-  return `<div class="categories">${categories.map(cat=>`
-    <button class="category" onclick="navigate('${cat.id}')">
-      <span class="emoji">${cat.emoji}</span>
-      <strong>${escapeHTML(cat.name)}</strong>
-      <small>${escapeHTML(cat.description)}</small>
-    </button>`).join("")}</div>`;
+ return `<div class="categories">${categories.map(c=>`<button class="category" onclick="navigate('${c.id}')"><span class="emoji">${c.emoji}</span><strong>${escapeHTML(c.name)}</strong><small>${escapeHTML(c.description)}</small></button>`).join("")}</div>`;
 }
-
-function productGrid(list){
-  if(!list.length) return `<div class="empty">No products found. Try another search.</div>`;
-  return `<div class="product-grid">${list.map(productCard).join("")}</div>`;
-}
-
+function productGrid(list){return list.length?`<div class="product-grid">${list.map(productCard).join("")}</div>`:`<div class="empty">No products found. Try another search.</div>`;}
 function renderHome(){
-  const featured = products.filter(p=>p.category==="topups" || p.category==="subscriptions").slice(0,8);
-  view.innerHTML = `
-    <section class="hero">
-      <div class="eyebrow">Your digital gaming store</div>
-      <h1>Level up with<br><span style="color:var(--purple)">GameVault.</span></h1>
-      <p>Explore gaming top-ups, accounts, skins, bundles and digital subscriptions in one place.</p>
-      <div class="search">
-        <input id="storeSearch" placeholder="Search games and digital products..." value="${escapeHTML(searchTerm)}" oninput="searchTerm=this.value;renderSearchResults()">
-        <button class="btn primary" onclick="runSearch()">Search</button>
-      </div>
-      <div id="searchResults"></div>
-    </section>
-    <div class="section-heading"><h2>Explore Categories</h2><button class="btn" onclick="navigate('categories')">View all</button></div>
-    ${categoryCards()}
-    <div class="section-heading"><h2>Popular Products</h2><button class="btn" onclick="navigate('products')">View all</button></div>
-    ${productGrid(featured)}
-    <div class="panel" style="margin-top:28px">
-      <h2>Welcome to GameVault</h2>
-      <p class="muted">Sign in to manage your customer profile. Product pricing and fulfillment options must be configured before purchases can be completed.</p>
-      <button class="btn primary" onclick="openAuth()">Sign in / Create account</button>
-    </div>`;
-  renderSearchResults();
+ const featured=products.filter(p=>p.category==="topups"||p.category==="subscriptions").slice(0,8);
+ view.innerHTML=`<section class="hero"><div class="eyebrow">Your digital gaming store</div><h1>Level up with<br><span>GameVault.</span></h1><p>Explore gaming top-ups, accounts, skins, bundles and digital subscriptions in one place.</p><div class="search"><input id="storeSearch" placeholder="Search games and digital products..." value="${escapeHTML(searchTerm)}" oninput="searchTerm=this.value;renderSearchResults()"><button class="btn primary" onclick="runSearch()">Search</button></div><div id="searchResults"></div></section><div class="section-heading"><h2>Explore Categories</h2><button class="btn" onclick="navigate('categories')">View all</button></div>${categoryCards()}<div class="section-heading"><h2>Popular Products</h2><button class="btn" onclick="navigate('products')">View all</button></div>${productGrid(featured)}<div class="panel" style="margin-top:28px"><h2>Welcome to GameVault</h2><p class="muted">Sign in to manage your customer profile. Product pricing and fulfillment options must be configured before purchases can be completed.</p><button class="btn primary" onclick="openAuth()">Sign in / Create account</button></div>`;
+ renderSearchResults();
 }
-
 function renderSearchResults(){
-  const container = document.getElementById("searchResults");
-  if(!container) return;
-  const term = searchTerm.trim().toLowerCase();
-  if(!term){container.innerHTML="";return;}
-  const matches = products.filter(p=>
-    (p.name+" "+p.game+" "+p.description+" "+p.category).toLowerCase().includes(term)
-  );
-  container.innerHTML = `<div class="panel"><div class="section-heading"><h2>Search results</h2><button class="btn" onclick="searchTerm='';renderPage()">Clear</button></div>${productGrid(matches)}</div>`;
+ const el=document.getElementById("searchResults");if(!el)return;
+ const term=searchTerm.trim().toLowerCase();if(!term){el.innerHTML="";return;}
+ const matches=products.filter(p=>(p.name+" "+p.game+" "+p.description+" "+p.category).toLowerCase().includes(term));
+ el.innerHTML=`<div class="panel"><div class="section-heading"><h2>Search results</h2><button class="btn" onclick="searchTerm='';renderPage()">Clear</button></div>${productGrid(matches)}</div>`;
 }
-
-function runSearch(){
-  const field = document.getElementById("storeSearch");
-  searchTerm = field ? field.value : searchTerm;
-  renderSearchResults();
-}
-
+function runSearch(){searchTerm=document.getElementById("storeSearch")?.value||searchTerm;renderSearchResults();}
 function renderCategoryPage(category){
-  const info = categories.find(c=>c.id===category);
-  const list = products.filter(p=>p.category===category);
-  view.innerHTML = `
-    <div class="page-title"><div class="eyebrow">GameVault Store</div><h1>${info?escapeHTML(info.name):"Products"}</h1>
-    <p class="muted">${info?escapeHTML(info.description):"Browse our digital product catalog."}</p></div>
-    <div class="search"><input id="categorySearch" placeholder="Search this catalog..." oninput="filterVisibleProducts(this.value,'${category}')"></div>
-    <div id="categoryProducts">${productGrid(list)}</div>`;
+ const info=categories.find(c=>c.id===category),list=products.filter(p=>p.category===category);
+ view.innerHTML=`<div class="page-title"><div class="eyebrow">GameVault Store</div><h1>${info?escapeHTML(info.name):"Products"}</h1><p class="muted">${info?escapeHTML(info.description):"Browse our digital product catalog."}</p></div><div class="search"><input id="categorySearch" placeholder="Search this catalog..." oninput="filterVisibleProducts(this.value,'${category}')"></div><div id="categoryProducts">${productGrid(list)}</div>`;
 }
-
 function filterVisibleProducts(value,category){
-  const list = products.filter(p=>p.category===category && (p.name+" "+p.game).toLowerCase().includes(value.toLowerCase()));
-  document.getElementById("categoryProducts").innerHTML = productGrid(list);
+ const list=products.filter(p=>p.category===category&&(p.name+" "+p.game).toLowerCase().includes(value.toLowerCase()));
+ document.getElementById("categoryProducts").innerHTML=productGrid(list);
 }
-
 function renderAllProducts(){
-  const term = searchTerm.toLowerCase();
-  const list = products.filter(p=>(p.name+" "+p.game+" "+p.description).toLowerCase().includes(term));
-  view.innerHTML = `<div class="page-title"><div class="eyebrow">Browse Store</div><h1>All Products</h1><p class="muted">Explore the GameVault catalog.</p></div>
-  <div class="search"><input value="${escapeHTML(searchTerm)}" placeholder="Search products..." oninput="searchTerm=this.value;renderAllProductGrid()"></div>
-  <div id="allProductGrid">${productGrid(list)}</div>`;
+ const term=searchTerm.toLowerCase(),list=products.filter(p=>(p.name+" "+p.game+" "+p.description).toLowerCase().includes(term));
+ view.innerHTML=`<div class="page-title"><div class="eyebrow">Browse Store</div><h1>All Products</h1><p class="muted">Explore the GameVault catalog.</p></div><div class="search"><input value="${escapeHTML(searchTerm)}" placeholder="Search products..." oninput="searchTerm=this.value;renderAllProductGrid()"></div><div id="allProductGrid">${productGrid(list)}</div>`;
 }
-
 function renderAllProductGrid(){
-  const term = searchTerm.toLowerCase();
-  document.getElementById("allProductGrid").innerHTML = productGrid(products.filter(p=>(p.name+" "+p.game+" "+p.description).toLowerCase().includes(term)));
+ const term=searchTerm.toLowerCase();document.getElementById("allProductGrid").innerHTML=productGrid(products.filter(p=>(p.name+" "+p.game+" "+p.description).toLowerCase().includes(term)));
 }
-
 function renderCategories(){
-  view.innerHTML = `<div class="page-title"><div class="eyebrow">Find what you need</div><h1>All Categories</h1><p class="muted">Choose a category to explore.</p></div>${categoryCards()}`;
+ view.innerHTML=`<div class="page-title"><div class="eyebrow">Find what you need</div><h1>All Categories</h1><p class="muted">Choose a category to explore.</p></div>${categoryCards()}`;
 }
-
 function renderCart(){
-  const rows = cart.map(item=>{
-    const product = products.find(p=>p.id===item.id);
-    if(!product) return "";
-    return `<div class="cart-line"><div><strong>${escapeHTML(product.name)}</strong><span class="muted small">Price is provided at checkout after catalog pricing is configured.</span>
-      <div style="display:flex;align-items:center;gap:10px;margin-top:10px">
-        <button class="btn" onclick="changeQty('${escapeHTML(item.id)}',-1)" aria-label="Decrease quantity">−</button><span>${item.qty}</span><button class="btn" onclick="changeQty('${escapeHTML(item.id)}',1)" aria-label="Increase quantity">+</button>
-      </div></div><button class="btn danger" onclick="removeFromCart('${escapeHTML(item.id)}')">Remove</button></div>`;
-  }).join("");
-
-  view.innerHTML = `<div class="page-title"><div class="eyebrow">Your selection</div><h1>Your Cart</h1><p class="muted">Review your selected products.</p></div>
-    <div class="panel">${rows || `<div class="empty">Your cart is empty.<br><br><button class="btn primary" onclick="navigate('products')">Browse products</button></div>`}
-    ${cart.length?`<div class="notice">Checkout is not enabled by this page alone. Prices, payment verification, and product delivery must be connected and tested on the backend before orders can be placed.</div><button class="btn primary" style="width:100%;margin-top:14px" onclick="notify('Online checkout is not connected yet.')">Continue to Checkout</button>`:""}</div>`;
+ const rows=cart.map(i=>{
+  const p=products.find(p=>p.id===i.id);if(!p)return "";
+  return `<div class="cart-line"><div><strong>${escapeHTML(p.name)}</strong><span class="muted small">Price is provided at checkout after catalog pricing is configured.</span><div style="display:flex;align-items:center;gap:10px;margin-top:10px"><button class="btn" onclick="changeQty('${escapeHTML(i.id)}',-1)" aria-label="Decrease quantity">−</button><span>${i.qty}</span><button class="btn" onclick="changeQty('${escapeHTML(i.id)}',1)" aria-label="Increase quantity">+</button></div></div><button class="btn danger" onclick="removeFromCart('${escapeHTML(i.id)}')">Remove</button></div>`;
+ }).join("");
+ view.innerHTML=`<div class="page-title"><div class="eyebrow">Your selection</div><h1>Your Cart</h1><p class="muted">Review your selected products.</p></div><div class="panel">${rows||`<div class="empty">Your cart is empty.<br><br><button class="btn primary" onclick="navigate('products')">Browse products</button></div>`}${cart.length?`<div class="notice">Checkout is not enabled. Payment verification, pricing, and delivery must be connected to a secure backend before orders can be placed.</div><button class="btn primary" style="width:100%;margin-top:14px" onclick="notify('Online checkout is not connected yet.')">Continue to Checkout</button>`:""}</div>`;
 }
-
 function renderPage(){
-  saveCart();
-  updateBottomNavigation();
-  const page = currentPage;
-
-  if(page==="home") return renderHome();
-  if(page==="categories") return renderCategories();
-  if(page==="products") return renderAllProducts();
-  if(["topups","accounts","skins","subscriptions"].includes(page)) return renderCategoryPage(page);
-  if(page==="cart") return renderCart();
-  if(page==="profile") return renderProfile();
-  if(page==="wallet") return renderWallet();
-  if(page==="orders") return renderOrders();
-  if(page==="security") return renderSecurity();
-
-  currentPage="home";
-  renderHome();
-  updateBottomNavigation();
+ saveCart();updateBottomNavigation();
+ if(currentPage==="home")return renderHome();
+ if(currentPage==="categories")return renderCategories();
+ if(currentPage==="products")return renderAllProducts();
+ if(["topups","accounts","skins","subscriptions"].includes(currentPage))return renderCategoryPage(currentPage);
+ if(currentPage==="cart")return renderCart();
+ if(currentPage==="profile")return renderProfile();
+ if(currentPage==="wallet")return renderWallet();
+ if(currentPage==="orders")return renderOrders();
+ if(currentPage==="security")return renderSecurity();
+ currentPage="home";renderHome();updateBottomNavigation();
 }
 
-/* Authentication */
+/* Supabase authentication */
 function initSupabase(){
-  if(!window.supabase){
-    notify("Supabase library could not load. Check your internet connection.");
-    return;
-  }
-
-  supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
-
-  supabaseClient.auth.onAuthStateChange((_event,session)=>{
-    currentUser = session?.user || null;
-    if(!currentUser) currentProfile=null;
-
-    setTimeout(async()=>{
-      if(currentUser) await loadProfile();
-      updateAuthButton();
-      if(["profile","wallet","orders","security"].includes(currentPage)) renderPage();
-    },0);
-  });
-
-  supabaseClient.auth.getSession().then(async({data,error})=>{
-    if(error) console.error("Session lookup:",error.message);
-    currentUser = data?.session?.user || null;
-    if(currentUser) await loadProfile();
-    updateAuthButton();
-    renderPage();
-  }).catch(error=>{
-    console.error("Session initialization:",error);
-    updateAuthButton();
-  });
+ if(!window.supabase){notify("Supabase library could not load. Check your internet connection.");return;}
+ supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+ supabaseClient.auth.onAuthStateChange((_event,session)=>{
+  currentUser=session?.user||null;if(!currentUser)currentProfile=null;
+  setTimeout(async()=>{
+   if(currentUser)await loadProfile();
+   updateAuthButton();
+   if(["profile","wallet","orders","security"].includes(currentPage))renderPage();
+  },0);
+ });
+ supabaseClient.auth.getSession().then(async({data,error})=>{
+  if(error)console.error("Session lookup:",error.message);
+  currentUser=data?.session?.user||null;
+  if(currentUser)await loadProfile();
+  updateAuthButton();renderPage();
+ }).catch(error=>{console.error("Session initialization:",error);updateAuthButton();});
 }
-
 function updateAuthButton(){
-  const button = document.getElementById("authHeaderBtn");
-  if(!button) return;
-  button.textContent = currentUser ? "My Account" : "Login";
-  button.onclick = () => currentUser ? navigate("profile") : openAuth();
+ const b=document.getElementById("authHeaderBtn");if(!b)return;
+ b.textContent=currentUser?"My Account":"Login";
+ b.onclick=()=>currentUser?navigate("profile"):openAuth();
 }
-
-function openAuth(mode="login"){
-  authMode=mode;
-  document.getElementById("authModal").classList.remove("hidden");
-  updateAuthMode();
-}
-
-function closeAuth(){
-  document.getElementById("authModal").classList.add("hidden");
-}
-
-function switchAuthMode(){
-  authMode=authMode==="login"?"signup":"login";
-  updateAuthMode();
-}
-
+function openAuth(mode="login"){authMode=mode;document.getElementById("authModal").classList.remove("hidden");updateAuthMode();}
+function closeAuth(){document.getElementById("authModal").classList.add("hidden");}
+function switchAuthMode(){authMode=authMode==="login"?"signup":"login";updateAuthMode();}
 function updateAuthMode(){
-  const signup=authMode==="signup";
-  document.getElementById("authTitle").textContent=signup?"Create your GameVault account":"Welcome to GameVault";
-  document.getElementById("authDescription").textContent=signup?"Create an account to manage your profile.":"Sign in to your account.";
-  document.getElementById("authSubmit").textContent=signup?"Create Account":"Sign In";
-  document.getElementById("authSwitchText").textContent=signup?"Already have an account?":"New to GameVault?";
-  document.getElementById("authSwitch").textContent=signup?"Sign In":"Create Account";
-  document.getElementById("authPassword").autocomplete=signup?"new-password":"current-password";
+ const signup=authMode==="signup";
+ document.getElementById("authTitle").textContent=signup?"Create your GameVault account":"Welcome to GameVault";
+ document.getElementById("authDescription").textContent=signup?"Create an account to manage your profile.":"Sign in to your account.";
+ document.getElementById("authSubmit").textContent=signup?"Create Account":"Sign In";
+ document.getElementById("authSwitchText").textContent=signup?"Already have an account?":"New to GameVault?";
+ document.getElementById("authSwitch").textContent=signup?"Sign In":"Create Account";
+ document.getElementById("authPassword").autocomplete=signup?"new-password":"current-password";
 }
-
 document.getElementById("authForm").addEventListener("submit",async event=>{
-  event.preventDefault();
-  if(!supabaseClient) return notify("Supabase is not ready yet.");
-
-  const email=document.getElementById("authEmail").value.trim();
-  const password=document.getElementById("authPassword").value;
-  const submit=document.getElementById("authSubmit");
-
-  submit.disabled=true;
-  const originalText=submit.textContent;
-  submit.textContent="Please wait...";
-
-  try{
-    if(authMode==="signup"){
-      const result=await supabaseClient.auth.signUp({
-        email,password,
-        options:{emailRedirectTo:SITE_URL}
-      });
-
-      if(result.error) throw result.error;
-
-      if(result.data.session){
-        currentUser=result.data.user;
-        await loadProfile();
-        closeAuth();
-        notify("Account created successfully.");
-        navigate("profile");
-      }else{
-        notify("Account created. Check your email to confirm your account.");
-      }
-    }else{
-      const result=await supabaseClient.auth.signInWithPassword({email,password});
-
-      if(result.error){
-        if(result.error.message.toLowerCase().includes("invalid login credentials")){
-          throw new Error("Email or password is incorrect. Check both, or use Forgot password to reset your password.");
-        }
-        throw result.error;
-      }
-
-      currentUser=result.data.user;
-      await loadProfile();
-      closeAuth();
-      notify("Signed in successfully.");
-      navigate("profile");
-    }
-  }catch(error){
-    notify(error.message || "Authentication failed.");
-  }finally{
-    submit.disabled=false;
-    submit.textContent=originalText;
+ event.preventDefault();if(!supabaseClient)return notify("Supabase is not ready yet.");
+ const email=document.getElementById("authEmail").value.trim(),password=document.getElementById("authPassword").value,button=document.getElementById("authSubmit");
+ button.disabled=true;const old=button.textContent;button.textContent="Please wait...";
+ try{
+  if(authMode==="signup"){
+   const r=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:SITE_URL}});
+   if(r.error)throw r.error;
+   if(r.data.session){currentUser=r.data.user;await loadProfile();closeAuth();notify("Account created successfully.");navigate("profile");}
+   else notify("Account created. Check your email to confirm your account.");
+  }else{
+   const r=await supabaseClient.auth.signInWithPassword({email,password});
+   if(r.error){
+    if(r.error.message.toLowerCase().includes("invalid login credentials"))throw new Error("Email or password is incorrect. Check both, or use Forgot password to reset your password.");
+    throw r.error;
+   }
+   currentUser=r.data.user;await loadProfile();closeAuth();notify("Signed in successfully.");navigate("profile");
   }
+ }catch(e){notify(e.message||"Authentication failed.");}
+ finally{button.disabled=false;button.textContent=old;}
 });
-
 async function resetPassword(){
-  if(!supabaseClient) return notify("Supabase is not ready yet.");
-
-  const email=document.getElementById("authEmail").value.trim();
-  if(!email) return notify("Enter your email address first.");
-
-  const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{
-    redirectTo:SITE_URL
-  });
-
-  notify(error?error.message:"If the account exists, a password reset email will be sent.");
+ if(!supabaseClient)return notify("Supabase is not ready yet.");
+ const email=document.getElementById("authEmail").value.trim();if(!email)return notify("Enter your email address first.");
+ const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:SITE_URL});
+ notify(error?error.message:"If the account exists, a password reset email will be sent.");
 }
-
 async function signOut(){
-  if(!supabaseClient) return;
-
-  const {error}=await supabaseClient.auth.signOut();
-  if(error) return notify(error.message);
-
-  currentUser=null;
-  currentProfile=null;
-  toggleMenu(false);
-  updateAuthButton();
-  navigate("home");
-  notify("Signed out.");
+ if(!supabaseClient)return;
+ const {error}=await supabaseClient.auth.signOut();if(error)return notify(error.message);
+ currentUser=null;currentProfile=null;toggleMenu(false);updateAuthButton();navigate("home");notify("Signed out.");
 }
 
-/* Customer profile */
+/* Profile data */
 async function loadProfile(){
-  if(!currentUser || !supabaseClient) return null;
-
-  const userId=currentUser.id;
-
-  try{
-    const {data,error}=await supabaseClient
-      .from("profiles")
-      .select("*")
-      .eq("id",userId)
-      .maybeSingle();
-
-    if(error) throw error;
-
-    if(data){
-      currentProfile=data;
-      return data;
-    }
-
-    const metadataName=currentUser.user_metadata?.display_name || "";
-
-    const {data:created,error:createError}=await supabaseClient
-      .from("profiles")
-      .insert({
-        id:userId,
-        display_name:metadataName || null,
-        avatar_url:currentUser.user_metadata?.avatar_url || null
-      })
-      .select("*")
-      .maybeSingle();
-
-    if(createError){
-      const {data:retryData,error:retryError}=await supabaseClient
-        .from("profiles")
-        .select("*")
-        .eq("id",userId)
-        .maybeSingle();
-
-      if(retryError) throw createError;
-
-      if(retryData){
-        currentProfile=retryData;
-        return retryData;
-      }
-
-      console.warn("Profile creation:",createError.message);
-      currentProfile=null;
-      return null;
-    }
-
-    currentProfile=created;
-    return created;
-  }catch(error){
-    console.error("Profile lookup:",error.message);
-    currentProfile=null;
-    return null;
+ if(!currentUser||!supabaseClient)return null;
+ try{
+  const {data,error}=await supabaseClient.from("profiles").select("*").eq("id",currentUser.id).maybeSingle();
+  if(error)throw error;
+  if(data){currentProfile=data;return data;}
+  const meta=currentUser.user_metadata||{};
+  const {data:created,error:createError}=await supabaseClient.from("profiles").insert({
+   id:currentUser.id,display_name:meta.display_name||null,avatar_url:meta.avatar_url||null
+  }).select("*").maybeSingle();
+  if(createError){
+   const retry=await supabaseClient.from("profiles").select("*").eq("id",currentUser.id).maybeSingle();
+   if(retry.data){currentProfile=retry.data;return retry.data;}
+   console.warn("Profile creation:",createError.message);currentProfile=null;return null;
   }
+  currentProfile=created;return created;
+ }catch(e){console.error("Profile lookup:",e.message);currentProfile=null;return null;}
 }
-
 function requireLogin(){
-  if(currentUser) return true;
-  openAuth();
-  notify("Sign in to view this page.");
-  return false;
+ if(currentUser)return true;openAuth();notify("Sign in to view this page.");return false;
 }
-
 function renderProfile(){
-  if(!requireLogin()) return;
-
-  const profile=currentProfile||{};
-  const name=profile.display_name ||
-    currentUser.user_metadata?.display_name ||
-    "GameVault Member";
-
-  const avatar=profile.avatar_url ||
-    currentUser.user_metadata?.avatar_url || "";
-
-  const avatarHTML=avatar
-    ? `<img class="avatar" id="profileAvatarPreview" src="${escapeHTML(avatar)}" alt="Profile avatar" onerror="this.style.display='none';document.getElementById('avatarFallback').style.display='grid'">
-       <div class="avatar-placeholder" id="avatarFallback" style="display:none">♙</div>`
-    : `<div class="avatar-placeholder" id="avatarFallback">♙</div>`;
-
-  view.innerHTML=`
-  <div class="page-title">
-    <div class="eyebrow">Your account</div>
-    <h1>My Profile</h1>
-    <p class="muted">Manage your personal GameVault details.</p>
+ if(!requireLogin())return;
+ const profile=currentProfile||{},meta=currentUser.user_metadata||{};
+ const name=profile.display_name||meta.display_name||"GameVault Member";
+ const avatar=profile.avatar_url||meta.avatar_url||"";
+ const email=currentUser.email||"";
+ const verified=!!currentUser.email_confirmed_at;
+ const joined=currentUser.created_at?new Date(currentUser.created_at).toLocaleDateString(undefined,{month:"short",year:"numeric"}):"Member";
+ const profileComplete=Boolean((profile.display_name||meta.display_name)&&avatar);
+ const avatarHTML=avatar
+  ?`<img class="avatar" id="profileAvatarPreview" src="${escapeHTML(avatar)}" alt="Profile avatar" onerror="this.style.display='none';const f=document.getElementById('avatarFallback');if(f)f.style.display='grid'"><div class="avatar-placeholder" id="avatarFallback" style="display:none">♙</div>`
+  :`<div class="avatar-placeholder" id="avatarFallback">♙</div>`;
+ view.innerHTML=`
+ <div class="page-title"><div class="eyebrow">Your account</div><h1>My Profile</h1><p class="muted">Your personal GameVault dashboard.</p></div>
+ <section class="profile-hero">
+  <div class="profile-top">${avatarHTML}<div style="min-width:0;flex:1">
+   <h2 style="margin:0 0 8px;overflow-wrap:anywhere">${escapeHTML(name)}</h2>
+   <span class="member-tag">GAMEVAULT MEMBER</span>
+   <div class="small muted" style="margin-top:9px;overflow-wrap:anywhere">${escapeHTML(email)}</div>
+   <div style="margin-top:10px"><span class="status ${verified?"success":""}">${verified?"✓ Email verified":"Email not verified"}</span></div>
+  </div></div>
+  <div class="profile-stats">
+   <div class="profile-stat"><span>MEMBERSHIP</span><strong>GameVault</strong></div>
+   <div class="profile-stat"><span>MEMBER SINCE</span><strong>${escapeHTML(joined)}</strong></div>
+   <div class="profile-stat"><span>PROFILE</span><strong>${profileComplete?"Complete":"In progress"}</strong></div>
   </div>
-
-  <div class="panel">
-    <div class="profile-top">
-      ${avatarHTML}
-      <div style="min-width:0">
-        <h2 style="margin:0 0 8px;overflow-wrap:anywhere">${escapeHTML(name)}</h2>
-        <span class="member-tag">GAMEVAULT MEMBER</span>
-        <div class="small muted" style="margin-top:8px;overflow-wrap:anywhere">${escapeHTML(currentUser.email||"")}</div>
-      </div>
-    </div>
-
-    <form class="form-stack" id="profileForm">
-      <label>Display name
-        <input id="profileName" maxlength="50" value="${escapeHTML(name==="GameVault Member"?"":name)}" placeholder="Your display name" required>
-      </label>
-
-      <label>Email address
-        <input value="${escapeHTML(currentUser.email||"")}" disabled>
-      </label>
-
-      <label>Avatar image URL
-        <input id="profileAvatarUrl" type="url" value="${escapeHTML(avatar)}" placeholder="https://example.com/avatar.png">
-      </label>
-
-      <label>Or upload an avatar
-        <input id="profileAvatarFile" type="file" accept="image/png,image/jpeg,image/webp">
-      </label>
-
-      <p class="muted small">Use a JPG, PNG or WebP image up to 3 MB. Uploaded images need appropriate Supabase Storage permissions to display publicly.</p>
-
-      <button class="btn primary" type="submit" id="saveProfileButton">Save Profile</button>
-      <div id="profileSaveMessage" class="small muted" aria-live="polite"></div>
-    </form>
-  </div>
-
-  <div class="page-grid">
-    <div class="panel">
-      <h3>My Orders</h3>
-      <p class="muted">View your order history and status.</p>
-      <button class="btn" onclick="navigate('orders')">View Orders</button>
-    </div>
-    <div class="panel">
-      <h3>Account Security</h3>
-      <p class="muted">Password and account security settings.</p>
-      <button class="btn" onclick="navigate('security')">Security Settings</button>
-    </div>
-    <div class="panel">
-      <h3>My Wallet</h3>
-      <p class="muted">View available wallet information.</p>
-      <button class="btn" onclick="navigate('wallet')">Open Wallet</button>
-    </div>
-  </div>`;
-
-  document.getElementById("profileForm").addEventListener("submit",saveProfile);
-
-  const fileInput=document.getElementById("profileAvatarFile");
-
-  fileInput.addEventListener("change",()=>{
-    const file=fileInput.files?.[0];
-    if(!file) return;
-
-    if(file.size>3*1024*1024){
-      fileInput.value="";
-      notify("Avatar must be 3 MB or smaller.");
-      return;
-    }
-
-    if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
-      fileInput.value="";
-      notify("Use a JPG, PNG or WebP image.");
-      return;
-    }
-
-    const preview=document.getElementById("profileAvatarPreview");
-    const fallback=document.getElementById("avatarFallback");
-    const localUrl=URL.createObjectURL(file);
-
-    if(preview){
-      preview.src=localUrl;
-      preview.style.display="block";
-    }else{
-      const img=document.createElement("img");
-      img.id="profileAvatarPreview";
-      img.className="avatar";
-      img.alt="Selected avatar preview";
-      img.src=localUrl;
-      fallback.replaceWith(img);
-    }
-
-    if(fallback) fallback.style.display="none";
-  });
+ </section>
+ <div class="profile-actions">
+  <div class="profile-action"><div class="action-icon">▣</div><strong>My Orders</strong><p>Check your purchases and delivery statuses.</p><button class="btn" style="width:100%" onclick="navigate('orders')">View Orders</button></div>
+  <div class="profile-action"><div class="action-icon">◉</div><strong>My Wallet</strong><p>View available wallet records and transactions.</p><button class="btn" style="width:100%" onclick="navigate('wallet')">Open Wallet</button></div>
+  <div class="profile-action"><div class="action-icon">⚿</div><strong>Security</strong><p>Manage password resets and account access.</p><button class="btn" style="width:100%" onclick="navigate('security')">Account Security</button></div>
+ </div>
+ <section class="panel">
+  <h2>Personal Details</h2><p class="muted small">Update the information shown on your GameVault profile.</p>
+  <form class="form-stack" id="profileForm">
+   <label>Display name<input id="profileName" maxlength="50" value="${escapeHTML(name==="GameVault Member"?"":name)}" placeholder="Your display name" required></label>
+   <label>Email address<input value="${escapeHTML(email)}" disabled></label>
+   <label>Avatar image URL<input id="profileAvatarUrl" type="url" value="${escapeHTML(avatar)}" placeholder="https://example.com/avatar.png"></label>
+   <label>Or upload an avatar<input id="profileAvatarFile" type="file" accept="image/png,image/jpeg,image/webp"></label>
+   <p class="muted small">Choose a JPG, PNG or WebP image up to 3 MB. Uploads require the Supabase Storage bucket and policies described below.</p>
+   <button class="btn primary" type="submit" id="saveProfileButton">Save Profile</button>
+   <div id="profileSaveMessage" class="small muted" aria-live="polite"></div>
+  </form>
+ </section>
+ <section class="panel">
+  <h2>Account Shortcuts</h2>
+  <div class="list-row"><div><strong>Account security</strong><div class="muted small">Password reset and sign-in status</div></div><button class="btn" onclick="navigate('security')">Manage</button></div>
+  <div class="list-row"><div><strong>Order history</strong><div class="muted small">View your recorded orders</div></div><button class="btn" onclick="navigate('orders')">Open</button></div>
+  <div class="list-row"><div><strong>Wallet history</strong><div class="muted small">View your recorded transactions</div></div><button class="btn" onclick="navigate('wallet')">Open</button></div>
+  <div class="list-row"><div><strong>Sign out</strong><div class="muted small">Sign out of this device</div></div><button class="btn danger" onclick="signOut()">Sign Out</button></div>
+ </section>`;
+ document.getElementById("profileForm").addEventListener("submit",saveProfile);
+ document.getElementById("profileAvatarFile").addEventListener("change",previewAvatar);
 }
-
+function previewAvatar(){
+ const input=document.getElementById("profileAvatarFile"),file=input.files?.[0];if(!file)return;
+ if(file.size>3*1024*1024){input.value="";return notify("Avatar must be 3 MB or smaller.");}
+ if(!["image/jpeg","image/png","image/webp"].includes(file.type)){input.value="";return notify("Use a JPG, PNG or WebP image.");}
+ const url=URL.createObjectURL(file),preview=document.getElementById("profileAvatarPreview"),fallback=document.getElementById("avatarFallback");
+ if(preview)preview.src=url;
+ else{
+  const img=document.createElement("img");img.id="profileAvatarPreview";img.className="avatar";img.alt="Selected avatar preview";img.src=url;
+  fallback.replaceWith(img);
+ }
+ if(fallback)fallback.style.display="none";
+}
 async function saveProfile(event){
-  event.preventDefault();
-
-  if(!requireLogin() || profileSaveInProgress) return;
-  if(!supabaseClient) return notify("Supabase is not ready yet.");
-
-  const name=document.getElementById("profileName").value.trim();
-  let avatarUrl=document.getElementById("profileAvatarUrl").value.trim();
-  const file=document.getElementById("profileAvatarFile").files?.[0];
-  const button=document.getElementById("saveProfileButton");
-  const message=document.getElementById("profileSaveMessage");
-
-  if(!name) return notify("Enter a display name.");
-  if(name.length>50) return notify("Your display name must be 50 characters or fewer.");
-
-  if(avatarUrl){
-    try{
-      const parsed=new URL(avatarUrl);
-      if(!["https:","http:"].includes(parsed.protocol)){
-        return notify("Enter a valid image URL.");
-      }
-    }catch{
-      return notify("Enter a valid avatar image URL.");
-    }
+ event.preventDefault();
+ if(!requireLogin()||profileSaveInProgress)return;
+ if(!supabaseClient)return notify("Supabase is not ready yet.");
+ const name=document.getElementById("profileName").value.trim();
+ let avatarUrl=document.getElementById("profileAvatarUrl").value.trim();
+ const file=document.getElementById("profileAvatarFile").files?.[0];
+ const button=document.getElementById("saveProfileButton"),message=document.getElementById("profileSaveMessage");
+ if(!name)return notify("Enter a display name.");
+ if(name.length>50)return notify("Your display name must be 50 characters or fewer.");
+ if(avatarUrl){
+  try{const u=new URL(avatarUrl);if(!["https:","http:"].includes(u.protocol))return notify("Enter a valid avatar URL.");}
+  catch{return notify("Enter a valid avatar URL.");}
+ }
+ profileSaveInProgress=true;button.disabled=true;button.textContent="Saving...";message.textContent="Saving your profile...";
+ try{
+  if(file){
+   if(file.size>3*1024*1024)throw new Error("Avatar must be 3 MB or smaller.");
+   if(!["image/jpeg","image/png","image/webp"].includes(file.type))throw new Error("Use a JPG, PNG or WebP image.");
+   const ext=file.type==="image/jpeg"?"jpg":file.type.split("/")[1],path=`${currentUser.id}/${Date.now()}.${ext}`;
+   const {error}=await supabaseClient.storage.from("avatar").upload(path,file,{upsert:false,contentType:file.type,cacheControl:"3600"});
+   if(error)throw error;
+   const {data}=supabaseClient.storage.from("avatar").getPublicUrl(path);
+   avatarUrl=data?.publicUrl||"";if(!avatarUrl)throw new Error("Could not create an avatar URL.");
   }
-
-  profileSaveInProgress=true;
-  button.disabled=true;
-  button.textContent="Saving...";
-  message.textContent="Saving your profile...";
-
-  try{
-    if(file){
-      if(file.size>3*1024*1024) throw new Error("Avatar must be 3 MB or smaller.");
-      if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
-        throw new Error("Use a JPG, PNG or WebP image.");
-      }
-
-      const ext=file.type==="image/jpeg"?"jpg":file.type.split("/")[1];
-      const path=`${currentUser.id}/${Date.now()}.${ext}`;
-
-      const {error:uploadError}=await supabaseClient.storage
-        .from("avatar")
-        .upload(path,file,{
-          upsert:false,
-          contentType:file.type,
-          cacheControl:"3600"
-        });
-
-      if(uploadError) throw uploadError;
-
-      const {data:publicData}=supabaseClient.storage.from("avatar").getPublicUrl(path);
-      avatarUrl=publicData?.publicUrl || "";
-
-      if(!avatarUrl) throw new Error("The avatar URL could not be created.");
-    }
-
-    const profileChanges={
-      display_name:name,
-      avatar_url:avatarUrl || null
-    };
-
-    const {data:updated,error:updateError}=await supabaseClient
-      .from("profiles")
-      .update(profileChanges)
-      .eq("id",currentUser.id)
-      .select("*")
-      .maybeSingle();
-
-    if(updateError) throw updateError;
-
-    let savedProfile=updated;
-
-    if(!savedProfile){
-      const {data:inserted,error:insertError}=await supabaseClient
-        .from("profiles")
-        .insert({
-          id:currentUser.id,
-          display_name:name,
-          avatar_url:avatarUrl || null
-        })
-        .select("*")
-        .maybeSingle();
-
-      if(insertError) throw insertError;
-      savedProfile=inserted;
-    }
-
-    if(!savedProfile){
-      throw new Error("No profile row was returned. Check your profiles table and its Row Level Security policies.");
-    }
-
-    currentProfile=savedProfile;
-
-    const {data:authData,error:metadataError}=await supabaseClient.auth.updateUser({
-      data:{
-        display_name:name,
-        avatar_url:avatarUrl || null
-      }
-    });
-
-    if(metadataError){
-      console.warn("Profile saved, but auth metadata update failed:",metadataError.message);
-    }else if(authData?.user){
-      currentUser=authData.user;
-    }
-
-    message.textContent="Profile saved successfully.";
-    notify("Profile saved successfully.");
-    renderProfile();
-
-  }catch(error){
-    console.error("Profile save error:",error);
-
-    let explanation=error.message || "Unknown error.";
-
-    if(/row-level security|permission denied|policy/i.test(explanation)){
-      explanation="Supabase blocked the save. Check the profiles table's SELECT, UPDATE and INSERT policies for the signed-in user.";
-    }else if(/column .* does not exist|schema cache/i.test(explanation)){
-      explanation="A profiles table column does not match the code. Check that display_name and avatar_url exist.";
-    }else if(/bucket|storage|object/i.test(explanation)){
-      explanation="Avatar upload failed. Check the avatar storage bucket and its upload policy.";
-    }
-
-    message.textContent="Save failed: "+explanation;
-    notify("Could not save profile: "+explanation);
-  }finally{
-    profileSaveInProgress=false;
-
-    const currentButton=document.getElementById("saveProfileButton");
-    if(currentButton){
-      currentButton.disabled=false;
-      currentButton.textContent="Save Profile";
-    }
+  const changes={display_name:name,avatar_url:avatarUrl||null};
+  const updated=await supabaseClient.from("profiles").update(changes).eq("id",currentUser.id).select("*").maybeSingle();
+  if(updated.error)throw updated.error;
+  let saved=updated.data;
+  if(!saved){
+   const inserted=await supabaseClient.from("profiles").upsert({id:currentUser.id,...changes},{onConflict:"id"}).select("*").maybeSingle();
+   if(inserted.error)throw inserted.error;saved=inserted.data;
   }
+  if(!saved)throw new Error("Profile wasn't returned by Supabase. Check your profiles table policies.");
+  currentProfile=saved;
+  const meta=await supabaseClient.auth.updateUser({data:{display_name:name,avatar_url:avatarUrl||null}});
+  if(meta.error)console.warn("Profile saved, metadata update failed:",meta.error.message);
+  message.textContent="Profile saved successfully.";notify("Profile saved successfully.");renderProfile();
+ }catch(error){
+  console.error("Profile save error:",error);
+  let msg=error.message||"Unknown error.";
+  if(/row-level security|permission denied|policy/i.test(msg))msg="Supabase blocked this save. Check profiles table SELECT, UPDATE and INSERT policies.";
+  else if(/column .* does not exist|schema cache/i.test(msg))msg="Check that display_name and avatar_url exist in the profiles table.";
+  else if(/bucket|storage|object/i.test(msg))msg="Avatar upload failed. Check the avatar bucket and its upload policy.";
+  message.textContent="Save failed: "+msg;notify("Could not save profile: "+msg);
+ }finally{
+  profileSaveInProgress=false;
+  const b=document.getElementById("saveProfileButton");if(b){b.disabled=false;b.textContent="Save Profile";}
+ }
 }
 
-/* Wallet: read-only until secure payment processing is connected */
+/* Wallet: read-only. Browser code never credits balances. */
 async function renderWallet(){
-  if(!requireLogin()) return;
-
-  view.innerHTML=`<div class="page-title"><div class="eyebrow">GameVault Tokens</div><h1>My Wallet</h1><p class="muted">Wallet balance and transaction history.</p></div><div class="panel"><p class="muted">Loading wallet information...</p></div>`;
-
-  let balanceText="Unavailable";
-  let transactions=[];
-
-  try{
-    const {data,error}=await supabaseClient.from("gv_wallets")
-      .select("*").eq("user_id",currentUser.id).maybeSingle();
-
-    if(error) throw error;
-
-    if(data){
-      const balance=data.balance ?? data.balance_kobo ?? data.tokens;
-      if(balance!==undefined) balanceText=String(balance);
-    }else{
-      balanceText="0";
-    }
-  }catch(error){
-    console.warn("Wallet lookup:",error.message);
-  }
-
-  try{
-    const {data,error}=await supabaseClient.from("gv_wallet_transactions")
-      .select("*").eq("user_id",currentUser.id)
-      .order("created_at",{ascending:false}).limit(10);
-
-    if(error) throw error;
-    transactions=data||[];
-  }catch(error){
-    console.warn("Wallet transactions:",error.message);
-  }
-
-  view.innerHTML=`<div class="page-title"><div class="eyebrow">GameVault Tokens</div><h1>My Wallet</h1><p class="muted">View your wallet balance and recent transactions.</p></div>
-  <div class="panel"><div class="muted small">Wallet balance</div><div style="font-size:34px;font-weight:900;margin:10px 0">${escapeHTML(balanceText)}</div><div class="notice">Wallet funding is not initiated here. Use only a verified payment flow connected to the secure backend; do not credit balances from the browser.</div></div>
-  <div class="panel"><h2>Recent Transactions</h2>${transactions.length?transactions.map(tx=>`<div class="list-row"><div><strong>${escapeHTML(tx.description||tx.type||"Wallet transaction")}</strong><div class="muted small">${escapeHTML(tx.created_at||"")}</div></div><span class="status">${escapeHTML(tx.status||"Recorded")}</span></div>`).join(""):`<div class="empty">No transactions to display, or the wallet table is not configured for this account.</div>`}</div>`;
+ if(!requireLogin())return;
+ view.innerHTML=`<div class="page-title"><div class="eyebrow">GameVault Tokens</div><h1>My Wallet</h1><p class="muted">Wallet balance and transaction history.</p></div><div class="panel muted">Loading wallet information...</div>`;
+ let balanceText="Unavailable",transactions=[],walletFound=false;
+ try{
+  const {data,error}=await supabaseClient.from("gv_wallets").select("*").eq("user_id",currentUser.id).maybeSingle();
+  if(error)throw error;
+  if(data){
+   walletFound=true;
+   const value=data.balance??data.balance_kobo??data.tokens;
+   if(value!==undefined)balanceText=String(value);
+  }else balanceText="0";
+ }catch(e){console.warn("Wallet lookup:",e.message);}
+ try{
+  const {data,error}=await supabaseClient.from("gv_wallet_transactions").select("*").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(10);
+  if(error)throw error;transactions=data||[];
+ }catch(e){console.warn("Wallet transactions:",e.message);}
+ view.innerHTML=`<div class="page-title"><div class="eyebrow">GameVault Tokens</div><h1>My Wallet</h1><p class="muted">Your wallet overview and recent transactions.</p></div>
+ <div class="profile-hero"><div class="muted small">WALLET BALANCE</div><div style="font-size:34px;font-weight:900;margin:10px 0;color:var(--light)">${escapeHTML(balanceText)}</div><span class="member-tag">GAMEVAULT WALLET</span></div>
+ <div class="notice">This page displays recorded wallet data only. Wallet funding and balance credits must be processed by a verified server-side payment flow.</div>
+ <div class="panel" style="margin-top:17px"><h2>Recent Transactions</h2>${transactions.length?transactions.map(tx=>`<div class="list-row"><div><strong>${escapeHTML(tx.description||tx.type||"Wallet transaction")}</strong><div class="muted small">${escapeHTML(tx.created_at||"")}</div></div><span class="status">${escapeHTML(tx.status||"Recorded")}</span></div>`).join(""):`<div class="empty">${walletFound?"No transactions recorded yet.":"No wallet record found, or the wallet table is not configured for this account."}</div>`}</div>`;
 }
 
-/* Orders */
+/* Orders: reads only the signed-in customer's rows */
 async function renderOrders(){
-  if(!requireLogin()) return;
-
-  view.innerHTML=`<div class="page-title"><div class="eyebrow">Your purchases</div><h1>My Orders</h1><p class="muted">Your order history and delivery status.</p></div><div class="panel"><p class="muted">Loading orders...</p></div>`;
-
-  let orders=[];
-
-  try{
-    const {data,error}=await supabaseClient.from("orders")
-      .select("*").eq("user_id",currentUser.id)
-      .order("created_at",{ascending:false}).limit(50);
-
-    if(error) throw error;
-    orders=data||[];
-  }catch(error){
-    console.warn("Orders lookup:",error.message);
-  }
-
-  view.innerHTML=`<div class="page-title"><div class="eyebrow">Your purchases</div><h1>My Orders</h1><p class="muted">Your order history and delivery status.</p></div>
-  <div class="panel">${orders.length?orders.map(order=>`<div class="list-row"><div><strong>Order ${escapeHTML(order.id||order.reference||"")}</strong><div class="muted small">${escapeHTML(order.created_at||"")}</div><div class="small muted">${escapeHTML(order.product_name||order.description||"Digital product")}</div></div><span class="status">${escapeHTML(order.status||"Pending")}</span></div>`).join(""):`<div class="empty">No orders to display yet. Orders will appear here when the store's order backend is connected.</div>`}</div>`;
+ if(!requireLogin())return;
+ view.innerHTML=`<div class="page-title"><div class="eyebrow">Your purchases</div><h1>My Orders</h1><p class="muted">Your order history and delivery status.</p></div><div class="panel muted">Loading orders...</div>`;
+ let orders=[];
+ try{
+  const {data,error}=await supabaseClient.from("orders").select("*").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(50);
+  if(error)throw error;orders=data||[];
+ }catch(e){console.warn("Orders lookup:",e.message);}
+ view.innerHTML=`<div class="page-title"><div class="eyebrow">Your purchases</div><h1>My Orders</h1><p class="muted">Your order history and delivery status.</p></div><div class="panel">${orders.length?orders.map(o=>`<div class="list-row"><div style="min-width:0"><strong>Order ${escapeHTML(o.id||o.reference||"")}</strong><div class="muted small">${escapeHTML(o.created_at||"")}</div><div class="small muted">${escapeHTML(o.product_name||o.description||"Digital product")}</div></div><span class="status">${escapeHTML(o.status||"Pending")}</span></div>`).join(""):`<div class="empty">No orders to display yet, or the orders table is not configured for this account.</div>`}</div>`;
 }
 
 /* Security */
 function renderSecurity(){
-  if(!requireLogin()) return;
-
-  view.innerHTML=`<div class="page-title"><div class="eyebrow">Protect your account</div><h1>Security</h1><p class="muted">Manage your sign-in and account access.</p></div>
-  <div class="panel"><h2>Email & Sign-In</h2><p class="muted">Signed in as ${escapeHTML(currentUser.email||"")}</p><div class="list-row"><span>Email verified</span><span class="status">${currentUser.email_confirmed_at?"Confirmed":"Not confirmed"}</span></div></div>
-  <div class="panel"><h2>Password</h2><p class="muted">Request a password reset email for your account.</p><button class="btn primary" onclick="sendSecurityReset()">Send Password Reset</button></div>
-  <div class="panel"><h2>Sign Out</h2><p class="muted">Sign out of this device.</p><button class="btn danger" onclick="signOut()">Sign Out</button></div>`;
+ if(!requireLogin())return;
+ view.innerHTML=`<div class="page-title"><div class="eyebrow">Protect your account</div><h1>Security</h1><p class="muted">Manage your sign-in and account access.</p></div>
+ <div class="panel"><h2>Email & Sign-In</h2><p class="muted">Signed in as ${escapeHTML(currentUser.email||"")}</p><div class="list-row"><span>Email verified</span><span class="status ${currentUser.email_confirmed_at?"success":""}">${currentUser.email_confirmed_at?"Confirmed":"Not confirmed"}</span></div></div>
+ <div class="panel"><h2>Password</h2><p class="muted">Request a password reset email for your account.</p><button class="btn primary" onclick="sendSecurityReset()">Send Password Reset</button></div>
+ <div class="panel"><h2>Sign Out</h2><p class="muted">Sign out of this device.</p><button class="btn danger" onclick="signOut()">Sign Out</button></div>`;
 }
-
 async function sendSecurityReset(){
-  if(!supabaseClient||!currentUser?.email) return notify("Please sign in again.");
-
-  const {error}=await supabaseClient.auth.resetPasswordForEmail(currentUser.email,{
-    redirectTo:SITE_URL
-  });
-
-  notify(error?error.message:"If the account exists, a password reset email will be sent.");
+ if(!supabaseClient||!currentUser?.email)return notify("Please sign in again.");
+ const {error}=await supabaseClient.auth.resetPasswordForEmail(currentUser.email,{redirectTo:SITE_URL});
+ notify(error?error.message:"If the account exists, a password reset email will be sent.");
 }
-
-document.addEventListener("keydown",event=>{
-  if(event.key==="Escape"){
-    closeAuth();
-    toggleMenu(false);
-  }
-});
-
-document.getElementById("authModal").addEventListener("click",event=>{
-  if(event.target.id==="authModal") closeAuth();
-});
-
-saveCart();
-updateBottomNavigation();
-renderPage();
-initSupabase();
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeAuth();toggleMenu(false);}});
+document.getElementById("authModal").addEventListener("click",e=>{if(e.target.id==="authModal")closeAuth();});
+saveCart();updateBottomNavigation();renderPage();initSupabase();
 </script>
 </body>
 </html>
