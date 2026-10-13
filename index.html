@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#10091d">
 <meta name="description" content="GameVault gaming top-ups, accounts, skins and digital subscriptions.">
 <title>GameVault | Digital Gaming Store</title>
@@ -15,7 +15,7 @@
   --panel:#171022;
   --panel2:#21152f;
   --purple:#9b5cff;
-  --light:#bd91ff;
+  --light:#c49aff;
   --text:#f7f2ff;
   --muted:#b7a9c9;
   --border:#39244e;
@@ -23,66 +23,96 @@
   --danger:#ff7588;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
 body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  margin:0;
+  background:radial-gradient(ellipse at 50% -20%,#52258a35,transparent 55%),var(--bg);
+  color:var(--text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
 }
-button,input,select{font:inherit}
+button,input,select,textarea{font:inherit}
 button,a{touch-action:manipulation}
 button{cursor:pointer}
 a{color:inherit;text-decoration:none}
 .hidden{display:none!important}
 .muted{color:var(--muted)}
 .small{font-size:12px}
+
 .gv-header{
-  position:sticky;top:0;z-index:20;background:#10091df2;
-  backdrop-filter:blur(16px);border-bottom:1px solid var(--border);
-  padding:13px 5%;display:flex;align-items:center;gap:16px;
+  position:sticky;top:0;z-index:30;
+  background:#10091df2;backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+  padding:12px 5%;display:flex;align-items:center;gap:12px
 }
-.logo{font-size:22px;font-weight:900;letter-spacing:-1px;cursor:pointer}
+.logo{font-size:21px;font-weight:950;letter-spacing:-1px;cursor:pointer}
 .logo span{color:var(--purple)}
 .header-actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+
 .btn{
   border:1px solid var(--border);background:var(--panel2);
-  color:var(--text);border-radius:11px;padding:10px 14px;
-  font-weight:700;display:inline-flex;align-items:center;
-  justify-content:center;gap:7px;
+  color:var(--text);border-radius:12px;padding:10px 14px;
+  font-weight:750;display:inline-flex;align-items:center;
+  justify-content:center;gap:8px;transition:.2s
 }
-.btn:hover{border-color:var(--purple)}
-.btn.primary{background:var(--purple);color:white;border-color:var(--purple)}
+.btn:hover{border-color:var(--light);box-shadow:0 0 16px #9b5cff20}
+.btn.primary{
+  background:linear-gradient(135deg,#9b5cff,#7134ca);
+  border-color:var(--purple);color:white;
+  box-shadow:0 4px 18px #9b5cff24
+}
 .btn.danger{color:var(--danger)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
-.icon-btn{width:42px;height:42px;padding:0;font-size:19px}
-main{max-width:1250px;margin:auto;padding:24px 5% 70px}
+.icon-btn{width:42px;height:42px;padding:0}
+
+.gv-icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  flex-shrink:0;width:21px;height:21px;color:currentColor;
+  transition:color .25s ease,filter .25s ease,transform .25s ease
+}
+.gv-icon svg{display:block;width:100%;height:100%}
+.gv-icon svg path,
+.gv-icon svg circle,
+.gv-icon svg rect,
+.gv-icon svg line,
+.gv-icon svg polyline,
+.gv-icon svg polygon{
+  fill:none;stroke:currentColor;stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round
+}
+.icon-btn .gv-icon{width:21px;height:21px}
+
+main{max-width:1250px;margin:auto;padding:24px 5% 120px;min-height:75vh}
 .hero{
-  padding:35px 0 24px;
-  background:radial-gradient(ellipse at 70% 0%,#52258a33,transparent 55%);
+  padding:38px 0 24px;
+  background:radial-gradient(ellipse at 70% 0%,#52258a33,transparent 55%)
 }
-.eyebrow{color:var(--light);font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
-.hero h1{font-size:clamp(32px,6vw,56px);line-height:1.06;margin:12px 0}
-.hero p{color:var(--muted);max-width:540px;line-height:1.7}
+.eyebrow{color:var(--light);font-size:11px;font-weight:850;letter-spacing:2px;text-transform:uppercase}
+.hero h1{font-size:clamp(34px,6vw,58px);line-height:1.06;margin:12px 0}
+.hero p{color:var(--muted);max-width:560px;line-height:1.7}
 .search{display:flex;gap:8px;max-width:620px;margin:24px 0}
-input,select{
+input,select,textarea{
   width:100%;min-width:0;background:#100a19;border:1px solid var(--border);
-  border-radius:11px;padding:13px;color:var(--text);outline:none;
+  border-radius:11px;padding:13px;color:var(--text);outline:none
 }
-input:focus,select:focus{border-color:var(--purple)}
-.search input{flex:1}
+input:focus,select:focus,textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px #9b5cff17}
+
 .section-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:30px 0 16px}
-.section-heading h2{font-size:22px;margin:0}
+.section-heading h2{font-size:21px;margin:0}
 .categories{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .category{
-  text-align:left;background:var(--panel);border:1px solid var(--border);
-  border-radius:15px;padding:18px;color:var(--text);min-height:105px;
+  background:linear-gradient(145deg,#1b1228,#120c1c);
+  border:1px solid var(--border);border-radius:16px;
+  padding:18px;color:var(--text);text-align:left;min-height:110px;transition:.2s
 }
+.category:hover,.product:hover{border-color:#8750c9;transform:translateY(-2px)}
 .category .emoji{font-size:25px;display:block;margin-bottom:12px}
 .category strong{display:block}
 .category small{color:var(--muted)}
+
 .product-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .product{
-  overflow:hidden;background:var(--panel);border:1px solid var(--border);
-  border-radius:15px;min-width:0;
+  overflow:hidden;background:linear-gradient(150deg,#1b1228,#120c1c);
+  border:1px solid var(--border);border-radius:16px;min-width:0;transition:.2s
 }
 .product img{display:block;width:100%;aspect-ratio:1.2;object-fit:cover;background:#21152f}
 .product-info{padding:13px}
@@ -91,11 +121,13 @@ input:focus,select:focus{border-color:var(--purple)}
 .product-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .price{font-weight:800;color:var(--light)}
 .product-bottom .btn{padding:9px;font-size:12px}
+
 .page-title{margin:10px 0 22px}
 .page-title h1{font-size:30px;margin:0 0 8px}
 .panel{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:17px;padding:20px;margin-bottom:16px;
+  background:linear-gradient(145deg,#1b1228,#120c1c);
+  border:1px solid var(--border);border-radius:17px;
+  padding:20px;margin-bottom:16px;box-shadow:0 8px 28px #00000012
 }
 .panel h2,.panel h3{margin-top:0}
 .panel p{line-height:1.6}
@@ -103,64 +135,118 @@ input:focus,select:focus{border-color:var(--purple)}
 .profile-top{display:flex;align-items:center;gap:17px;margin-bottom:24px}
 .avatar{
   width:82px;height:82px;flex:0 0 82px;border-radius:50%;
-  border:2px solid var(--purple);object-fit:cover;background:var(--panel2);
+  border:2px solid var(--purple);object-fit:cover;background:var(--panel2)
 }
 .member-tag{
   display:inline-flex;padding:5px 9px;border-radius:20px;
-  background:#9b5cff20;color:var(--light);font-size:11px;font-weight:800;
+  background:#9b5cff20;color:var(--light);font-size:11px;font-weight:800
 }
 .form-stack{display:grid;gap:12px}
 .form-stack label{display:grid;gap:7px;font-size:13px;color:var(--muted)}
-.notice{padding:12px;border-radius:10px;background:#9b5cff18;color:var(--light);font-size:13px;line-height:1.5}
+.notice{padding:12px;border-radius:11px;background:#9b5cff18;color:var(--light);font-size:13px;line-height:1.6}
 .status{padding:5px 9px;border-radius:8px;font-size:12px;background:#9b5cff22;color:var(--light)}
 .list-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--border)}
 .list-row:last-child{border-bottom:0}
 .empty{text-align:center;padding:36px 15px;color:var(--muted)}
 .cart-line{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:15px 0;border-bottom:1px solid var(--border)}
-.cart-line strong{display:block;margin-bottom:5px}
 .total{display:flex;justify-content:space-between;font-size:18px;font-weight:800;padding:20px 0}
-.footer{border-top:1px solid var(--border);padding:25px 5%;color:var(--muted);text-align:center;font-size:12px}
-.modal{
-  position:fixed;inset:0;background:#000b;z-index:60;display:flex;
-  align-items:center;justify-content:center;padding:18px;
-}
-.modal-card{
-  width:min(440px,100%);max-height:90vh;overflow:auto;
-  padding:23px;background:var(--panel);border:1px solid var(--border);border-radius:18px;
-}
+.footer{border-top:1px solid var(--border);padding:25px 5%;color:var(--muted);text-align:center;font-size:12px;margin-bottom:75px}
+
+.modal{position:fixed;inset:0;background:#000b;z-index:70;display:flex;align-items:center;justify-content:center;padding:18px}
+.modal-card{width:min(460px,100%);max-height:90vh;overflow:auto;padding:23px;background:var(--panel);border:1px solid var(--border);border-radius:18px}
 .modal-head{display:flex;justify-content:space-between;align-items:center}
 .modal-head h2{margin-top:0}
 #toast{
-  position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
-  z-index:90;background:var(--panel2);border:1px solid var(--border);
-  padding:12px 17px;border-radius:12px;max-width:90%;font-size:13px;
+  position:fixed;bottom:92px;left:50%;transform:translateX(-50%);z-index:100;
+  background:var(--panel2);border:1px solid var(--border);padding:12px 17px;
+  border-radius:12px;max-width:90%;font-size:13px;box-shadow:0 8px 30px #0008
 }
-.menu-backdrop{position:fixed;inset:0;background:#0009;z-index:39}
+
+/* DRAWER */
+.menu-backdrop{position:fixed;inset:0;background:#0009;z-index:49}
 .drawer{
-  position:fixed;z-index:40;top:0;left:0;bottom:0;width:min(320px,86vw);
-  overflow-y:auto;background:#110a1b;border-right:1px solid var(--border);
-  padding:20px;transform:translateX(-105%);transition:transform .22s ease;
+  position:fixed;z-index:50;top:0;left:0;bottom:0;
+  width:min(320px,86vw);overflow-y:auto;background:#110a1b;
+  border-right:1px solid var(--border);padding:20px;
+  transform:translateX(-105%);transition:transform .25s ease
 }
 .drawer.open{transform:translateX(0)}
 .drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
 .drawer a,.drawer button{
   width:100%;display:flex;align-items:center;gap:12px;text-align:left;
-  border:0;border-radius:10px;padding:13px;background:transparent;
-  color:var(--text);font-size:14px;cursor:pointer;
+  border:1px solid transparent;border-radius:12px;padding:13px;
+  background:transparent;color:var(--text);font-size:14px;cursor:pointer;
+  transition:background .22s,border-color .22s,box-shadow .22s,transform .22s
 }
-.drawer a:hover,.drawer button:hover{background:var(--panel2)}
+.drawer a .gv-icon,.drawer button .gv-icon{color:#ad9bc4}
+.drawer a:hover,.drawer button:hover{
+  background:#9b5cff12;border-color:#9b5cff38;transform:translateX(2px)
+}
+.drawer a:hover .gv-icon,.drawer button:hover .gv-icon{
+  color:#dfc5ff;filter:drop-shadow(0 0 6px #9b5cff)
+}
+.drawer a.active{
+  position:relative;
+  background:linear-gradient(100deg,#9b5cff35,#9b5cff08);
+  border-color:#b37bff75;
+  box-shadow:inset 3px 0 var(--purple),0 0 19px #9b5cff25;
+  color:#eadbff
+}
+.drawer a.active .gv-icon{
+  color:#ddbaff;
+  filter:drop-shadow(0 0 6px #9b5cff)
+}
+.drawer a.active:after{
+  content:"";position:absolute;right:12px;width:5px;height:5px;
+  border-radius:50%;background:#d7b1ff;box-shadow:0 0 9px #b77bff
+}
 .drawer-label{font-size:11px;color:var(--muted);letter-spacing:1.5px;margin:20px 0 8px}
 hr{border:0;border-top:1px solid var(--border);margin:15px 0}
+
+/* BOTTOM NAVIGATION */
+.bottom-nav{
+  position:fixed;z-index:35;bottom:12px;left:50%;transform:translateX(-50%);
+  width:min(560px,calc(100% - 24px));padding:8px;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:5px;
+  background:#160d23ef;border:1px solid #543474;border-radius:22px;
+  backdrop-filter:blur(22px);
+  box-shadow:0 10px 40px #0009,0 0 28px #9b5cff14
+}
+.nav-item{
+  position:relative;min-width:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:5px;padding:9px 2px;
+  border:1px solid transparent;border-radius:15px;background:transparent;
+  color:#aa9abf;font-size:10px;font-weight:750;transition:.22s
+}
+.nav-item .gv-icon{width:21px;height:21px;color:inherit}
+.nav-item:hover{color:#dfc5ff;background:#9b5cff12}
+.nav-item.active{
+  color:#eadbff;background:linear-gradient(145deg,#9b5cff38,#4a207844);
+  border-color:#9b5cff75;box-shadow:inset 0 0 18px #9b5cff18,0 0 17px #9b5cff28
+}
+.nav-item.active .gv-icon{filter:drop-shadow(0 0 6px #bd91ff)}
+.nav-item.active:before{
+  content:"";position:absolute;top:-2px;width:24px;height:2px;
+  border-radius:5px;background:#d4b5ff;box-shadow:0 0 10px #b77bff,0 0 18px #9b5cff
+}
+.admin-stat{font-size:27px;font-weight:900;color:var(--light)}
+
+@keyframes glow{
+  0%,100%{box-shadow:0 0 12px #9b5cff18}
+  50%{box-shadow:0 0 22px #9b5cff35}
+}
+.nav-item.active{animation:glow 3s ease-in-out infinite}
+
 @media(max-width:900px){
   .product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
   .categories{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:600px){
-  .gv-header{padding:11px 4%;gap:9px}
+  .gv-header{padding:10px 4%;gap:9px}
   .logo{font-size:19px}
   .header-actions{gap:5px}
   .header-actions .btn{padding:9px;font-size:12px}
-  main{padding:15px 4% 50px}
+  main{padding:15px 4% 110px}
   .hero{padding-top:26px}
   .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   .product-info{padding:10px}
@@ -170,75 +256,96 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
   .page-grid{grid-template-columns:1fr}
   .panel{padding:15px}
   .icon-btn{width:38px;height:38px}
+  .bottom-nav{bottom:8px}
+  .nav-item{font-size:9px;padding:9px 1px}
+  .nav-item .gv-icon{width:20px;height:20px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}
 }
 </style>
 </head>
 
 <body>
 <header class="gv-header">
-  <button class="btn icon-btn" aria-label="Open menu" onclick="toggleMenu(true)">☰</button>
+  <button class="btn icon-btn" id="openMenuButton" data-gv-icon="menu" aria-label="Open menu" onclick="toggleMenu(true)"></button>
   <div class="logo" onclick="navigate('home')">GAME<span>VAULT</span></div>
   <div class="header-actions">
-    <button class="btn" onclick="navigate('cart')">Cart <span id="cartCount">0</span></button>
+    <button class="btn" onclick="navigate('cart')">
+      <span class="gv-icon" aria-hidden="true" id="headerCartIcon"></span>
+      Cart <span id="cartCount">0</span>
+    </button>
     <button class="btn primary" id="authHeaderBtn" onclick="openAuth()">Login</button>
   </div>
 </header>
 
 <div id="menuBackdrop" class="menu-backdrop hidden" onclick="toggleMenu(false)"></div>
-<aside id="drawer" class="drawer">
+
+<aside id="drawer" class="drawer" aria-label="Main navigation">
   <div class="drawer-head">
-    <div class="logo" onclick="navigate('home');toggleMenu(false)">GAME<span>VAULT</span></div>
-    <button class="btn icon-btn" onclick="toggleMenu(false)" aria-label="Close menu">×</button>
+    <div class="logo" onclick="navigate('home')">GAME<span>VAULT</span></div>
+    <button class="btn icon-btn" id="closeMenuButton" data-gv-icon="close" aria-label="Close menu" onclick="toggleMenu(false)"></button>
   </div>
-  <a href="?page=home" data-page="home">⌂ Home</a>
+
+  <a href="?page=home" data-page="home" data-gv-icon="home" data-gv-label="Home">Home</a>
+
   <div class="drawer-label">STORE</div>
-  <a href="?page=categories" data-page="categories">▦ All Categories</a>
-  <a href="?page=products" data-page="products">▤ All Products</a>
-  <a href="?page=topups" data-page="topups">◈ Game Top-Ups</a>
-  <a href="?page=accounts" data-page="accounts">♙ Trending Accounts</a>
-  <a href="?page=skins" data-page="skins">✦ Skins & Bundles</a>
-  <a href="?page=subscriptions" data-page="subscriptions">◉ App Subscriptions</a>
+  <a href="?page=categories" data-page="categories" data-gv-icon="categories" data-gv-label="All Categories">All Categories</a>
+  <a href="?page=products" data-page="products" data-gv-icon="products" data-gv-label="All Products">All Products</a>
+  <a href="?page=topups" data-page="topups" data-gv-icon="topups" data-gv-label="Game Top-Ups">Game Top-Ups</a>
+  <a href="?page=accounts" data-page="accounts" data-gv-icon="accounts" data-gv-label="Trending Accounts">Trending Accounts</a>
+  <a href="?page=skins" data-page="skins" data-gv-icon="skins" data-gv-label="Skins & Bundles">Skins & Bundles</a>
+  <a href="?page=subscriptions" data-page="subscriptions" data-gv-icon="subscriptions" data-gv-label="App Subscriptions">App Subscriptions</a>
+
   <hr>
   <div class="drawer-label">YOUR ACCOUNT</div>
-  <a href="?page=profile" data-page="profile">♙ My Profile</a>
-  <a href="?page=wallet" data-page="wallet">◉ My Wallet</a>
-  <a href="?page=orders" data-page="orders">▣ My Orders</a>
-  <a href="?page=security" data-page="security">⚿ Security</a>
-  <a href="?page=cart" data-page="cart">🛒 Cart</a>
+  <a href="?page=profile" data-page="profile" data-gv-icon="profile" data-gv-label="My Profile">My Profile</a>
+  <a href="?page=wallet" data-page="wallet" data-gv-icon="wallet" data-gv-label="My Wallet">My Wallet</a>
+  <a href="?page=orders" data-page="orders" data-gv-icon="orders" data-gv-label="My Orders">My Orders</a>
+  <a href="?page=security" data-page="security" data-gv-icon="security" data-gv-label="Security">Security</a>
+  <a href="?page=cart" data-page="cart" data-gv-icon="cart" data-gv-label="Cart">Cart</a>
+
+  <div id="adminMenuLink" class="hidden">
+    <hr><div class="drawer-label">ADMIN</div>
+    <a href="?page=admin" data-page="admin" data-gv-icon="admin" data-gv-label="Admin Dashboard">Admin Dashboard</a>
+  </div>
+
   <hr>
-  <a href="mailto:support@gamevault.com">✉ Contact Support</a>
-  <button onclick="signOut()">↪ Sign Out</button>
+  <a href="mailto:support@gamevault.com" data-gv-icon="support" data-gv-label="Contact Support">Contact Support</a>
+  <button data-gv-icon="logout" data-gv-label="Sign Out" onclick="signOut()">Sign Out</button>
 </aside>
 
-<main>
-  <section id="view"></section>
-</main>
+<main><section id="view"></section></main>
 
 <footer class="footer">
   GameVault · Your digital gaming store
   <div style="margin-top:7px">Secure account access · Digital products · Customer support</div>
 </footer>
 
+<nav class="bottom-nav" aria-label="Quick navigation">
+  <button class="nav-item" data-nav="home" data-gv-icon="home" data-gv-label="Home" onclick="navigate('home')">Home</button>
+  <button class="nav-item" data-nav="products" data-gv-icon="explore" data-gv-label="Explore" onclick="navigate('products')">Explore</button>
+  <button class="nav-item" data-nav="orders" data-gv-icon="orders" data-gv-label="Orders" onclick="navigate('orders')">Orders</button>
+  <button class="nav-item" data-nav="wallet" data-gv-icon="wallet" data-gv-label="Wallet" onclick="navigate('wallet')">Wallet</button>
+  <button class="nav-item" data-nav="profile" data-gv-icon="profile" data-gv-label="Profile" onclick="navigate('profile')">Profile</button>
+</nav>
+
 <div id="authModal" class="modal hidden">
   <div class="modal-card">
     <div class="modal-head">
       <h2 id="authTitle">Welcome to GameVault</h2>
-      <button class="btn icon-btn" onclick="closeAuth()">×</button>
+      <button class="btn icon-btn" data-gv-icon="close" aria-label="Close sign-in" onclick="closeAuth()"></button>
     </div>
     <p class="muted small" id="authDescription">Sign in to your account.</p>
     <form class="form-stack" id="authForm">
-      <label>Email
-        <input type="email" id="authEmail" autocomplete="email" required>
-      </label>
-      <label>Password
-        <input type="password" id="authPassword" minlength="6" autocomplete="current-password" required>
-      </label>
+      <label>Email<input type="email" id="authEmail" autocomplete="email" required></label>
+      <label>Password<input type="password" id="authPassword" minlength="6" autocomplete="current-password" required></label>
       <button class="btn primary" type="submit" id="authSubmit">Sign In</button>
     </form>
     <p class="small muted" id="authSwitchText">New to GameVault?</p>
     <button class="btn" id="authSwitch" style="width:100%" onclick="switchAuthMode()">Create Account</button>
     <button class="btn" style="width:100%;margin-top:8px" onclick="resetPassword()">Forgot password?</button>
-    <p class="small muted">If email confirmation is enabled, follow the confirmation link sent to your email.</p>
+    <p class="small muted">If email confirmation is enabled, follow the link sent to your email.</p>
   </div>
 </div>
 
@@ -248,500 +355,479 @@ hr{border:0;border-top:1px solid var(--border);margin:15px 0}
 <script>
 "use strict";
 
-/* GameVault Supabase connection */
-const SUPABASE_URL = "https://hhopviwrhbebfkljzmiv.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_qzbuNv6A5xkxXTJH2rWYZQ__iDDAVwT";
+const SUPABASE_URL="https://hhopviwrhbebfkljzmiv.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_qzbuNv6A5xkxXTJH2rWYZQ__iDDAVwT";
+const SITE_URL="https://gamevault-hub.github.io/gamevault-site/";
 
-let supabaseClient = null;
-let currentUser = null;
-let currentProfile = null;
-let authMode = "login";
-let currentPage = new URLSearchParams(location.search).get("page") || "home";
-let activeCategory = "all";
-let searchTerm = "";
-let toastTimer = null;
+let supabaseClient=null,currentUser=null,currentProfile=null,authMode="login";
+let currentPage=new URLSearchParams(location.search).get("page")||"home";
+let searchTerm="",toastTimer=null,cart=loadCart();
+const view=document.getElementById("view");
 
-const view = document.getElementById("view");
+/* CUSTOM SVG ICON LIBRARY */
+const GV_ICONS={
+  home:'<path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9"/><path d="M9 20v-7h6v7"/>',
+  categories:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  products:'<path d="M4 7h16"/><path d="M6 3h12l2 4H4l2-4Z"/><path d="M5 7v13h14V7"/><path d="M9 11h6"/><path d="M9 15h6"/>',
+  topups:'<path d="m13 2-8 11h6l-1 9 9-12h-6l0-8Z"/>',
+  accounts:'<circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2Z"/>',
+  skins:'<path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4 7.5 8 4.5 8-4.5"/><path d="M12 12v9"/>',
+  subscriptions:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/>',
+  profile:'<circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2Z"/>',
+  wallet:'<rect x="3" y="5" width="18" height="15" rx="2"/><path d="M3 9h18"/><path d="M16 14h2"/>',
+  orders:'<path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5"/><path d="M8 13h8"/><path d="M8 17h8"/>',
+  security:'<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v3"/>',
+  cart:'<circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M2 3h3l3 12h11l3-9H6"/>',
+  menu:'<path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/>',
+  close:'<path d="m6 6 12 12"/><path d="M18 6 6 18"/>',
+  support:'<path d="M4 13v-2a8 8 0 0 1 16 0v2"/><path d="M4 13H3v4h4v-4H4Z"/><path d="M20 13h1v4h-4v-4h3Z"/><path d="M17 20c-1 1-2 1-5 1"/>',
+  logout:'<path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7"/>',
+  admin:'<path d="M12 3 20 7v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4Z"/><path d="m9 12 2 2 4-4"/>',
+  explore:'<circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/><path d="m14 8-2 5-5 2 2-5 5-2Z"/>'
+};
 
-const products = [
-  {id:"ff-diamonds",name:"Free Fire Diamonds",category:"topups",game:"Free Fire",description:"Top up diamonds for your Free Fire account.",image:"1e84951ea4e43a94485c30851c151ad2.jpg"},
-  {id:"ff-weekly",name:"Free Fire Weekly Membership",category:"topups",game:"Free Fire",description:"Weekly membership top-up.",image:"IMG_2377.jpeg"},
-  {id:"codm-cp",name:"COD Mobile CP",category:"topups",game:"Call of Duty Mobile",description:"CODM points for in-game purchases.",image:"IMG_2374.jpeg"},
-  {id:"codm-pass",name:"COD Mobile Battle Pass",category:"topups",game:"Call of Duty Mobile",description:"Battle Pass top-up.",image:"IMG_2376.jpeg"},
-  {id:"pubg-uc",name:"PUBG Mobile UC",category:"topups",game:"PUBG Mobile",description:"UC for your PUBG Mobile account.",image:"IMG_2379.jpeg"},
-  {id:"pubg-pass",name:"PUBG Royale Pass",category:"topups",game:"PUBG Mobile",description:"Royale Pass top-up.",image:"IMG_2380.jpeg"},
-  {id:"mlbb-diamonds",name:"MLBB Diamonds",category:"topups",game:"Mobile Legends",description:"Diamonds for Mobile Legends.",image:"IMG_2381.jpeg"},
-  {id:"gaming-account",name:"Gaming Account",category:"accounts",game:"Gaming Accounts",description:"Browse available gaming account listings.",image:""},
-  {id:"digital-sub",name:"Digital Subscription",category:"subscriptions",game:"Digital Services",description:"Digital subscription listings.",image:""},
-  {id:"tiktok-coins",name:"TikTok Coins",category:"topups",game:"TikTok",description:"TikTok coin top-up.",image:"IMG_2383.jpeg"},
-  {id:"spotify",name:"Spotify Premium",category:"subscriptions",game:"Spotify",description:"Spotify subscription listing.",image:"IMG_2412.jpeg"},
-  {id:"snapchat",name:"Snapchat+",category:"subscriptions",game:"Snapchat",description:"Snapchat+ subscription listing.",image:"IMG_2385.jpeg"},
-  {id:"youtube",name:"YouTube Premium",category:"subscriptions",game:"YouTube",description:"YouTube Premium subscription listing.",image:"IMG_2413.jpeg"},
-  {id:"netflix",name:"Netflix Subscription",category:"subscriptions",game:"Netflix",description:"Netflix subscription listing.",image:"IMG_2416.jpeg"},
-  {id:"chatgpt",name:"ChatGPT Subscription",category:"subscriptions",game:"ChatGPT",description:"ChatGPT subscription listing.",image:"IMG_2414.jpeg"}
-];
+function gvIcon(name){
+  return `<span class="gv-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none">${GV_ICONS[name]||GV_ICONS.products}</svg></span>`;
+}
 
-const categories = [
-  {id:"topups",name:"Game Top-Ups",emoji:"🎮",description:"Diamonds, CP, UC and more"},
-  {id:"accounts",name:"Gaming Accounts",emoji:"👤",description:"Browse gaming account listings"},
-  {id:"skins",name:"Skins & Bundles",emoji:"✨",description:"Limited skins and bundles"},
-  {id:"subscriptions",name:"App Subscriptions",emoji:"📱",description:"Digital apps and memberships"}
-];
+function setupGameVaultIcons(){
+  document.querySelectorAll("[data-gv-icon]").forEach(el=>{
+    const name=el.dataset.gvIcon;
+    const label=el.dataset.gvLabel;
+    el.innerHTML=gvIcon(name)+(label?`<span>${escapeHTML(label)}</span>`:"");
+  });
 
-let cart = loadCart();
+  const cartIcon=document.getElementById("headerCartIcon");
+  if(cartIcon)cartIcon.innerHTML=`<svg viewBox="0 0 24 24" fill="none">${GV_ICONS.cart}</svg>`;
+}
 
-function escapeHTML(value){
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[char]));
+function escapeHTML(v){
+  return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))
 }
 
 function notify(message){
-  const toast = document.getElementById("toast");
-  toast.textContent = message;
-  toast.classList.remove("hidden");
+  const t=document.getElementById("toast");
+  t.textContent=message;
+  t.classList.remove("hidden");
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.add("hidden"), 3200);
+  toastTimer=setTimeout(()=>t.classList.add("hidden"),3500)
 }
 
 function toggleMenu(open){
   document.getElementById("drawer").classList.toggle("open",open);
   document.getElementById("menuBackdrop").classList.toggle("hidden",!open);
+  document.getElementById("openMenuButton").setAttribute("aria-expanded",String(open));
 }
 
-function navigate(page, options = {}){
-  const allowed = ["home","categories","products","topups","accounts","skins","subscriptions","cart","wallet","profile","orders","security"];
-  if(!allowed.includes(page)) page = "home";
-  currentPage = page;
-
-  const url = new URL(location.href);
-  if(page === "home") url.searchParams.delete("page");
-  else url.searchParams.set("page",page);
-
-  if(options.replace) history.replaceState({page}, "", url);
-  else history.pushState({page}, "", url);
-
+function navigate(page,options={}){
+  const allowed=["home","categories","products","topups","accounts","skins","subscriptions","cart","wallet","profile","orders","security","admin"];
+  if(!allowed.includes(page))page="home";
+  currentPage=page;
+  const u=new URL(location.href);
+  if(page==="home")u.searchParams.delete("page");
+  else u.searchParams.set("page",page);
+  if(options.replace)history.replaceState({page},"",u);
+  else history.pushState({page},"",u);
   toggleMenu(false);
   renderPage();
-  window.scrollTo({top:0,behavior:"instant"});
+  window.scrollTo({top:0,behavior:"auto"});
 }
 
-window.addEventListener("popstate", () => {
-  currentPage = new URLSearchParams(location.search).get("page") || "home";
-  renderPage();
+window.addEventListener("popstate",()=>{
+  currentPage=new URLSearchParams(location.search).get("page")||"home";
+  renderPage()
 });
 
 function loadCart(){
-  try { return JSON.parse(localStorage.getItem("gv_cart") || "[]"); }
-  catch { return []; }
+  try{return JSON.parse(localStorage.getItem("gv_cart")||"[]")}
+  catch{return []}
 }
 function saveCart(){
   localStorage.setItem("gv_cart",JSON.stringify(cart));
-  document.getElementById("cartCount").textContent = cart.reduce((sum,item)=>sum+item.qty,0);
+  document.getElementById("cartCount").textContent=cart.reduce((s,i)=>s+i.qty,0)
 }
 function addToCart(id){
-  const product = products.find(p=>p.id===id);
-  if(!product) return;
-  const existing = cart.find(item=>item.id===id);
-  if(existing) existing.qty++;
+  const p=products.find(x=>x.id===id);
+  if(!p)return;
+  const row=cart.find(x=>x.id===id);
+  if(row)row.qty++;
   else cart.push({id,qty:1});
   saveCart();
-  notify(product.name+" added to cart.");
+  notify(p.name+" added to cart")
 }
-function changeQty(id,delta){
-  const item = cart.find(row=>row.id===id);
-  if(!item) return;
-  item.qty += delta;
-  cart = cart.filter(row=>row.qty>0);
+function changeQty(id,n){
+  const r=cart.find(x=>x.id===id);
+  if(!r)return;
+  r.qty+=n;
+  cart=cart.filter(x=>x.qty>0);
   saveCart();
-  renderPage();
+  renderPage()
 }
 function removeFromCart(id){
-  cart = cart.filter(item=>item.id!==id);
+  cart=cart.filter(x=>x.id!==id);
   saveCart();
-  renderPage();
+  renderPage()
 }
 
-function productCard(product){
-  const image = product.image
-    ? `<img src="${escapeHTML(product.image)}" alt="${escapeHTML(product.name)}" loading="lazy" onerror="this.style.display='none'">`
-    : `<div style="aspect-ratio:1.2;display:grid;place-items:center;font-size:42px;background:var(--panel2)">🎮</div>`;
+const products=[
+{id:"ff-diamonds",name:"Free Fire Diamonds",category:"topups",game:"Free Fire",description:"Top up diamonds for your Free Fire account.",image:"1e84951ea4e43a94485c30851c151ad2.jpg"},
+{id:"ff-weekly",name:"Free Fire Weekly Membership",category:"topups",game:"Free Fire",description:"Weekly membership top-up.",image:"IMG_2377.jpeg"},
+{id:"codm-cp",name:"COD Mobile CP",category:"topups",game:"Call of Duty Mobile",description:"CODM points for in-game purchases.",image:"IMG_2374.jpeg"},
+{id:"codm-pass",name:"COD Mobile Battle Pass",category:"topups",game:"Call of Duty Mobile",description:"Battle Pass top-up.",image:"IMG_2376.jpeg"},
+{id:"pubg-uc",name:"PUBG Mobile UC",category:"topups",game:"PUBG Mobile",description:"UC for your PUBG Mobile account.",image:"IMG_2379.jpeg"},
+{id:"pubg-pass",name:"PUBG Royale Pass",category:"topups",game:"PUBG Mobile",description:"Royale Pass top-up.",image:"IMG_2380.jpeg"},
+{id:"mlbb-diamonds",name:"MLBB Diamonds",category:"topups",game:"Mobile Legends",description:"Diamonds for Mobile Legends.",image:"IMG_2381.jpeg"},
+{id:"gaming-account",name:"Gaming Account",category:"accounts",game:"Gaming Accounts",description:"Browse available gaming account listings.",image:""},
+{id:"skin-bundle",name:"Limited Skins & Bundles",category:"skins",game:"Gaming Skins",description:"Browse available skins and bundles.",image:""},
+{id:"digital-sub",name:"Digital Subscription",category:"subscriptions",game:"Digital Services",description:"Digital subscription listings.",image:""},
+{id:"tiktok-coins",name:"TikTok Coins",category:"topups",game:"TikTok",description:"TikTok coin top-up.",image:"IMG_2383.jpeg"},
+{id:"spotify",name:"Spotify Premium",category:"subscriptions",game:"Spotify",description:"Spotify subscription listing.",image:"IMG_2412.jpeg"},
+{id:"snapchat",name:"Snapchat+",category:"subscriptions",game:"Snapchat",description:"Snapchat+ subscription listing.",image:"IMG_2385.jpeg"},
+{id:"youtube",name:"YouTube Premium",category:"subscriptions",game:"YouTube",description:"YouTube Premium subscription listing.",image:"IMG_2413.jpeg"},
+{id:"netflix",name:"Netflix Subscription",category:"subscriptions",game:"Netflix",description:"Netflix subscription listing.",image:"IMG_2416.jpeg"},
+{id:"chatgpt",name:"ChatGPT Subscription",category:"subscriptions",game:"ChatGPT",description:"ChatGPT subscription listing.",image:"IMG_2414.jpeg"}
+];
 
-  return `<article class="product">
-    ${image}
-    <div class="product-info">
-      <h3>${escapeHTML(product.name)}</h3>
-      <p>${escapeHTML(product.description)}</p>
-      <div class="product-bottom">
-        <span class="price">View options</span>
-        <button class="btn primary" onclick="addToCart('${product.id}')">Add to cart</button>
-      </div>
-    </div>
-  </article>`;
+const categories=[
+{id:"topups",name:"Game Top-Ups",emoji:"🎮",description:"Diamonds, CP, UC and more"},
+{id:"accounts",name:"Gaming Accounts",emoji:"👤",description:"Browse gaming account listings"},
+{id:"skins",name:"Skins & Bundles",emoji:"✦",description:"Limited skins and bundles"},
+{id:"subscriptions",name:"App Subscriptions",emoji:"📱",description:"Digital apps and memberships"}
+];
+
+function productCard(p){
+  const img=p.image
+    ?`<img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.style.display='none'">`
+    :`<div style="aspect-ratio:1.2;display:grid;place-items:center;background:var(--panel2)">${gvIcon("products")}</div>`;
+  return `<article class="product">${img}<div class="product-info"><h3>${escapeHTML(p.name)}</h3><p>${escapeHTML(p.description)}</p><div class="product-bottom"><span class="price">View options</span><button class="btn primary" onclick="addToCart('${p.id}')">Add to cart</button></div></div></article>`
 }
-
-function categoryCards(){
-  return `<div class="categories">${categories.map(cat=>`
-    <button class="category" onclick="navigate('${cat.id}')">
-      <span class="emoji">${cat.emoji}</span>
-      <strong>${escapeHTML(cat.name)}</strong>
-      <small>${escapeHTML(cat.description)}</small>
-    </button>`).join("")}</div>`;
-}
-
 function productGrid(list){
-  if(!list.length) return `<div class="empty">No products found. Try another search.</div>`;
-  return `<div class="product-grid">${list.map(productCard).join("")}</div>`;
+  return list.length?`<div class="product-grid">${list.map(productCard).join("")}</div>`:`<div class="empty">No products found. Try another search.</div>`
+}
+function categoryCards(){
+  return `<div class="categories">${categories.map(c=>`<button class="category" onclick="navigate('${c.id}')"><span class="emoji">${c.emoji}</span><strong>${escapeHTML(c.name)}</strong><small>${escapeHTML(c.description)}</small></button>`).join("")}</div>`
 }
 
 function renderHome(){
-  const featured = products.filter(p=>p.category==="topups" || p.category==="subscriptions").slice(0,8);
-  view.innerHTML = `
-    <section class="hero">
-      <div class="eyebrow">Your digital gaming store</div>
-      <h1>Level up with<br><span style="color:var(--purple)">GameVault.</span></h1>
-      <p>Explore gaming top-ups, accounts, skins, bundles and digital subscriptions in one place.</p>
-      <div class="search">
-        <input id="storeSearch" placeholder="Search games and digital products..." value="${escapeHTML(searchTerm)}" oninput="searchTerm=this.value;renderSearchResults()">
-        <button class="btn primary" onclick="runSearch()">Search</button>
-      </div>
-      <div id="searchResults"></div>
-    </section>
-    <div class="section-heading"><h2>Explore Categories</h2><button class="btn" onclick="navigate('categories')">View all</button></div>
-    ${categoryCards()}
-    <div class="section-heading"><h2>Popular Products</h2><button class="btn" onclick="navigate('products')">View all</button></div>
-    ${productGrid(featured)}
-    <div class="panel" style="margin-top:28px">
-      <h2>Welcome to GameVault</h2>
-      <p class="muted">Sign in to manage your customer profile. Product pricing and fulfillment options must be configured before purchases can be completed.</p>
-      <button class="btn primary" onclick="openAuth()">Sign in / Create account</button>
-    </div>`;
-  renderSearchResults();
+  const featured=products.filter(p=>["topups","subscriptions"].includes(p.category)).slice(0,8);
+  view.innerHTML=`<section class="hero"><div class="eyebrow">Your digital gaming store</div><h1>Level up with<br><span style="color:var(--purple)">GameVault.</span></h1><p>Explore gaming top-ups, accounts, skins, bundles and digital subscriptions in one place.</p><div class="search"><input id="storeSearch" placeholder="Search games and digital products..." value="${escapeHTML(searchTerm)}" oninput="searchTerm=this.value;renderSearchResults()"><button class="btn primary" onclick="runSearch()">Search</button></div><div id="searchResults"></div></section>
+  <div class="section-heading"><h2>Explore Categories</h2><button class="btn" onclick="navigate('categories')">View all</button></div>${categoryCards()}
+  <div class="section-heading"><h2>Popular Products</h2><button class="btn" onclick="navigate('products')">View all</button></div>${productGrid(featured)}
+  <div class="panel" style="margin-top:28px"><h2>Welcome to GameVault</h2><p class="muted">Your gaming top-ups and digital products store.</p><button class="btn primary" onclick="openAuth()">Sign in / Create account</button></div>`;
+  renderSearchResults()
 }
-
 function renderSearchResults(){
-  const container = document.getElementById("searchResults");
-  if(!container) return;
-  const term = searchTerm.trim().toLowerCase();
-  if(!term){container.innerHTML="";return;}
-  const matches = products.filter(p=>
-    (p.name+" "+p.game+" "+p.description+" "+p.category).toLowerCase().includes(term)
-  );
-  container.innerHTML = `<div class="panel"><div class="section-heading"><h2>Search results</h2><button class="btn" onclick="searchTerm='';renderPage()">Clear</button></div>${productGrid(matches)}</div>`;
+  const c=document.getElementById("searchResults");
+  if(!c)return;
+  const term=searchTerm.trim().toLowerCase();
+  if(!term){c.innerHTML="";return}
+  const matches=products.filter(p=>(p.name+" "+p.game+" "+p.description+" "+p.category).toLowerCase().includes(term));
+  c.innerHTML=`<div class="panel"><div class="section-heading"><h2>Search results</h2><button class="btn" onclick="searchTerm='';renderPage()">Clear</button></div>${productGrid(matches)}</div>`
 }
 function runSearch(){
-  const field = document.getElementById("storeSearch");
-  searchTerm = field ? field.value : searchTerm;
-  renderSearchResults();
-}
-function renderCategoryPage(category){
-  const info = categories.find(c=>c.id===category);
-  const list = products.filter(p=>p.category===category);
-  view.innerHTML = `
-    <div class="page-title"><div class="eyebrow">GameVault Store</div><h1>${info?escapeHTML(info.name):"Products"}</h1>
-    <p class="muted">${info?escapeHTML(info.description):"Browse our digital product catalog."}</p></div>
-    <div class="search"><input id="categorySearch" placeholder="Search this catalog..." oninput="filterVisibleProducts(this.value,'${category}')"></div>
-    <div id="categoryProducts">${productGrid(list)}</div>`;
-}
-function filterVisibleProducts(value,category){
-  const list = products.filter(p=>p.category===category && (p.name+" "+p.game).toLowerCase().includes(value.toLowerCase()));
-  document.getElementById("categoryProducts").innerHTML = productGrid(list);
-}
-function renderAllProducts(){
-  const term = searchTerm.toLowerCase();
-  const list = products.filter(p=>(p.name+" "+p.game+" "+p.description).toLowerCase().includes(term));
-  view.innerHTML = `<div class="page-title"><div class="eyebrow">Browse Store</div><h1>All Products</h1><p class="muted">Explore the GameVault catalog.</p></div>
-  <div class="search"><input value="${escapeHTML(searchTerm)}" placeholder="Search products..." oninput="searchTerm=this.value;renderAllProductGrid()"></div>
-  <div id="allProductGrid">${productGrid(list)}</div>`;
-}
-function renderAllProductGrid(){
-  const term = searchTerm.toLowerCase();
-  document.getElementById("allProductGrid").innerHTML = productGrid(products.filter(p=>(p.name+" "+p.game+" "+p.description).toLowerCase().includes(term)));
+  searchTerm=document.getElementById("storeSearch")?.value||searchTerm;
+  renderSearchResults()
 }
 function renderCategories(){
-  view.innerHTML = `<div class="page-title"><div class="eyebrow">Find what you need</div><h1>All Categories</h1><p class="muted">Choose a category to explore.</p></div>${categoryCards()}`;
+  view.innerHTML=`<div class="page-title"><div class="eyebrow">Find what you need</div><h1>All Categories</h1><p class="muted">Choose a category to explore.</p></div>${categoryCards()}`
 }
-
+function renderCategoryPage(cat){
+  const info=categories.find(c=>c.id===cat);
+  const list=products.filter(p=>p.category===cat);
+  view.innerHTML=`<div class="page-title"><div class="eyebrow">GameVault Store</div><h1>${escapeHTML(info?.name||"Products")}</h1><p class="muted">${escapeHTML(info?.description||"Browse our digital product catalog.")}</p></div><div class="search"><input placeholder="Search this catalog..." oninput="filterVisibleProducts(this.value,'${cat}')"></div><div id="categoryProducts">${productGrid(list)}</div>`
+}
+function filterVisibleProducts(value,cat){
+  document.getElementById("categoryProducts").innerHTML=productGrid(products.filter(p=>p.category===cat&&(p.name+" "+p.game).toLowerCase().includes(value.toLowerCase())))
+}
+function renderAllProducts(){
+  view.innerHTML=`<div class="page-title"><div class="eyebrow">Browse Store</div><h1>All Products</h1><p class="muted">Explore the GameVault catalog.</p></div><div class="search"><input value="${escapeHTML(searchTerm)}" placeholder="Search products..." oninput="searchTerm=this.value;renderAllProductGrid()"></div><div id="allProductGrid">${productGrid(products.filter(p=>(p.name+" "+p.game+" "+p.description).toLowerCase().includes(searchTerm.toLowerCase())))}</div>`
+}
+function renderAllProductGrid(){
+  document.getElementById("allProductGrid").innerHTML=productGrid(products.filter(p=>(p.name+" "+p.game+" "+p.description).toLowerCase().includes(searchTerm.toLowerCase())))
+}
 function renderCart(){
-  const rows = cart.map(item=>{
-    const product = products.find(p=>p.id===item.id);
-    if(!product) return "";
-    return `<div class="cart-line"><div><strong>${escapeHTML(product.name)}</strong><span class="muted small">Price is provided at checkout after catalog pricing is configured.</span>
-      <div style="display:flex;align-items:center;gap:10px;margin-top:10px">
-        <button class="btn" onclick="changeQty('${item.id}',-1)">−</button><span>${item.qty}</span><button class="btn" onclick="changeQty('${item.id}',1)">+</button>
-      </div></div><button class="btn danger" onclick="removeFromCart('${item.id}')">Remove</button></div>`;
+  const rows=cart.map(i=>{
+    const p=products.find(x=>x.id===i.id);
+    if(!p)return "";
+    return `<div class="cart-line"><div><strong>${escapeHTML(p.name)}</strong><div class="muted small">Price and available package must be configured before purchase.</div><div style="display:flex;align-items:center;gap:10px;margin-top:10px"><button class="btn" onclick="changeQty('${i.id}',-1)">−</button><span>${i.qty}</span><button class="btn" onclick="changeQty('${i.id}',1)">+</button></div></div><button class="btn danger" onclick="removeFromCart('${i.id}')">Remove</button></div>`
   }).join("");
-  view.innerHTML = `<div class="page-title"><div class="eyebrow">Your selection</div><h1>Your Cart</h1><p class="muted">Review your selected products.</p></div>
-    <div class="panel">${rows || `<div class="empty">Your cart is empty.<br><br><button class="btn primary" onclick="navigate('products')">Browse products</button></div>`}
-    ${cart.length?`<div class="notice">Checkout is not enabled by this page alone. Prices, payment verification, and product delivery must be connected and tested on the backend before orders can be placed.</div><button class="btn primary" style="width:100%;margin-top:14px" onclick="notify('Online checkout is not connected yet.')">Continue to Checkout</button>`:""}</div>`;
+  view.innerHTML=`<div class="page-title"><div class="eyebrow">Your selection</div><h1>Your Cart</h1><p class="muted">Review your selected products.</p></div><div class="panel">${rows||`<div class="empty">Your cart is empty.<br><br><button class="btn primary" onclick="navigate('products')">Browse products</button></div>`}${cart.length?`<div class="notice">Secure checkout must be connected to the server-side payment and order functions before purchases can be completed.</div><button class="btn primary" style="width:100%;margin-top:14px" onclick="startCheckout()">Continue to Checkout</button>`:""}</div>`
+}
+async function startCheckout(){
+  if(!requireLogin())return;
+  notify("Checkout needs the deployed create-payment/order Edge Function and configured product prices. No payment has been taken.")
 }
 
-function renderPage(){
-  saveCart();
-  const page = currentPage;
-  if(page==="home") return renderHome();
-  if(page==="categories") return renderCategories();
-  if(page==="products") return renderAllProducts();
-  if(["topups","accounts","skins","subscriptions"].includes(page)) return renderCategoryPage(page);
-  if(page==="cart") return renderCart();
-  if(page==="profile") return renderProfile();
-  if(page==="wallet") return renderWallet();
-  if(page==="orders") return renderOrders();
-  if(page==="security") return renderSecurity();
-  currentPage="home";renderHome();
-}
-
-/* Supabase authentication */
+/* SUPABASE AUTHENTICATION */
 function initSupabase(){
-  if(!window.supabase){
-    notify("Supabase library could not load. Check your internet connection.");
-    return;
-  }
-  supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+  if(!window.supabase){notify("Supabase library failed to load. Check internet.");return}
+  supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
   supabaseClient.auth.onAuthStateChange((_event,session)=>{
-    currentUser = session?.user || null;
+    currentUser=session?.user||null;
     setTimeout(async()=>{
-      if(currentUser) await loadProfile();
-      updateAuthButton();
-      if(["profile","wallet","orders","security"].includes(currentPage)) renderPage();
-    },0);
+      if(currentUser)await loadProfile();
+      updateAuthButton();updateNavigation();
+      if(["profile","wallet","orders","security","admin"].includes(currentPage))renderPage()
+    },0)
   });
   supabaseClient.auth.getSession().then(async({data,error})=>{
-    if(error) console.error(error);
-    currentUser = data.session?.user || null;
-    if(currentUser) await loadProfile();
-    updateAuthButton();
-    renderPage();
-  });
+    if(error)console.error(error);
+    currentUser=data.session?.user||null;
+    if(currentUser)await loadProfile();
+    updateAuthButton();updateNavigation();renderPage()
+  })
 }
 function updateAuthButton(){
-  const button = document.getElementById("authHeaderBtn");
-  if(!button) return;
-  button.textContent = currentUser ? "My Account" : "Login";
-  button.onclick = () => currentUser ? navigate("profile") : openAuth();
+  const b=document.getElementById("authHeaderBtn");
+  if(!b)return;
+  b.textContent=currentUser?"My Account":"Login";
+  b.onclick=()=>currentUser?navigate("profile"):openAuth()
 }
 function openAuth(mode="login"){
   authMode=mode;
   document.getElementById("authModal").classList.remove("hidden");
-  updateAuthMode();
+  updateAuthMode()
 }
 function closeAuth(){document.getElementById("authModal").classList.add("hidden")}
-function switchAuthMode(){
-  authMode=authMode==="login"?"signup":"login";
-  updateAuthMode();
-}
+function switchAuthMode(){authMode=authMode==="login"?"signup":"login";updateAuthMode()}
 function updateAuthMode(){
-  const signup=authMode==="signup";
-  document.getElementById("authTitle").textContent=signup?"Create your GameVault account":"Welcome to GameVault";
-  document.getElementById("authDescription").textContent=signup?"Create an account to manage your profile.":"Sign in to your account.";
-  document.getElementById("authSubmit").textContent=signup?"Create Account":"Sign In";
-  document.getElementById("authSwitchText").textContent=signup?"Already have an account?":"New to GameVault?";
-  document.getElementById("authSwitch").textContent=signup?"Sign In":"Create Account";
+  const s=authMode==="signup";
+  document.getElementById("authTitle").textContent=s?"Create your GameVault account":"Welcome to GameVault";
+  document.getElementById("authDescription").textContent=s?"Create an account to manage your profile.":"Sign in to your account.";
+  document.getElementById("authSubmit").textContent=s?"Create Account":"Sign In";
+  document.getElementById("authSwitchText").textContent=s?"Already have an account?":"New to GameVault?";
+  document.getElementById("authSwitch").textContent=s?"Sign In":"Create Account"
 }
-document.getElementById("authForm").addEventListener("submit",async event=>{
-  event.preventDefault();
-  if(!supabaseClient) return notify("Supabase is not ready yet.");
+document.getElementById("authForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  if(!supabaseClient)return notify("Supabase is not ready.");
   const email=document.getElementById("authEmail").value.trim();
   const password=document.getElementById("authPassword").value;
-  const submit=document.getElementById("authSubmit");
-  submit.disabled=true;
+  const b=document.getElementById("authSubmit");
+  b.disabled=true;
   try{
-    let result;
+    let r;
     if(authMode==="signup"){
-      result=await supabaseClient.auth.signUp({
-        email,password,
-        options:{emailRedirectTo:"https://gamevault-hub.github.io/gamevault-site/"}
-      });
-      if(result.error) throw result.error;
-      if(result.data.session){
-        currentUser=result.data.user;
-        await loadProfile();
-        closeAuth();
-        notify("Account created successfully.");
-        navigate("profile");
-      }else{
-        notify("Account created. Check your email to confirm your account.");
-      }
+      r=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:SITE_URL}});
+      if(r.error)throw r.error;
+      if(r.data.session){
+        currentUser=r.data.user;await loadProfile();closeAuth();notify("Account created.");navigate("profile")
+      }else notify("Account created. Check your email to confirm.")
     }else{
-      result=await supabaseClient.auth.signInWithPassword({email,password});
-      if(result.error) throw result.error;
-      currentUser=result.data.user;
-      await loadProfile();
-      closeAuth();
-      notify("Signed in successfully.");
-      navigate("profile");
+      r=await supabaseClient.auth.signInWithPassword({email,password});
+      if(r.error)throw r.error;
+      currentUser=r.data.user;await loadProfile();closeAuth();notify("Signed in successfully.");navigate("profile")
     }
-  }catch(error){
-    notify(error.message || "Authentication failed.");
-  }finally{submit.disabled=false}
+    updateNavigation();updateAuthButton()
+  }catch(err){notify(err.message||"Authentication failed")}
+  finally{b.disabled=false}
 });
 async function resetPassword(){
-  if(!supabaseClient) return notify("Supabase is not ready yet.");
+  if(!supabaseClient)return notify("Supabase is not ready.");
   const email=document.getElementById("authEmail").value.trim();
-  if(!email) return notify("Enter your email address first.");
-  const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{
-    redirectTo:"https://gamevault-hub.github.io/gamevault-site/"
-  });
-  notify(error?error.message:"If the account exists, a password reset email will be sent.");
+  if(!email)return notify("Enter your email first.");
+  const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:SITE_URL});
+  notify(error?error.message:"If the account exists, a password reset email will be sent.")
 }
 async function signOut(){
-  if(!supabaseClient) return;
+  if(!supabaseClient)return;
   const {error}=await supabaseClient.auth.signOut();
-  if(error) return notify(error.message);
-  currentUser=null;currentProfile=null;
-  toggleMenu(false);updateAuthButton();navigate("home");
-  notify("Signed out.");
+  if(error)return notify(error.message);
+  currentUser=null;currentProfile=null;toggleMenu(false);
+  updateAuthButton();updateNavigation();navigate("home");notify("Signed out.")
 }
 
-/* Customer profile */
+/* CUSTOMER PROFILE */
 async function loadProfile(){
-  if(!currentUser || !supabaseClient) return;
-  const {data,error}=await supabaseClient.from("profiles")
-    .select("*").eq("id",currentUser.id).maybeSingle();
-  if(error){console.error("Profile lookup:",error.message);return}
+  if(!currentUser||!supabaseClient)return;
+  const {data,error}=await supabaseClient.from("profiles").select("*").eq("id",currentUser.id).maybeSingle();
+  if(error){console.warn("Profile lookup:",error.message);return}
   currentProfile=data;
   if(!data){
-    const metadataName=currentUser.user_metadata?.display_name || "";
-    const {data:created,error:createError}=await supabaseClient.from("profiles")
-      .insert({id:currentUser.id,email:currentUser.email,display_name:metadataName})
-      .select().maybeSingle();
-    if(createError) console.warn("Profile creation:",createError.message);
-    else currentProfile=created;
+    const {data:created,error:createError}=await supabaseClient.from("profiles").insert({
+      id:currentUser.id,email:currentUser.email,
+      display_name:currentUser.user_metadata?.display_name||""
+    }).select().maybeSingle();
+    if(createError)console.warn("Profile creation:",createError.message);
+    else currentProfile=created
   }
 }
 function requireLogin(){
-  if(currentUser) return true;
-  openAuth();
-  notify("Sign in to view this page.");
-  return false;
+  if(currentUser)return true;
+  openAuth();notify("Sign in to view this page.");return false
 }
 function renderProfile(){
-  if(!requireLogin()) return;
-  const profile=currentProfile||{};
-  const name=profile.display_name||currentUser.user_metadata?.display_name||"GameVault Member";
-  const avatar=profile.avatar_url||currentUser.user_metadata?.avatar_url||"";
-  view.innerHTML=`
-  <div class="page-title"><div class="eyebrow">Your account</div><h1>My Profile</h1><p class="muted">Manage your personal GameVault details.</p></div>
-  <div class="panel">
-    <div class="profile-top">
-      <img class="avatar" id="profileAvatarPreview" src="${escapeHTML(avatar||"")}" alt="Profile avatar" onerror="this.style.display='none'">
-      <div><h2 style="margin:0 0 8px">${escapeHTML(name)}</h2><span class="member-tag">GAMEVAULT MEMBER</span><div class="small muted" style="margin-top:8px">${escapeHTML(currentUser.email||"")}</div></div>
-    </div>
-    <form class="form-stack" onsubmit="saveProfile(event)">
-      <label>Display name<input id="profileName" maxlength="50" value="${escapeHTML(name)}" placeholder="Your display name"></label>
-      <label>Email address<input value="${escapeHTML(currentUser.email||"")}" disabled></label>
-      <label>Avatar image URL<input id="profileAvatarUrl" type="url" value="${escapeHTML(avatar)}" placeholder="https://example.com/avatar.png"></label>
-      <label>Or upload an avatar<input id="profileAvatarFile" type="file" accept="image/png,image/jpeg,image/webp"></label>
-      <button class="btn primary" type="submit">Save Profile</button>
-    </form>
-  </div>
-  <div class="page-grid">
-    <div class="panel"><h3>My Orders</h3><p class="muted">View your order history and status.</p><button class="btn" onclick="navigate('orders')">View Orders</button></div>
-    <div class="panel"><h3>Account Security</h3><p class="muted">Password and account security settings.</p><button class="btn" onclick="navigate('security')">Security Settings</button></div>
-    <div class="panel"><h3>My Wallet</h3><p class="muted">View available wallet information.</p><button class="btn" onclick="navigate('wallet')">Open Wallet</button></div>
-  </div>`;
+  if(!requireLogin())return;
+  const p=currentProfile||{};
+  const name=p.display_name||currentUser.user_metadata?.display_name||"GameVault Member";
+  const avatar=p.avatar_url||currentUser.user_metadata?.avatar_url||"";
+  view.innerHTML=`<div class="page-title"><div class="eyebrow">Your account</div><h1>My Profile</h1><p class="muted">Manage your GameVault details.</p></div><div class="panel"><div class="profile-top"><img class="avatar" id="profileAvatarPreview" src="${escapeHTML(avatar)}" alt="Profile avatar" onerror="this.style.display='none'"><div><h2 style="margin:0 0 8px">${escapeHTML(name)}</h2><span class="member-tag">GAMEVAULT MEMBER</span><div class="small muted" style="margin-top:8px">${escapeHTML(currentUser.email||"")}</div></div></div><form class="form-stack" onsubmit="saveProfile(event)"><label>Display name<input id="profileName" maxlength="50" value="${escapeHTML(name)}" required></label><label>Email<input value="${escapeHTML(currentUser.email||"")}" disabled></label><label>Avatar URL<input id="profileAvatarUrl" type="url" value="${escapeHTML(avatar)}" placeholder="https://example.com/avatar.png"></label><label>Or upload avatar<input id="profileAvatarFile" type="file" accept="image/png,image/jpeg,image/webp"></label><button class="btn primary" type="submit">Save Profile</button></form></div><div class="page-grid"><div class="panel"><h3>My Orders</h3><p class="muted">View purchases and delivery status.</p><button class="btn" onclick="navigate('orders')">View Orders</button></div><div class="panel"><h3>Account Security</h3><p class="muted">Manage account access.</p><button class="btn" onclick="navigate('security')">Security Settings</button></div><div class="panel"><h3>My Wallet</h3><p class="muted">View GameVault Tokens.</p><button class="btn" onclick="navigate('wallet')">Open Wallet</button></div></div>`
 }
-async function saveProfile(event){
-  event.preventDefault();
-  if(!requireLogin()) return;
+async function saveProfile(e){
+  e.preventDefault();
+  if(!requireLogin())return;
   const name=document.getElementById("profileName").value.trim();
   let avatarUrl=document.getElementById("profileAvatarUrl").value.trim();
   const file=document.getElementById("profileAvatarFile").files[0];
-
   try{
     if(file){
-      if(file.size>3*1024*1024) return notify("Avatar must be 3 MB or smaller.");
-      const allowed=["image/jpeg","image/png","image/webp"];
-      if(!allowed.includes(file.type)) return notify("Use a JPG, PNG or WebP image.");
+      if(file.size>3*1024*1024)return notify("Avatar must be 3 MB or smaller.");
+      if(!["image/jpeg","image/png","image/webp"].includes(file.type))return notify("Use JPG, PNG or WebP.");
       const ext=file.name.split(".").pop().toLowerCase();
       const path=`${currentUser.id}/${Date.now()}.${ext}`;
-      const {error:uploadError}=await supabaseClient.storage.from("avatar").upload(path,file,{upsert:true,contentType:file.type});
-      if(uploadError) throw uploadError;
-      const {data}=supabaseClient.storage.from("avatar").getPublicUrl(path);
-      avatarUrl=data.publicUrl;
+      const {error}=await supabaseClient.storage.from("avatar").upload(path,file,{upsert:true,contentType:file.type});
+      if(error)throw error;
+      avatarUrl=supabaseClient.storage.from("avatar").getPublicUrl(path).data.publicUrl
     }
-    const update={
-      id:currentUser.id,
-      email:currentUser.email,
-      display_name:name,
-      avatar_url:avatarUrl||null,
-      updated_at:new Date().toISOString()
-    };
+    const update={id:currentUser.id,email:currentUser.email,display_name:name,avatar_url:avatarUrl||null,updated_at:new Date().toISOString()};
     const {data,error}=await supabaseClient.from("profiles").upsert(update,{onConflict:"id"}).select().maybeSingle();
-    if(error) throw error;
+    if(error)throw error;
     currentProfile=data||update;
-    await supabaseClient.auth.updateUser({data:{display_name:name,avatar_url:avatarUrl||null}});
-    notify("Profile saved.");
-    renderProfile();
-  }catch(error){
-    notify("Could not save profile: "+(error.message||"Check the profiles table, RLS policies and avatar bucket."));
-  }
+    const {error:authError}=await supabaseClient.auth.updateUser({data:{display_name:name,avatar_url:avatarUrl||null}});
+    if(authError)console.warn(authError.message);
+    notify("Profile saved.");renderProfile()
+  }catch(err){notify("Profile save failed: "+err.message)}
 }
 
-/* Wallet page: read-only until a secure deposit flow is connected */
+/* WALLET */
 async function renderWallet(){
-  if(!requireLogin()) return;
-  view.innerHTML=`<div class="page-title"><div class="eyebrow">GameVault Tokens</div><h1>My Wallet</h1><p class="muted">Wallet balance and transaction history.</p></div><div class="panel"><p class="muted">Loading wallet information...</p></div>`;
-  let balanceText="Unavailable";
-  let transactions=[];
+  if(!requireLogin())return;
+  view.innerHTML=`<div class="page-title"><div class="eyebrow">GameVault Tokens</div><h1>My Wallet</h1></div><div class="panel">Loading wallet...</div>`;
+  let balance="Unavailable",transactions=[];
   try{
     const {data,error}=await supabaseClient.from("gv_wallets").select("*").eq("user_id",currentUser.id).maybeSingle();
-    if(error) throw error;
+    if(error)throw error;
     if(data){
-      const balance=data.balance ?? data.balance_kobo ?? data.tokens;
-      if(balance!==undefined) balanceText=String(balance);
-    }else balanceText="0";
-  }catch(error){console.warn("Wallet lookup:",error.message)}
+      const v=data.balance??data.balance_kobo??data.tokens;
+      if(v!==undefined)balance=String(v)
+    }else balance="0"
+  }catch(e){console.warn("Wallet:",e.message)}
   try{
-    const {data,error}=await supabaseClient.from("gv_wallet_transactions")
-      .select("*").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(10);
-    if(error) throw error;
-    transactions=data||[];
-  }catch(error){console.warn("Wallet transactions:",error.message)}
-
-  view.innerHTML=`<div class="page-title"><div class="eyebrow">GameVault Tokens</div><h1>My Wallet</h1><p class="muted">View your wallet balance and recent transactions.</p></div>
-  <div class="panel"><div class="muted small">Wallet balance</div><div style="font-size:34px;font-weight:900;margin:10px 0">${escapeHTML(balanceText)}</div><div class="notice">Wallet funding is not initiated here. Use only a verified payment flow connected to the secure backend; do not credit balances from the browser.</div></div>
-  <div class="panel"><h2>Recent Transactions</h2>${transactions.length?transactions.map(tx=>`<div class="list-row"><div><strong>${escapeHTML(tx.description||tx.type||"Wallet transaction")}</strong><div class="muted small">${escapeHTML(tx.created_at||"")}</div></div><span class="status">${escapeHTML(tx.status||"Recorded")}</span></div>`).join(""):`<div class="empty">No transactions to display, or the wallet table is not configured for this account.</div>`}</div>`;
+    const {data,error}=await supabaseClient.from("gv_wallet_transactions").select("*").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(20);
+    if(error)throw error;transactions=data||[]
+  }catch(e){console.warn("Transactions:",e.message)}
+  view.innerHTML=`<div class="page-title"><div class="eyebrow">GameVault Tokens</div><h1>My Wallet</h1><p class="muted">Your balance and wallet activity.</p></div><div class="panel"><div class="muted small">Wallet balance</div><div class="admin-stat" style="font-size:35px;margin:10px 0">${escapeHTML(balance)} <span style="font-size:14px">GVT</span></div><p class="muted small">1 GVT = ₦1, according to the GameVault token rule.</p><button class="btn primary" onclick="requestDeposit()">Fund Wallet</button><div class="notice" style="margin-top:12px">Wallet funding must be initiated and confirmed through the server-side payment function. This button will not credit funds by itself.</div></div><div class="panel"><h2>Recent Transactions</h2>${transactions.length?transactions.map(t=>`<div class="list-row"><div><strong>${escapeHTML(t.description||t.type||"Wallet transaction")}</strong><div class="muted small">${escapeHTML(t.created_at||"")}</div></div><span class="status">${escapeHTML(t.status||"Recorded")}</span></div>`).join(""):`<div class="empty">No transactions found.</div>`}</div>`
+}
+async function requestDeposit(){
+  if(!requireLogin())return;
+  try{
+    const {data,error}=await supabaseClient.functions.invoke("create-payment",{body:{purpose:"wallet_deposit"}});
+    if(error)throw error;
+    if(data?.authorization_url){location.href=data.authorization_url;return}
+    notify("Payment function returned no checkout URL. Configure the create-payment Edge Function first.")
+  }catch(e){notify("Wallet funding isn't configured yet: "+(e.message||"Edge Function unavailable"))}
 }
 
-/* Orders page: reads existing customer orders if the table is configured */
+/* ORDER HISTORY */
 async function renderOrders(){
-  if(!requireLogin()) return;
-  view.innerHTML=`<div class="page-title"><div class="eyebrow">Your purchases</div><h1>My Orders</h1><p class="muted">Your order history and delivery status.</p></div><div class="panel"><p class="muted">Loading orders...</p></div>`;
+  if(!requireLogin())return;
+  view.innerHTML=`<div class="page-title"><div class="eyebrow">Your purchases</div><h1>My Orders</h1></div><div class="panel">Loading orders...</div>`;
   let orders=[];
   try{
-    const {data,error}=await supabaseClient.from("orders").select("*")
-      .eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(50);
-    if(error) throw error;
-    orders=data||[];
-  }catch(error){console.warn("Orders lookup:",error.message)}
-  view.innerHTML=`<div class="page-title"><div class="eyebrow">Your purchases</div><h1>My Orders</h1><p class="muted">Your order history and delivery status.</p></div>
-  <div class="panel">${orders.length?orders.map(order=>`<div class="list-row"><div><strong>Order ${escapeHTML(order.id||order.reference||"")}</strong><div class="muted small">${escapeHTML(order.created_at||"")}</div><div class="small muted">${escapeHTML(order.product_name||order.description||"Digital product")}</div></div><span class="status">${escapeHTML(order.status||"Pending")}</span></div>`).join(""):`<div class="empty">No orders to display yet. Orders will appear here when the store's order backend is connected.</div>`}</div>`;
+    const {data,error}=await supabaseClient.from("orders").select("*").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(50);
+    if(error)throw error;orders=data||[]
+  }catch(e){console.warn("Orders:",e.message)}
+  view.innerHTML=`<div class="page-title"><div class="eyebrow">Your purchases</div><h1>My Orders</h1><p class="muted">Order history and delivery status.</p></div><div class="panel">${orders.length?orders.map(o=>`<div class="list-row"><div><strong>Order ${escapeHTML(o.reference||o.id||"")}</strong><div class="muted small">${escapeHTML(o.created_at||"")}</div><div class="small muted">${escapeHTML(o.product_name||o.description||"Digital product")}</div></div><span class="status">${escapeHTML(o.status||"Pending")}</span></div>`).join(""):`<div class="empty">No orders found yet.</div>`}</div>`
 }
 
-/* Security page */
+/* SECURITY */
 function renderSecurity(){
-  if(!requireLogin()) return;
-  view.innerHTML=`<div class="page-title"><div class="eyebrow">Protect your account</div><h1>Security</h1><p class="muted">Manage your sign-in and account access.</p></div>
-  <div class="panel"><h2>Email & Sign-In</h2><p class="muted">Signed in as ${escapeHTML(currentUser.email||"")}</p><div class="list-row"><span>Email verified</span><span class="status">${currentUser.email_confirmed_at?"Confirmed":"Not confirmed"}</span></div></div>
-  <div class="panel"><h2>Password</h2><p class="muted">Request a password reset email for your account.</p><button class="btn primary" onclick="sendSecurityReset()">Send Password Reset</button></div>
-  <div class="panel"><h2>Sign Out</h2><p class="muted">Sign out of this device.</p><button class="btn danger" onclick="signOut()">Sign Out</button></div>`;
+  if(!requireLogin())return;
+  view.innerHTML=`<div class="page-title"><div class="eyebrow">Protect your account</div><h1>Security</h1></div><div class="panel"><h2>Email & Sign-In</h2><p class="muted">${escapeHTML(currentUser.email||"")}</p><div class="list-row"><span>Email verified</span><span class="status">${currentUser.email_confirmed_at?"Confirmed":"Not confirmed"}</span></div></div><div class="panel"><h2>Password</h2><p class="muted">Request a password reset email.</p><button class="btn primary" onclick="sendSecurityReset()">Send Password Reset</button></div><div class="panel"><h2>Sign Out</h2><button class="btn danger" onclick="signOut()">Sign Out</button></div>`
 }
 async function sendSecurityReset(){
-  if(!supabaseClient||!currentUser?.email) return notify("Please sign in again.");
-  const {error}=await supabaseClient.auth.resetPasswordForEmail(currentUser.email,{
-    redirectTo:"https://gamevault-hub.github.io/gamevault-site/"
-  });
-  notify(error?error.message:"If supported by your Supabase settings, a password reset email will be sent.");
+  if(!supabaseClient||!currentUser?.email)return notify("Please sign in again.");
+  const {error}=await supabaseClient.auth.resetPasswordForEmail(currentUser.email,{redirectTo:SITE_URL});
+  notify(error?error.message:"If supported by your settings, a password reset email will be sent.")
 }
 
-document.addEventListener("keydown",event=>{
-  if(event.key==="Escape"){
-    closeAuth();
-    toggleMenu(false);
+/* ADMIN */
+function isAdmin(){return currentProfile?.role==="admin"}
+async function renderAdmin(){
+  if(!requireLogin())return;
+  if(!isAdmin()){
+    view.innerHTML=`<div class="page-title"><div class="eyebrow">Restricted area</div><h1>Admin Dashboard</h1></div><div class="panel"><div class="empty">Your account does not have the admin role.</div></div>`;
+    return
   }
+  let orders=[],deposits=[],catalog=[];
+  try{
+    const [o,d,p]=await Promise.all([
+      supabaseClient.from("orders").select("*").order("created_at",{ascending:false}).limit(20),
+      supabaseClient.from("gv_wallet_transactions").select("*").order("created_at",{ascending:false}).limit(20),
+      supabaseClient.from("gv_products").select("*").order("created_at",{ascending:false}).limit(100)
+    ]);
+    if(!o.error)orders=o.data||[];
+    if(!d.error)deposits=d.data||[];
+    if(!p.error)catalog=p.data||[]
+  }catch(e){console.warn("Admin data:",e.message)}
+  view.innerHTML=`<div class="page-title"><div class="eyebrow">Store control</div><h1>Admin Dashboard</h1><p class="muted">Manage the store and review activity.</p></div>
+  <div class="page-grid"><div class="panel"><div class="muted small">Orders loaded</div><div class="admin-stat">${orders.length}</div></div><div class="panel"><div class="muted small">Wallet transactions loaded</div><div class="admin-stat">${deposits.length}</div></div><div class="panel"><div class="muted small">Database products loaded</div><div class="admin-stat">${catalog.length}</div></div></div>
+  <div class="panel"><h2>Add Store Product</h2><p class="muted small">Requires the gv_products table and admin-only RLS policies.</p><form class="form-stack" onsubmit="adminAddProduct(event)"><label>Product name<input id="adminProductName" required maxlength="120"></label><label>Category<select id="adminProductCategory"><option value="topups">Game Top-Ups</option><option value="accounts">Gaming Accounts</option><option value="skins">Skins & Bundles</option><option value="subscriptions">App Subscriptions</option></select></label><label>Price in naira<input id="adminProductPrice" type="number" min="0" step="1" required></label><label>Image URL<input id="adminProductImage" type="url" placeholder="https://..."></label><label>Description<textarea id="adminProductDescription" rows="2"></textarea></label><button class="btn primary" type="submit">Add Product</button></form></div>
+  <div class="panel"><h2>Database Catalog</h2>${catalog.length?catalog.map(p=>`<div class="list-row"><div><strong>${escapeHTML(p.name||p.title||"Product")}</strong><div class="muted small">${escapeHTML(p.category||"")} · ${escapeHTML(p.price??"Price not set")}</div></div><span class="status">${p.active===false?"Inactive":"Listed"}</span></div>`).join(""):`<div class="empty">No products loaded. Check that gv_products exists and your admin RLS policy permits reading.</div>`}</div>
+  <div class="panel"><h2>Recent Orders</h2>${orders.length?orders.map(o=>`<div class="list-row"><div><strong>${escapeHTML(o.reference||o.id||"Order")}</strong><div class="muted small">${escapeHTML(o.product_name||o.description||"Product")}</div></div><span class="status">${escapeHTML(o.status||"Pending")}</span></div>`).join(""):`<div class="empty">No orders loaded.</div>`}</div>
+  <div class="panel"><h2>Recent Wallet Activity</h2>${deposits.length?deposits.map(d=>`<div class="list-row"><div><strong>${escapeHTML(d.description||d.type||"Wallet activity")}</strong><div class="muted small">${escapeHTML(d.user_id||"")}</div></div><span class="status">${escapeHTML(d.status||"Pending")}</span></div>`).join(""):`<div class="empty">No wallet transactions loaded.</div>`}</div>
+  <div class="notice">Payment verification, wallet credits and supplier fulfilment must be performed by trusted Edge Functions. Never mark payments successful manually from browser code.</div>`
+}
+async function adminAddProduct(e){
+  e.preventDefault();
+  if(!isAdmin())return notify("Admin access required.");
+  const row={
+    name:document.getElementById("adminProductName").value.trim(),
+    category:document.getElementById("adminProductCategory").value,
+    price:Number(document.getElementById("adminProductPrice").value),
+    image_url:document.getElementById("adminProductImage").value.trim()||null,
+    description:document.getElementById("adminProductDescription").value.trim(),
+    active:true
+  };
+  try{
+    const {error}=await supabaseClient.from("gv_products").insert(row);
+    if(error)throw error;
+    notify("Product added to database.");renderAdmin()
+  }catch(err){notify("Could not add product: "+err.message)}
+}
+
+/* ACTIVE NAVIGATION */
+function updateNavigation(){
+  document.querySelectorAll(".drawer a[data-page]").forEach(a=>{
+    const active=a.dataset.page===currentPage;
+    a.classList.toggle("active",active);
+    if(active)a.setAttribute("aria-current","page");
+    else a.removeAttribute("aria-current")
+  });
+  document.querySelectorAll("[data-nav]").forEach(a=>{
+    const page=a.dataset.nav;
+    const active=page===currentPage||
+      (page==="products"&&["categories","topups","accounts","skins","subscriptions"].includes(currentPage));
+    a.classList.toggle("active",active);
+    if(active)a.setAttribute("aria-current","page");
+    else a.removeAttribute("aria-current")
+  });
+  document.getElementById("adminMenuLink").classList.toggle("hidden",!isAdmin())
+}
+
+function renderPage(){
+  saveCart();
+  updateNavigation();
+  if(currentPage==="home")return renderHome();
+  if(currentPage==="categories")return renderCategories();
+  if(currentPage==="products")return renderAllProducts();
+  if(["topups","accounts","skins","subscriptions"].includes(currentPage))return renderCategoryPage(currentPage);
+  if(currentPage==="cart")return renderCart();
+  if(currentPage==="profile")return renderProfile();
+  if(currentPage==="wallet")return renderWallet();
+  if(currentPage==="orders")return renderOrders();
+  if(currentPage==="security")return renderSecurity();
+  if(currentPage==="admin")return renderAdmin();
+  currentPage="home";
+  renderHome();
+  updateNavigation()
+}
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){closeAuth();toggleMenu(false)}
 });
 
+setupGameVaultIcons();
 saveCart();
 renderPage();
 initSupabase();
