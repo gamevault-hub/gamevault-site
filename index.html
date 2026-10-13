@@ -516,34 +516,47 @@ function gvShowProfileMessage(message,type="success") {
   box.className = "gv-profile-message show " + type;
 }
 
-function gvRenderAvatar(name,avatarUrl) {
+
+function gvRenderAvatar(name, avatarUrl) {
   const avatar = $("gvAvatar");
   if (!avatar) return;
 
+  const fallback =
+    (name || "G").trim().charAt(0).toUpperCase() || "G";
+
   avatar.replaceChildren();
+  avatar.textContent = fallback;
 
-  if (avatarUrl) {
-    try {
-      const parsed = new URL(avatarUrl);
+  if (!avatarUrl || typeof avatarUrl !== "string") return;
 
-      if (parsed.protocol === "https:" || parsed.protocol === "http:") {
-        const img = document.createElement("img");
-        img.src = parsed.href;
-        img.alt = "Profile avatar";
-        img.referrerPolicy = "no-referrer";
+  let parsed;
 
-        img.onerror = () => {
-          avatar.replaceChildren();
-          avatar.textContent = (name || "G").trim().charAt(0).toUpperCase() || "G";
-        };
-
-        avatar.appendChild(img);
-        return;
-      }
-    } catch (_) {
-      // Use the member's initial if the URL is invalid.
-    }
+  try {
+    parsed = new URL(avatarUrl);
+  } catch (_) {
+    return;
   }
+
+  if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+    return;
+  }
+
+  const img = document.createElement("img");
+  img.src = parsed.href;
+  img.alt = "Profile avatar";
+  img.referrerPolicy = "no-referrer";
+
+  img.onload = () => {
+    avatar.replaceChildren(img);
+  };
+
+  img.onerror = () => {
+    avatar.replaceChildren();
+    avatar.textContent = fallback;
+  };
+
+  avatar.replaceChildren(img);
+}
 
   avatar.textContent = (name || "G").trim().charAt(0).toUpperCase() || "G";
 }
