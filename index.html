@@ -4,1402 +4,978 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#10091d">
 <meta name="description" content="GameVault gaming top-ups, accounts, skins and digital subscriptions.">
 <title>GameVault | Digital Gaming Store</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 :root {
-  --bg:#0b0712;--panel:#171022;--panel2:#21152f;
-  --purple:#9b5cff;--light:#bd91ff;--text:#f7f2ff;
-  --muted:#b7a9c9;--border:#39244e;--success:#72e6a2;
+  --bg:#0b0712;
+  --panel:#171022;
+  --panel2:#21152f;
+  --purple:#9b5cff;
+  --light:#bd91ff;
+  --text:#f7f2ff;
+  --muted:#b7a9c9;
+  --border:#39244e;
+  --success:#72e6a2;
+  --danger:#ffaaa9;
+  --radius:18px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
-body.modal-open{overflow:hidden}
-button,input,select{font:inherit}
-button{background:var(--purple);color:white;border:0;border-radius:10px;padding:11px 15px;font-weight:bold;cursor:pointer}
-button:hover{filter:brightness(1.1)}
-button:disabled{opacity:.55;cursor:wait}
-input,select{max-width:100%}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--light);outline-offset:3px}
-
-.gv-header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 5%;background:linear-gradient(110deg,#10091d,#1d1033,#120b20);border-bottom:1px solid #52346d;flex-wrap:wrap}
-.logo{font-size:22px;font-weight:900;letter-spacing:1px;cursor:pointer}
-.logo span,.brand span{color:var(--light)}
-.logo small{display:block;margin-top:4px;color:#a99abf;font-size:9px;letter-spacing:2px}
-.header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.header-actions button{font-size:12px;padding:10px}
-.nav{background:#241637;border:1px solid #39254e;color:#e9ddff}
-.ghost{background:transparent;border:1px solid #9a63dc}
-
-.hero{text-align:center;padding:40px 5% 34px;background:radial-gradient(ellipse at top,#432068,#180d29 48%,#0b0712 82%)}
-.pill{display:inline-block;border:1px solid #68419a;border-radius:30px;padding:8px 13px;color:#d9bdff;font-size:11px;letter-spacing:1px}
-.hero h1{font-size:clamp(32px,7vw,55px);margin:17px 0 10px}
-.hero h1 span{color:var(--light)}
-.hero p,.muted{color:var(--muted);line-height:1.6}
-.hero p{max-width:560px;margin:auto}
-.search{width:min(100%,590px);margin:22px auto 0;display:flex;gap:10px;align-items:center;padding:7px 12px;background:var(--panel);border:1px solid #49335d;border-radius:14px}
-.search input{flex:1;min-width:0;background:transparent;border:0;color:white;padding:10px 0;outline:none}
-.search input::placeholder{color:var(--muted)}
-.search button{padding:7px 11px;background:#30203e}
-
-main{max-width:1200px;margin:auto;padding:24px 5%}
-h2{font-size:22px}
-.section{margin-top:30px;scroll-margin-top:90px}
-.section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.category-grid,.game-grid,.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0 25px}
-.category-card,.game-card{min-width:0;text-align:left;padding:16px;background:linear-gradient(145deg,#21152f,#140d1e);border:1px solid var(--border);border-radius:14px;color:var(--text)}
-.category-icon{display:block;font-size:30px;margin-bottom:10px}
-.category-card strong,.category-card small{display:block}
-.category-card small{color:var(--muted);font-weight:normal;line-height:1.5;margin-top:7px}
-.game-card span{margin-right:8px}
-.breadcrumbs{display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:var(--muted);font-size:13px;margin:10px 0 18px}
-.breadcrumbs button{padding:5px 8px;font-size:12px}
-.card{min-width:0;background:var(--panel);border:1px solid #30203e;border-radius:14px;overflow:hidden}
-.art{height:130px;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 20%,#593184,#21122f 65%,#130c1d);font-size:38px}
-.art img{width:100%;height:100%;object-fit:cover}
-.art small{position:absolute;bottom:8px;left:9px;font-size:9px;letter-spacing:1.5px;text-shadow:0 1px 4px #000}
-.info{padding:12px}
-.info h3{font-size:14px;line-height:1.4;margin:2px 0 7px}
-.info p{font-size:12px;color:var(--muted);min-height:30px;line-height:1.5}
-.info button{width:100%;font-size:12px}
-.panel{background:var(--panel);border:1px solid #49335d;border-radius:14px;padding:17px;margin:15px 0}
-.notice{padding:14px;background:#120c1b;border:1px solid var(--border);border-radius:12px;color:var(--muted);font-size:13px;line-height:1.65}
-.form-grid{display:grid;gap:10px;margin:15px 0}
-.form-grid input,.form-grid select,.field{width:100%;background:#0f0918;color:white;border:1px solid #49335d;padding:12px;border-radius:9px}
-.form-grid label{font-size:13px;color:var(--muted)}
-.balance{font-size:clamp(27px,6vw,36px);font-weight:900;margin:10px 0;color:var(--light)}
-.status{min-height:20px;font-size:13px;line-height:1.6;overflow-wrap:anywhere;color:#d9bdff}
-.status.error{color:#ffaaa9}
-.status.success{color:var(--success)}
-.line{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 0;border-bottom:1px solid #30203e;font-size:13px}
-.line span{flex:1;min-width:120px;overflow-wrap:anywhere}
-.line button{padding:7px 10px}
-.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:#30203e;color:#d9bdff;font-size:11px}
-footer{text-align:center;padding:28px 5%;color:var(--muted);font-size:12px;line-height:1.8;border-top:1px solid #30203e;margin-top:25px}
-
-.gv-modal{display:none;position:fixed;inset:0;z-index:100;padding:18px;align-items:center;justify-content:center;background:#05020be8;overflow:auto}
-.gv-modal.open{display:flex}
-.gv-modal-card{position:relative;width:100%;max-width:420px;margin:auto;padding:25px;background:linear-gradient(145deg,#21132f,#100a19);border:1px solid #7040a0;border-radius:20px}
-.gv-close{position:absolute;right:12px;top:12px;padding:7px 12px;background:#30203e}
-.brand{text-align:center;font-size:25px;font-weight:900;letter-spacing:1px;margin:10px 0}
-.gv-tabs{display:flex;gap:8px;margin:18px 0}
-.gv-tabs button{flex:1}
-.inactive{background:#30213f}
-.gv-modal-card label{font-size:13px}
-.gv-modal-card .field{margin:8px 0 14px}
-.gv-submit{width:100%}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  min-height:100vh
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:var(--light);text-decoration:none}
 .hidden{display:none!important}
-
-/* PREMIUM PURPLE CUSTOMER PROFILE */
-.gv-profile{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:16px}
-.gv-profile-card{min-width:0;background:linear-gradient(145deg,#211333,#120b1c);border:1px solid rgba(174,111,255,.25);border-radius:20px;padding:20px;box-shadow:0 12px 35px #0003}
-.gv-member-card{grid-column:1/-1;background:radial-gradient(ellipse at top right,#753cb333,transparent 60%),linear-gradient(145deg,#261439,#120b1c)}
-.gv-profile-header{display:flex;align-items:center;gap:18px;margin-bottom:18px}
-.gv-avatar-area{width:105px;flex-shrink:0;text-align:center}
-.gv-avatar{width:84px;height:84px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at top,#b77aff,#5820a5 75%);border:2px solid #c59aff;box-shadow:0 0 0 4px #9b5cff20,0 0 25px #9b5cff55;font-size:29px;font-weight:800;transition:transform .2s,box-shadow .2s}
-.gv-avatar:hover{transform:scale(1.03);box-shadow:0 0 0 5px #9b5cff30,0 0 32px #b77aff90}
-.gv-avatar img{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%}
-.gv-profile-name{font-size:20px;font-weight:800;overflow-wrap:anywhere}
-.gv-profile-email{color:#b9a9ca;font-size:12px;overflow-wrap:anywhere;margin-top:5px}
-.gv-member-badge{display:inline-block;color:#e4c9ff;background:#9b4dff29;border:1px solid #b77aff65;border-radius:30px;padding:6px 10px;font-size:10px;letter-spacing:.6px;margin-top:9px}
-.gv-profile-title{font-size:16px;font-weight:800;margin:0 0 15px;color:#ead9ff}
-.gv-profile-form{display:grid;gap:14px}
-.gv-profile-form label{display:block;font-size:12px;color:#cbbbdc;margin-bottom:7px}
-.gv-profile-form input{display:block;width:100%;min-width:0;padding:13px 14px;border-radius:11px;border:1px solid #443151;background:#100a18;color:#fff;font-size:14px;outline:none}
-.gv-profile-form input:focus{border-color:#a65cff;box-shadow:0 0 0 3px #a65cff1f}
-.gv-profile-form input:disabled,.gv-profile-form input:read-only{opacity:.75}
-.gv-profile-btn{width:100%;border:0;border-radius:12px;padding:13px 14px;font-size:13px;font-weight:800;cursor:pointer;color:#fff;background:linear-gradient(100deg,#853bdb,#b15cff);transition:filter .2s,transform .2s}
-.gv-profile-btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
-.gv-profile-btn.secondary{background:linear-gradient(135deg,#30203f,#21132f);border:1px solid #704a94;color:#e7d5ff}
-.gv-profile-btn.danger{background:#35151f;border:1px solid #6e293e;color:#ffb8ca}
-.gv-avatar-area .gv-profile-btn{padding:9px 8px;font-size:11px;letter-spacing:.2px}
-.gv-profile-links{display:grid;gap:10px}
-.gv-profile-link{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px;border-radius:12px;border:1px solid #3c294b;background:#190f24;color:#f7f2ff;font-size:13px}
-.gv-profile-link span:last-child{color:#c49aff;text-align:right;overflow-wrap:anywhere}
-.gv-profile-message{display:none;padding:12px;border-radius:10px;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
-.gv-profile-message.show{display:block}
-.gv-profile-message.success{color:#b8f6d0;background:#102a20}
-.gv-profile-message.error{color:#ffc0cb;background:#35151f}
-.gv-profile-note{font-size:12px;color:#b9a9ca;line-height:1.6}
-.gv-security-note{margin-top:15px}
-.gv-orders-empty{padding:18px 12px;margin-top:12px;border:1px dashed #59416f;border-radius:13px;text-align:center;color:#b9a9ca;font-size:13px;line-height:1.6}
-.gv-orders-empty strong{display:block;color:#e7d5ff;margin-bottom:6px}
-
-@media(min-width:650px){.grid,.game-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.art{height:160px}}
-@media(min-width:950px){.category-grid,.grid,.game-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media(max-width:649px){.gv-profile{grid-template-columns:minmax(0,1fr)}.gv-profile-card{padding:17px;border-radius:16px}}
-@media(max-width:480px){.gv-header{padding:12px}.logo{font-size:19px}.header-actions{width:100%;justify-content:space-between}.header-actions button{padding:9px 8px;font-size:11px}.hero{padding-top:30px}.gv-profile-header{gap:12px;align-items:flex-start}.gv-avatar-area{width:78px}.gv-avatar{width:68px;height:68px;font-size:25px}.gv-profile-name{font-size:18px}}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.container{width:min(1180px,calc(100% - 32px));margin:auto}
+header{
+  position:sticky;top:0;z-index:30;
+  background:rgba(11,7,18,.94);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border)
+}
+.header-inner{
+  min-height:70px;display:flex;align-items:center;
+  justify-content:space-between;gap:14px
+}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:21px}
+.brand-mark{
+  width:40px;height:40px;display:grid;place-items:center;
+  border-radius:13px;background:linear-gradient(135deg,#a45cff,#5727a3);
+  box-shadow:0 0 28px #9b5cff30;font-size:20px
+}
+.brand span:last-child{letter-spacing:-.5px}
+.header-actions,.desktop-nav{display:flex;align-items:center;gap:9px}
+.desktop-nav a,.nav-link{
+  color:var(--muted);font-size:13px;padding:10px 11px;border-radius:10px
+}
+.desktop-nav a:hover,.desktop-nav a.active{background:var(--panel2);color:white}
+.btn{
+  border:1px solid var(--border);border-radius:12px;padding:11px 15px;
+  color:var(--text);background:var(--panel2);font-weight:700
+}
+.btn:hover{border-color:var(--purple)}
+.btn.primary{
+  border:0;background:linear-gradient(135deg,#a45cff,#7540d6);color:white
+}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--danger)}
+.icon-btn{
+  width:42px;height:42px;border-radius:12px;border:1px solid var(--border);
+  background:var(--panel);color:white;font-size:20px
+}
+main{min-height:65vh;padding-bottom:36px}
+.hero{
+  margin:26px auto 22px;padding:35px;
+  border:1px solid var(--border);border-radius:24px;
+  background:radial-gradient(ellipse at 85% 10%,#713cb044,transparent 40%),
+  linear-gradient(135deg,#211331,#110b1b 70%)
+}
+.eyebrow{
+  color:var(--light);font-weight:800;letter-spacing:2px;
+  font-size:11px;text-transform:uppercase
+}
+.hero h1{font-size:clamp(30px,5vw,53px);line-height:1.08;margin:12px 0}
+.hero p{color:var(--muted);max-width:570px;line-height:1.7}
+.searchbar{display:flex;gap:10px;max-width:620px;margin-top:22px}
+input,select,textarea{
+  width:100%;min-width:0;padding:13px 14px;color:var(--text);
+  background:#0e0916;border:1px solid var(--border);border-radius:12px;
+  outline:none
+}
+input:focus,select:focus,textarea:focus{border-color:var(--purple)}
+.section{padding:18px 0}
+.section-heading{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:14px;margin:10px 0 18px
+}
+.section-heading h2{font-size:22px;margin:0}
+.section-heading p{margin:6px 0 0;color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.category-card,.product-card,.panel,.stat-card{
+  border:1px solid var(--border);background:var(--panel);border-radius:var(--radius)
+}
+.category-card{
+  padding:19px;text-align:left;color:var(--text);width:100%;
+  transition:transform .18s,border-color .18s
+}
+.category-card:hover,.product-card:hover{transform:translateY(-3px);border-color:#8650ca}
+.category-icon{
+  display:grid;place-items:center;width:49px;height:49px;
+  background:#352047;border-radius:15px;font-size:25px;margin-bottom:15px
+}
+.category-card strong{display:block;font-size:15px}
+.category-card p{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:0}
+.product-card{overflow:hidden;min-width:0}
+.product-image{
+  height:155px;background:linear-gradient(135deg,#30203e,#171022);
+  display:grid;place-items:center;overflow:hidden
+}
+.product-image img{width:100%;height:100%;object-fit:cover}
+.product-placeholder{font-size:40px}
+.product-info{padding:14px}
+.product-info h3{font-size:14px;margin:0 0 7px}
+.product-info p{font-size:12px;line-height:1.5;color:var(--muted);min-height:34px;margin:0 0 13px}
+.product-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
+.tag{
+  display:inline-flex;align-items:center;padding:5px 8px;border-radius:8px;
+  background:#30203f;color:#d8bbff;font-size:10px;font-weight:800
+}
+.product-info .btn{width:100%;padding:10px 8px;font-size:12px}
+.page-title{padding:28px 0 12px}
+.page-title h1{font-size:clamp(27px,4vw,38px);margin:7px 0}
+.page-title p{color:var(--muted);line-height:1.6}
+.panel{padding:22px;margin:14px 0}
+.panel h2,.panel h3{margin-top:0}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.field{display:flex;flex-direction:column;gap:7px}
+.field label{font-size:12px;color:var(--muted)}
+.field.full{grid-column:1/-1}
+.notice{
+  padding:13px 15px;border-radius:12px;background:#24182e;
+  border:1px solid var(--border);font-size:12px;line-height:1.65;color:var(--muted)
+}
+.notice.success{border-color:#276342;color:#a8f3c2}
+.notice.error{border-color:#713a4b;color:#ffc0c0}
+.stat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.stat-card{padding:18px}
+.stat-card p{font-size:12px;color:var(--muted);margin:0 0 10px}
+.stat-card strong{font-size:21px}
+.profile-head{display:flex;align-items:center;gap:15px;margin-bottom:20px}
+.avatar{
+  width:70px;height:70px;flex-shrink:0;border-radius:50%;
+  object-fit:cover;background:#30203f;border:2px solid var(--purple)
+}
+.avatar-fallback{
+  display:grid;place-items:center;font-size:25px;color:var(--light)
+}
+.line{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border-bottom:1px solid var(--border);padding:15px 0
+}
+.line:last-child{border-bottom:0}
+.line strong{font-size:14px}
+.line small{display:block;color:var(--muted);margin-top:5px}
+.empty-state{text-align:center;padding:35px 12px;color:var(--muted)}
+.empty-state .big{font-size:40px;margin-bottom:12px}
+footer{border-top:1px solid var(--border);padding:30px 0 100px;color:var(--muted);font-size:12px}
+.footer-inner{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.bottom-nav{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:35;
+  background:rgba(17,10,27,.97);border-top:1px solid var(--border);
+  padding:8px 4px calc(8px + env(safe-area-inset-bottom));
+  backdrop-filter:blur(18px)
+}
+.bottom-nav button{
+  flex:1;background:transparent;border:0;color:var(--muted);
+  display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10px;padding:5px 0
+}
+.bottom-nav button span:first-child{font-size:19px}
+.bottom-nav button.active{color:var(--light)}
+.drawer-backdrop,.modal-backdrop{
+  position:fixed;inset:0;background:#0009;z-index:50
+}
+.drawer{
+  position:fixed;z-index:51;top:0;bottom:0;left:0;width:min(330px,87vw);
+  padding:22px;background:#120b1d;border-right:1px solid var(--border);
+  overflow-y:auto;transform:translateX(-105%);transition:transform .22s
+}
+.drawer.open{transform:translateX(0)}
+.drawer-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.drawer button.menu-item{
+  display:flex;align-items:center;gap:13px;width:100%;padding:14px 12px;
+  border:0;background:transparent;color:var(--text);text-align:left;border-radius:11px
+}
+.drawer button.menu-item:hover{background:var(--panel2)}
+.drawer-label{font-size:10px;color:var(--muted);letter-spacing:1.5px;margin:20px 12px 8px}
+.modal-backdrop{display:grid;place-items:center;padding:18px;overflow:auto}
+.modal{
+  width:min(440px,100%);max-height:90vh;overflow:auto;
+  border:1px solid var(--border);border-radius:22px;background:#160e22;padding:23px
+}
+.modal h2{margin-top:0}
+.modal-close{float:right}
+.toast{
+  position:fixed;left:50%;bottom:85px;transform:translateX(-50%);
+  z-index:80;background:#2b1d39;border:1px solid var(--border);
+  border-radius:12px;padding:13px 18px;max-width:90vw;font-size:13px;
+  box-shadow:0 10px 35px #0005
+}
+hr{border:0;border-top:1px solid var(--border);margin:20px 0}
+@media(max-width:900px){
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .desktop-nav{display:none}
+}
+@media(max-width:620px){
+  .container{width:calc(100% - 24px)}
+  .header-inner{min-height:62px}
+  .brand{font-size:19px}
+  .header-actions .desktop-login{display:none}
+  .hero{padding:24px 19px;margin-top:15px;border-radius:19px}
+  .hero h1{font-size:34px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .product-image{height:130px}
+  .product-info{padding:11px}
+  .product-info h3{font-size:13px}
+  .product-info p{font-size:11px}
+  .category-card{padding:14px}
+  .category-icon{width:43px;height:43px}
+  .form-grid{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .stat-grid{grid-template-columns:1fr}
+  .stat-card{padding:14px}
+  .panel{padding:16px}
+  .bottom-nav{display:flex}
+  footer{padding-bottom:100px}
+  .searchbar{flex-direction:column}
+  .searchbar .btn{width:100%}
+}
 </style>
 </head>
 
 <body>
-<header class="gv-header">
-  <div class="logo" onclick="goHome()" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goHome()}">
-    GAME<span>VAULT</span><small>YOUR DIGITAL GAMING HUB</small>
-  </div>
-  <div class="header-actions">
-    <button class="nav" onclick="goHome()">⌂ Home</button>
-    <button class="nav" onclick="showCart()">🛒 Cart <span id="cartCount">0</span></button>
-    <button class="ghost" id="accountButton" onclick="openAuth('login')">Log In</button>
-    <button id="signupButton" onclick="openAuth('signup')">Sign Up ↗</button>
+<header>
+  <div class="container header-inner">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="icon-btn" onclick="toggleDrawer(true)" aria-label="Open menu">☰</button>
+      <a class="brand" href="?page=home" onclick="return gvLink(event,'home')">
+        <span class="brand-mark">G</span>
+        <span>GameVault</span>
+      </a>
+    </div>
+
+    <nav class="desktop-nav" id="desktopNav">
+      <a href="?page=home" data-nav="home" onclick="return gvLink(event,'home')">Home</a>
+      <a href="?page=topups" data-nav="topups" onclick="return gvLink(event,'topups')">Top-Ups</a>
+      <a href="?page=accounts" data-nav="accounts" onclick="return gvLink(event,'accounts')">Accounts</a>
+      <a href="?page=subscriptions" data-nav="subscriptions" onclick="return gvLink(event,'subscriptions')">Subscriptions</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn" onclick="navigate('cart')" aria-label="Shopping cart">🛒<span id="headerCartCount" class="small">0</span></button>
+      <button class="btn primary desktop-login" id="headerAuthBtn" onclick="handleHeaderAuth()">Login</button>
+    </div>
   </div>
 </header>
 
-<section class="hero">
-  <span class="pill">YOUR DIGITAL GAMING DESTINATION</span>
-  <h1>Unlock Your <span>Next Level.</span></h1>
-  <p>Find your game, choose your product, and explore the vault.</p>
-  <div class="search">
-    <span aria-hidden="true">⌕</span>
-    <input id="searchInput" type="search" placeholder="Search games, top-ups, accounts..." oninput="searchProducts()">
-    <button onclick="clearSearch()" aria-label="Clear search">×</button>
+<div class="drawer-backdrop hidden" id="drawerBackdrop" onclick="toggleDrawer(false)"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-top">
+    <div class="brand"><span class="brand-mark">G</span><span>GameVault</span></div>
+    <button class="icon-btn" onclick="toggleDrawer(false)" aria-label="Close menu">×</button>
   </div>
-</section>
+  <div id="drawerCustomer" class="notice" style="margin-bottom:12px">Welcome to GameVault</div>
+  <div class="drawer-label">STORE</div>
+  <button class="menu-item" onclick="navigate('home')">⌂ <span>Home</span></button>
+  <button class="menu-item" onclick="navigate('browse')">▦ <span>Browse all products</span></button>
+  <button class="menu-item" onclick="navigate('topups')">💎 <span>Game top-ups</span></button>
+  <button class="menu-item" onclick="navigate('accounts')">🎮 <span>Gaming accounts</span></button>
+  <button class="menu-item" onclick="navigate('skins')">⚡ <span>Skins & bundles</span></button>
+  <button class="menu-item" onclick="navigate('subscriptions')">✨ <span>Subscriptions</span></button>
+  <div class="drawer-label">YOUR ACCOUNT</div>
+  <button class="menu-item" onclick="navigate('cart')">🛒 <span>Shopping cart</span></button>
+  <button class="menu-item" onclick="navigate('wallet')">◈ <span>My wallet</span></button>
+  <button class="menu-item" onclick="navigate('profile')">👤 <span>My profile</span></button>
+  <button class="menu-item" onclick="navigate('orders')">▤ <span>My orders</span></button>
+  <button class="menu-item" onclick="navigate('security')">🔒 <span>Security</span></button>
+  <hr>
+  <button class="menu-item" id="drawerAuthBtn" onclick="handleHeaderAuth()">↪ <span>Login / Sign up</span></button>
+</aside>
 
-<main>
-  <section id="storeSection"><div id="storeView"></div></section>
-
-  <section id="cartSection" class="section hidden">
-    <div class="section-heading"><h2>Your Cart</h2><button class="nav" onclick="goHome()">Continue shopping</button></div>
-    <div class="panel">
-      <div id="cartItems"></div>
-      <p class="notice">Product checkout is not enabled yet. No purchase will be charged or delivered from this cart.</p>
+<main class="container">
+  <section class="hero" id="hero">
+    <div class="eyebrow">Your digital gaming store</div>
+    <h1>Level up your<br><span style="color:var(--light)">gaming experience.</span></h1>
+    <p>Explore game top-ups, gaming accounts, exclusive bundles and digital subscriptions in one place.</p>
+    <div class="searchbar">
+      <input id="searchInput" type="search" placeholder="Search products or games..." aria-label="Search products" onkeydown="if(event.key==='Enter')searchProducts()">
+      <button class="btn primary" onclick="searchProducts()">Search products</button>
     </div>
   </section>
 
-  <section id="walletSection" class="section">
-    <h2>💜 GameVault Wallet</h2>
-    <p class="muted">Fund your wallet through Paystack and review your deposit history.</p>
-    <div class="panel">
-      <div class="muted">Available balance</div>
-      <div class="balance" id="walletBalance">Sign in to view</div>
-      <div id="walletAccountState" class="muted">Your wallet is linked to your GameVault account.</div>
-      <div class="form-grid">
-        <label for="walletAmount">Deposit amount (NGN)</label>
-        <input id="walletAmount" type="number" min="100" max="500000" step="1" placeholder="Enter amount, e.g. 1000">
-        <button id="walletFundButton" onclick="startWalletFunding()">Fund Wallet with Paystack</button>
-        <button class="nav" onclick="refreshWallet()">Refresh balance and history</button>
-        <div id="walletMessage" class="status" role="status" aria-live="polite"></div>
-      </div>
-    </div>
-    <h3>Wallet transactions</h3>
-    <div class="panel" id="walletTransactions"><p class="muted">Sign in to view your transaction history.</p></div>
-  </section>
-
-  <section id="accountSection" class="section hidden">
+  <section class="section" id="storeSection">
     <div class="section-heading">
-      <h2>My GameVault Profile</h2>
-      <button class="nav" onclick="signOut()">Log Out</button>
+      <div><h2 id="storeHeading">Explore GameVault</h2><p id="storeSubtitle">Choose a category to get started.</p></div>
+      <button class="btn ghost hidden" id="backToStore" onclick="navigate('home')">← Home</button>
     </div>
+    <div id="storeView"></div>
+  </section>
 
-    <div class="gv-profile">
-      <div class="gv-profile-card gv-member-card">
-        <div class="gv-profile-header">
-          <div class="gv-avatar-area">
-            <div class="gv-avatar" id="gvAvatar">G</div>
-            <input type="file" id="gvAvatarFile" accept="image/png,image/jpeg,image/webp" hidden>
-            <button type="button" class="gv-profile-btn secondary" id="gvChangeAvatarBtn">Change Photo</button>
-          </div>
-          <div>
-            <div class="gv-profile-name" id="gvProfileName">GameVault Member</div>
-            <div class="gv-profile-email" id="gvProfileEmail">Loading account...</div>
-            <span class="gv-member-badge">✦ GAMEVAULT MEMBER</span>
-          </div>
-        </div>
-        <p class="gv-profile-note">Your gaming identity. Your account. Your GameVault.</p>
-      </div>
-
-      <div class="gv-profile-card">
-        <h3 class="gv-profile-title">Personal Information</h3>
-        <div id="gvProfileMessage" class="gv-profile-message" role="status" aria-live="polite"></div>
-        <form id="gvProfileForm" class="gv-profile-form">
-          <div>
-            <label for="gvDisplayName">Display name</label>
-            <input id="gvDisplayName" name="display_name" type="text" maxlength="60" placeholder="Your display name" autocomplete="nickname" required>
-          </div>
-          <div>
-            <label for="gvProfileEmailInput">Email address</label>
-            <input id="gvProfileEmailInput" type="email" readonly disabled>
-          </div>
-          <div>
-            <label for="gvAvatarUrl">Avatar image URL (optional)</label>
-            <input id="gvAvatarUrl" name="avatar_url" type="url" maxlength="500" placeholder="Upload a photo above or paste an image URL">
-            <p class="gv-profile-note">Photo uploads accept JPG, PNG or WebP, up to 2 MB.</p>
-          </div>
-          <button type="submit" class="gv-profile-btn" id="gvSaveProfileBtn">Save Profile</button>
-        </form>
-      </div>
-
-      <div class="gv-profile-card">
-        <h3 class="gv-profile-title">Account Security</h3>
-        <div class="gv-profile-links">
-          <div class="gv-profile-link"><span>Email verification</span><span id="gvVerificationStatus">Checking...</span></div>
-          <div class="gv-profile-link"><span>Account ID</span><span id="gvAccountIdShort">—</span></div>
-        </div>
-        <p class="gv-profile-note gv-security-note">Your email and password are managed by Supabase Authentication. Never share your password.</p>
-        <button type="button" class="gv-profile-btn secondary" id="gvPasswordResetBtn" style="margin-top:14px">Send Password Reset Email</button>
-      </div>
-
-      <div class="gv-profile-card">
-        <h3 class="gv-profile-title">My Orders</h3>
-        <p class="gv-profile-note">Your purchase history will appear here when order storage is connected.</p>
-        <button type="button" class="gv-profile-btn secondary" id="gvViewOrdersBtn">View My Orders →</button>
-        <div id="gvOrdersMessage" class="gv-orders-empty">Order history is not connected yet.</div>
+  <section class="section hidden" id="cartSection">
+    <div class="page-title"><div class="eyebrow">Your selection</div><h1>Shopping Cart</h1><p>Review the digital products you've added.</p></div>
+    <div class="panel"><div id="cartItems"></div><hr>
+      <div class="line"><span class="muted">Items</span><strong id="cartTotalItems">0</strong></div>
+      <p class="notice">Prices and live checkout have not been configured in this version. Adding items to your cart does not place an order or charge your wallet.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:15px">
+        <button class="btn" onclick="navigate('browse')">Continue browsing</button>
+        <button class="btn primary" onclick="checkoutNotice()">Continue to checkout</button>
       </div>
     </div>
   </section>
 
-  <section class="section">
-    <h2>About this demo</h2>
-    <p class="notice">GameVault's product catalog is stored in this page. Product checkout, supplier delivery, and admin product management are not live. Wallet deposits require a secure, verified backend before real customer use.</p>
+  <section class="section hidden" id="walletSection">
+    <div class="page-title"><div class="eyebrow">GameVault account</div><h1>My Wallet</h1><p>Manage your available balance and wallet activity.</p></div>
+    <div class="stat-grid">
+      <div class="stat-card"><p>Available balance</p><strong id="walletBalance">₦—</strong></div>
+      <div class="stat-card"><p>Wallet status</p><strong id="walletStatus">Not loaded</strong></div>
+      <div class="stat-card"><p>Account</p><strong id="walletAccountStatus">Signed out</strong></div>
+    </div>
+    <div class="panel">
+      <h2>Fund your wallet</h2>
+      <p class="muted">Wallet funding requires a verified payment provider and server-side transaction verification.</p>
+      <div class="field" style="max-width:380px;margin:16px 0"><label for="depositAmount">Amount (NGN)</label><input id="depositAmount" type="number" min="100" step="50" placeholder="Enter amount"></div>
+      <button class="btn primary" onclick="requestWalletFunding()">Continue to funding</button>
+      <div id="walletMessage" class="notice" style="margin-top:14px">Sign in to load your wallet.</div>
+    </div>
+    <div class="panel"><h2>Recent wallet activity</h2><div id="walletTransactions" class="muted">Transactions will appear here when the wallet table is connected.</div></div>
+  </section>
+
+  <section class="section hidden" id="profileSection">
+    <div class="page-title"><div class="eyebrow">Personal account</div><h1>My Profile</h1><p>Manage your GameVault account and preferences.</p></div>
+    <div class="panel">
+      <div class="profile-head">
+        <img class="avatar hidden" id="profileAvatar" alt="Profile avatar">
+        <div class="avatar avatar-fallback" id="profileAvatarFallback">G</div>
+        <div><h2 id="profileHeading" style="margin:0 0 6px">Your profile</h2><div class="muted small" id="profileEmail">Sign in to view your account.</div><div class="tag" style="margin-top:8px">GAMEVAULT MEMBER</div></div>
+      </div>
+      <div id="profileMessage" class="notice">Your profile information will appear here after login.</div>
+      <form id="profileForm" class="form-grid" style="margin-top:18px">
+        <div class="field"><label for="profileName">Display name</label><input id="profileName" maxlength="60" placeholder="Your display name"></div>
+        <div class="field"><label for="profileAvatarUrl">Avatar image URL</label><input id="profileAvatarUrl" type="url" placeholder="https://..."></div>
+        <div class="field full"><button class="btn primary" type="submit">Save profile</button></div>
+      </form>
+    </div>
+    <div class="panel"><h2>Account security</h2><p class="muted">Use password reset to secure your account.</p><button class="btn" id="resetPasswordBtn" onclick="sendPasswordReset()">Send password reset email</button><button class="btn danger" style="margin-left:8px" onclick="signOut()">Sign out</button></div>
+  </section>
+
+  <section class="section hidden" id="ordersSection">
+    <div class="page-title"><div class="eyebrow">Purchase history</div><h1>My Orders</h1><p>View your previous GameVault orders.</p></div>
+    <div class="panel"><div id="ordersMessage" class="notice">Sign in to view your order history.</div><div id="ordersList"></div></div>
+  </section>
+
+  <section class="section hidden" id="securitySection">
+    <div class="page-title"><div class="eyebrow">Account protection</div><h1>Security</h1><p>Manage access to your GameVault account.</p></div>
+    <div class="panel"><h2>Password reset</h2><p class="muted">We can send a password-reset email to your registered address.</p><button class="btn primary" onclick="sendPasswordReset()">Send reset email</button><div id="securityMessage" class="notice" style="margin-top:14px">Sign in to manage your account security.</div></div>
+    <div class="panel"><h2>Session</h2><button class="btn danger" onclick="signOut()">Sign out of GameVault</button></div>
+  </section>
+
+  <section class="section hidden" id="aboutSection">
+    <div class="panel">
+      <div class="eyebrow">About GameVault</div>
+      <h2>A store built for gamers.</h2>
+      <p class="muted" style="line-height:1.8">Browse digital gaming products and subscriptions. Product availability, prices, payment processing and automated delivery must be confirmed before a live purchase can be completed.</p>
+    </div>
   </section>
 </main>
 
-<footer>GAMEVAULT © 2026 · YOUR DIGITAL GAMING HUB<br>Dark premium design · Built for gamers</footer>
+<footer>
+  <div class="container footer-inner">
+    <div><strong style="color:var(--text)">GameVault</strong><p>Digital gaming store</p></div>
+    <div><a href="?page=home" onclick="return gvLink(event,'home')">Home</a> · <a href="?page=wallet" onclick="return gvLink(event,'wallet')">Wallet</a> · <a href="?page=profile" onclick="return gvLink(event,'profile')">Account</a></div>
+    <div>© <span id="year"></span> GameVault</div>
+  </div>
+</footer>
 
-<div id="authModal" class="gv-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
-  <div class="gv-modal-card">
-    <button class="gv-close" onclick="closeAuth()" aria-label="Close">×</button>
-    <div class="brand">GAME<span>VAULT</span></div>
-    <p class="muted">Sign in or create your GameVault account.</p>
-    <div class="gv-tabs">
-      <button id="loginTab" onclick="setAuthMode('login')">Log In</button>
-      <button id="signupTab" class="inactive" onclick="setAuthMode('signup')">Sign Up</button>
+<nav class="bottom-nav" id="bottomNav" aria-label="Mobile navigation">
+  <button data-bottom="home" onclick="navigate('home')"><span>⌂</span><span>Home</span></button>
+  <button data-bottom="browse" onclick="navigate('browse')"><span>▦</span><span>Browse</span></button>
+  <button data-bottom="cart" onclick="navigate('cart')"><span>🛒</span><span>Cart</span></button>
+  <button data-bottom="wallet" onclick="navigate('wallet')"><span>◈</span><span>Wallet</span></button>
+  <button data-bottom="profile" onclick="navigate('profile')"><span>👤</span><span>Profile</span></button>
+</nav>
+
+<div class="modal-backdrop hidden" id="authBackdrop" onclick="if(event.target===this)closeAuth()">
+  <div class="modal">
+    <button class="icon-btn modal-close" onclick="closeAuth()" aria-label="Close">×</button>
+    <div class="eyebrow">Welcome to GameVault</div>
+    <h2 id="authTitle">Sign in</h2>
+    <div style="display:flex;gap:8px;margin:15px 0">
+      <button class="btn primary" id="loginTab" onclick="setAuthMode('login')">Login</button>
+      <button class="btn" id="signupTab" onclick="setAuthMode('signup')">Create account</button>
     </div>
-    <h2 id="authTitle">Welcome back!</h2>
     <form id="authForm">
-      <label for="authEmail">Email address</label>
-      <input class="field" id="authEmail" type="email" autocomplete="email" required placeholder="you@example.com">
-      <label for="authPassword">Password</label>
-      <input class="field" id="authPassword" type="password" minlength="6" autocomplete="current-password" required placeholder="At least 6 characters">
-      <button id="authSubmit" class="gv-submit" type="submit">Log In</button>
+      <div class="field" style="margin-bottom:13px"><label for="authEmail">Email address</label><input id="authEmail" type="email" required autocomplete="email" placeholder="you@example.com"></div>
+      <div class="field" style="margin-bottom:13px"><label for="authPassword">Password</label><input id="authPassword" type="password" required minlength="6" autocomplete="current-password" placeholder="At least 6 characters"></div>
+      <div id="authNameField" class="field hidden" style="margin-bottom:13px"><label for="authName">Display name</label><input id="authName" maxlength="60" placeholder="Your display name"></div>
+      <button class="btn primary" id="authSubmit" type="submit" style="width:100%">Login</button>
     </form>
-    <p id="authMessage" class="status" role="status" aria-live="polite"></p>
+    <button class="btn ghost" style="width:100%;margin-top:10px" onclick="forgotPassword()">Forgot password?</button>
+    <div id="authMessage" class="notice" style="margin-top:15px">Your account is protected by Supabase authentication.</div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<div id="toast" class="toast hidden" role="status"></div>
+
 <script>
 "use strict";
 
+/* SUPABASE PROJECT CONFIGURATION */
 const SUPABASE_URL = "https://hhopviwrhbebfkljzmiv.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_qzbuNv6A5xkxXTJH2rWYZQ__iDDAVwT";
 const INIT_FUNCTION = "gamevault-initialize-payment";
 const VERIFY_FUNCTION = "gamevault-payment-gateway";
 
 let supabaseClient = null;
-let authMode = "login";
 let currentUser = null;
-let cart = [];
+let authMode = "login";
 let activeGroup = "";
 let activeGame = "";
 let viewMode = "home";
-let paymentVerificationRunning = false;
-
-const groups = [
-  {id:"topups",title:"Game Top-Ups",icon:"💎",desc:"Diamonds, CP, UC and game currencies"},
-  {id:"accounts",title:"Gaming Accounts",icon:"🎮",desc:"Browse gaming account listings"},
-  {id:"skins",title:"Skins & Bundles",icon:"🛡️",desc:"Cosmetics and limited bundles"},
-  {id:"subscriptions",title:"Digital Subscriptions",icon:"✨",desc:"Subscriptions, coins and digital services"}
-];
-
-const games = ["Free Fire","COD Mobile","PUBG Mobile","Mobile Legends","Other Games"];
-
-const products = [
- {id:1,name:"Free Fire Diamonds",group:"topups",game:"Free Fire",icon:"💎",image:"1e84951ea4e43a94485c30851c151ad2.jpg",desc:"Diamonds top-up"},
- {id:2,name:"Free Fire Weekly",group:"topups",game:"Free Fire",icon:"🔥",image:"IMG_2377.jpeg",desc:"Weekly membership"},
- {id:3,name:"COD Mobile CP",group:"topups",game:"COD Mobile",icon:"🎯",image:"IMG_2374.jpeg",desc:"CP top-up"},
- {id:4,name:"CODM Battle Pass",group:"topups",game:"COD Mobile",icon:"🪖",image:"IMG_2376.jpeg",desc:"Battle Pass listing"},
- {id:5,name:"PUBG UC",group:"topups",game:"PUBG Mobile",icon:"🎮",image:"IMG_2379.jpeg",desc:"UC top-up"},
- {id:6,name:"PUBG Royale Pass",group:"topups",game:"PUBG Mobile",icon:"🏆",image:"IMG_2380.jpeg",desc:"Royale Pass listing"},
- {id:7,name:"MLBB Diamonds",group:"topups",game:"Mobile Legends",icon:"💠",image:"IMG_2381.jpeg",desc:"Diamonds top-up"},
- {id:8,name:"Gaming Account",group:"accounts",game:"Other Games",icon:"🎮",desc:"Account listing"},
- {id:9,name:"Digital Subscription",group:"subscriptions",game:"General",icon:"✨",desc:"Digital subscription listing"},
- {id:10,name:"TikTok Coins",group:"subscriptions",game:"General",icon:"📱",image:"IMG_2383.jpeg",desc:"Coins listing"},
- {id:11,name:"Spotify Premium",group:"subscriptions",game:"General",icon:"🎵",image:"IMG_2412.jpeg",desc:"Subscription listing"},
- {id:12,name:"Snapchat+",group:"subscriptions",game:"General",icon:"👻",image:"IMG_2385.jpeg",desc:"Subscription listing"},
- {id:13,name:"YouTube Premium",group:"subscriptions",game:"General",icon:"▶️",image:"IMG_2413.jpeg",desc:"Subscription listing"},
- {id:14,name:"Netflix",group:"subscriptions",game:"General",icon:"🎬",image:"IMG_2416.jpeg",desc:"Subscription listing"},
- {id:15,name:"ChatGPT Subscription",group:"subscriptions",game:"General",icon:"🤖",image:"IMG_2414.jpeg",desc:"Subscription listing"}
-];
+let searchQuery = "";
+let toastTimer = null;
 
 const $ = id => document.getElementById(id);
 
-const escapeHTML = value => String(value ?? "").replace(/[&<>"']/g, c => ({
- "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-}[c]));
+const PRODUCTS = [
+  {id:1,name:"Free Fire Diamonds",group:"topups",game:"Free Fire",icon:"💎",image:"1e84951ea4e43a94485c30851c151ad2.jpg",desc:"Diamonds top-up"},
+  {id:2,name:"Free Fire Weekly",group:"topups",game:"Free Fire",icon:"🔥",image:"IMG_2377.jpeg",desc:"Weekly membership"},
+  {id:3,name:"COD Mobile CP",group:"topups",game:"COD Mobile",icon:"🎯",image:"IMG_2374.jpeg",desc:"CP top-up"},
+  {id:4,name:"CODM Battle Pass",group:"topups",game:"COD Mobile",icon:"🪖",image:"IMG_2376.jpeg",desc:"Battle Pass listing"},
+  {id:5,name:"PUBG UC",group:"topups",game:"PUBG Mobile",icon:"🎮",image:"IMG_2379.jpeg",desc:"UC top-up"},
+  {id:6,name:"PUBG Royale Pass",group:"topups",game:"PUBG Mobile",icon:"🏆",image:"IMG_2380.jpeg",desc:"Royale Pass listing"},
+  {id:7,name:"MLBB Diamonds",group:"topups",game:"Mobile Legends",icon:"💠",image:"IMG_2381.jpeg",desc:"Diamonds top-up"},
+  {id:8,name:"Gaming Account",group:"accounts",game:"Other Games",icon:"🎮",desc:"Account listing"},
+  {id:9,name:"Digital Subscription",group:"subscriptions",game:"General",icon:"✨",desc:"Digital subscription listing"},
+  {id:10,name:"TikTok Coins",group:"subscriptions",game:"General",icon:"📱",image:"IMG_2383.jpeg",desc:"Coins listing"},
+  {id:11,name:"Spotify Premium",group:"subscriptions",game:"General",icon:"🎵",image:"IMG_2412.jpeg",desc:"Subscription listing"},
+  {id:12,name:"Snapchat+",group:"subscriptions",game:"General",icon:"👻",image:"IMG_2385.jpeg",desc:"Subscription listing"},
+  {id:13,name:"YouTube Premium",group:"subscriptions",game:"General",icon:"▶️",image:"IMG_2413.jpeg",desc:"Subscription listing"},
+  {id:14,name:"Netflix",group:"subscriptions",game:"General",icon:"🎬",image:"IMG_2416.jpeg",desc:"Subscription listing"},
+  {id:15,name:"ChatGPT Subscription",group:"subscriptions",game:"General",icon:"🤖",image:"IMG_2414.jpeg",desc:"Subscription listing"}
+];
 
-const money = kobo => "₦" + (Number(kobo || 0)/100).toLocaleString("en-NG",{
-  minimumFractionDigits:2,
-  maximumFractionDigits:2
-});
-
-const setStatus = (id,message,type="") => {
-  const el = $(id);
-  if (!el) return;
-  el.textContent = message;
-  el.className = "status " + type;
+const GROUPS = {
+  topups:{title:"Game Top-Ups",subtitle:"Choose a game to browse available top-ups.",icon:"💎",description:"Game currency and membership listings."},
+  accounts:{title:"Gaming Accounts",subtitle:"Browse gaming account listings.",icon:"🎮",description:"Account listings are subject to availability and verification."},
+  skins:{title:"Skins & Bundles",subtitle:"Explore skins and limited-time bundles.",icon:"⚡",description:"New skin and bundle listings can be added by the store owner."},
+  subscriptions:{title:"Subscriptions",subtitle:"Explore digital subscriptions and coins.",icon:"✨",description:"Check availability before making a purchase."}
 };
 
-/* AUTHENTICATION AND SESSION */
-function initializeSupabase() {
-  if (!window.supabase?.createClient) {
-    setStatus("authMessage","Could not load Supabase. Check your internet connection.","error");
-    return;
-  }
+const GAMES = ["Free Fire","COD Mobile","PUBG Mobile","Mobile Legends","Other Games"];
+const CART_KEY = "gamevault_cart_v2";
 
-  supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
-
-  supabaseClient.auth.onAuthStateChange((event,session) => {
-    currentUser = session?.user || null;
-    updateAccountUI();
-
-    if (currentUser) {
-      refreshWallet();
-      if (event === "SIGNED_IN" || event === "USER_UPDATED") {
-        loadCustomerProfile();
-      }
-
-      if (new URLSearchParams(location.search).has("reference") ||
-          new URLSearchParams(location.search).has("trxref")) {
-        verifyReturnedPayment();
-      }
-    } else {
-      resetWalletUI();
-      clearProfileUI();
-    }
-  });
-
-  supabaseClient.auth.getSession().then(({data,error}) => {
-    if (error) {
-      console.error("Session lookup error:",error);
-      return;
-    }
-
-    currentUser = data.session?.user || null;
-    updateAccountUI();
-
-    if (currentUser) {
-      refreshWallet();
-      loadCustomerProfile();
-      verifyReturnedPayment();
-    } else {
-      resetWalletUI();
-    }
-  });
+function safeText(value) {
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[ch]);
 }
-
-function updateAccountUI() {
-  $("accountButton").textContent = currentUser ? "My Profile" : "Log In";
-  $("signupButton").textContent = currentUser ? "Account" : "Sign Up ↗";
-  $("accountSection").classList.toggle("hidden",!currentUser);
-
-  if (currentUser) {
-    $("accountButton").onclick = openCustomerProfile;
-    $("signupButton").onclick = openCustomerProfile;
-    $("signedInEmail") && ($("signedInEmail").textContent = currentUser.email || "Signed in");
-  } else {
-    $("accountButton").onclick = () => openAuth("login");
-    $("signupButton").onclick = () => openAuth("signup");
-  }
+function money(value) {
+  const amount = Number(value);
+  if (!Number.isFinite(amount)) return "₦—";
+  return "₦" + amount.toLocaleString("en-NG",{maximumFractionDigits:2});
 }
-
-function openCustomerProfile() {
-  if (!currentUser) {
-    openAuth("login");
-    return;
-  }
-
-  $("accountSection").classList.remove("hidden");
-  $("accountSection").scrollIntoView({behavior:"smooth",block:"start"});
-  loadCustomerProfile();
+function notify(message) {
+  $("toast").textContent = message;
+  $("toast").classList.remove("hidden");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => $("toast").classList.add("hidden"),3000);
 }
-
-/* AUTH MODAL */
-function openAuth(mode) {
-  $("authModal").classList.add("open");
-  document.body.classList.add("modal-open");
-  setAuthMode(mode);
+function setNotice(id,message,type="") {
+  const element = $(id);
+  if (!element) return;
+  element.textContent = message;
+  element.className = "notice" + (type ? " " + type : "");
 }
+function loadCart() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+    return Array.isArray(saved) ? saved.filter(item =>
+      PRODUCTS.some(product => product.id === Number(item.id))
+    ).map(item => ({id:Number(item.id),qty:Math.min(99,Math.max(1,Number(item.qty)||1))})) : [];
+  } catch { return []; }
+}
+let cart = loadCart();
 
+function saveCart() {
+  localStorage.setItem(CART_KEY,JSON.stringify(cart));
+  updateCartCounts();
+}
+function updateCartCounts() {
+  const count = cart.reduce((sum,item)=>sum+item.qty,0);
+  $("headerCartCount").textContent = count;
+  $("cartTotalItems").textContent = count;
+}
+function toggleDrawer(open) {
+  $("drawer").classList.toggle("open",open);
+  $("drawerBackdrop").classList.toggle("hidden",!open);
+}
 function closeAuth() {
-  $("authModal").classList.remove("open");
-  document.body.classList.remove("modal-open");
+  $("authBackdrop").classList.add("hidden");
 }
-
-$("authModal").addEventListener("click",e => {
-  if (e.target === $("authModal")) closeAuth();
-});
-
-document.addEventListener("keydown",e => {
-  if (e.key === "Escape") closeAuth();
-});
-
+function openAuth(mode="login") {
+  setAuthMode(mode);
+  $("authBackdrop").classList.remove("hidden");
+  setTimeout(()=>$("authEmail").focus(),50);
+}
 function setAuthMode(mode) {
   authMode = mode === "signup" ? "signup" : "login";
-  const signup = authMode === "signup";
-
-  $("authTitle").textContent = signup ? "Create your GameVault account" : "Welcome back!";
-  $("authSubmit").textContent = signup ? "Create Account" : "Log In";
-  $("loginTab").classList.toggle("inactive",signup);
-  $("signupTab").classList.toggle("inactive",!signup);
-  $("authPassword").autocomplete = signup ? "new-password" : "current-password";
-
-  setStatus("authMessage","");
+  $("authTitle").textContent = authMode === "signup" ? "Create your account" : "Sign in";
+  $("authSubmit").textContent = authMode === "signup" ? "Create account" : "Login";
+  $("authNameField").classList.toggle("hidden",authMode !== "signup");
+  $("loginTab").classList.toggle("primary",authMode === "login");
+  $("signupTab").classList.toggle("primary",authMode === "signup");
+  $("authPassword").autocomplete = authMode === "signup" ? "new-password" : "current-password";
+  setNotice("authMessage",authMode === "signup" ? "Use an email address you can access to verify your account." : "Sign in with your registered email and password.");
 }
-
-$("authForm").addEventListener("submit",async e => {
-  e.preventDefault();
-
-  if (!supabaseClient) {
-    setStatus("authMessage","Supabase is not ready. Refresh and try again.","error");
-    return;
-  }
-
-  const email = $("authEmail").value.trim();
-  const password = $("authPassword").value;
-  $("authSubmit").disabled = true;
-  setStatus("authMessage","Please wait...");
-
-  try {
-    const result = authMode === "signup"
-      ? await supabaseClient.auth.signUp({
-          email,
-          password,
-          options: {data:{display_name:email.split("@")[0]}}
-        })
-      : await supabaseClient.auth.signInWithPassword({email,password});
-
-    if (result.error) {
-      setStatus("authMessage",result.error.message,"error");
-      return;
-    }
-
-    if (authMode === "signup" && !result.data.session) {
-      setStatus("authMessage","Account created. Check your email to confirm it, then log in.","success");
-      return;
-    }
-
-    currentUser = result.data.user || result.data.session?.user || null;
-    updateAccountUI();
-    closeAuth();
-
-    if (currentUser) {
-      loadCustomerProfile();
-      refreshWallet();
-    }
-  } catch (error) {
-    console.error("Authentication error:",error);
-    setStatus("authMessage","Connection error. Please try again.","error");
-  } finally {
-    $("authSubmit").disabled = false;
-  }
-});
-
-/* CUSTOMER PROFILE */
-function gvShowProfileMessage(message,type="success") {
-  const box = $("gvProfileMessage");
-  if (!box) return;
-
-  box.textContent = message;
-  box.className = "gv-profile-message show " + type;
+function handleHeaderAuth() {
+  if (currentUser) navigate("profile");
+  else openAuth("login");
 }
-
-/* FIXED AVATAR DISPLAY */
-function gvRenderAvatar(name,avatarUrl) {
-  const avatar = $("gvAvatar");
-  if (!avatar) return;
-
-  const fallback = (name || "G").trim().charAt(0).toUpperCase() || "G";
-  avatar.replaceChildren();
-  avatar.textContent = fallback;
-
-  if (!avatarUrl || typeof avatarUrl !== "string") return;
-
-  let parsed;
-  try {
-    parsed = new URL(avatarUrl);
-  } catch (_) {
-    return;
-  }
-
-  if (parsed.protocol !== "https:" && parsed.protocol !== "http:") return;
-
-  const img = document.createElement("img");
-  img.alt = "Profile avatar";
-  img.referrerPolicy = "no-referrer";
-
-  img.onload = () => {
-    avatar.replaceChildren(img);
-  };
-
-  img.onerror = () => {
-    avatar.replaceChildren();
-    avatar.textContent = fallback;
-  };
-
-  img.src = parsed.href;
-  avatar.replaceChildren(img);
+function setSignedInUI() {
+  $("headerAuthBtn").textContent = currentUser ? "My account" : "Login";
+  $("drawerAuthBtn").innerHTML = currentUser ? "↪ <span>Sign out</span>" : "↪ <span>Login / Sign up</span>";
+  $("drawerAuthBtn").onclick = currentUser ? signOut : ()=>openAuth("login");
+  $("drawerCustomer").textContent = currentUser ? (currentUser.email || "Signed in") : "Welcome to GameVault";
+  $("walletAccountStatus").textContent = currentUser ? "Signed in" : "Signed out";
+  $("profileEmail").textContent = currentUser?.email || "Sign in to view your account.";
 }
-
-function clearProfileUI() {
-  $("gvProfileName").textContent = "GameVault Member";
-  $("gvProfileEmail").textContent = "Sign in to view your profile";
-  $("gvDisplayName").value = "";
-  $("gvProfileEmailInput").value = "";
-  $("gvAvatarUrl").value = "";
-  $("gvAccountIdShort").textContent = "—";
-  $("gvVerificationStatus").textContent = "—";
-  $("gvAvatar").replaceChildren();
-  $("gvAvatar").textContent = "G";
-  $("gvOrdersMessage").textContent = "Sign in to view your account.";
-  $("gvProfileMessage").className = "gv-profile-message";
-}
-
-async function loadCustomerProfile() {
-  if (!supabaseClient || !currentUser) return;
-
-  const user = currentUser;
-
-  $("gvProfileEmail").textContent = user.email || "No email available";
-  $("gvProfileEmailInput").value = user.email || "";
-  $("gvAccountIdShort").textContent = user.id.slice(0,8) + "...";
-  $("gvVerificationStatus").textContent =
-    user.email_confirmed_at ? "Verified ✓" : "Unverified";
-
-  const {data:profile,error} = await supabaseClient
-    .from("profiles")
-    .select("id,display_name,avatar_url")
-    .eq("id",user.id)
-    .maybeSingle();
-
-  if (currentUser?.id !== user.id) return;
-
-  if (error) {
-    console.error("Profile loading error:",error);
-    gvShowProfileMessage("Could not load your saved profile. Check the profiles table and its security policies.","error");
-  }
-
-  const displayName =
-    profile?.display_name ||
-    user.user_metadata?.display_name ||
-    user.user_metadata?.full_name ||
-    (user.email ? user.email.split("@")[0] : "GameVault Member");
-
-  const avatarUrl =
-    profile?.avatar_url ||
-    user.user_metadata?.avatar_url ||
-    "";
-
-  $("gvDisplayName").value = displayName;
-  $("gvAvatarUrl").value = avatarUrl;
-  $("gvProfileName").textContent = displayName;
-  gvRenderAvatar(displayName,avatarUrl);
-}
-
-/* SAVE PROFILE */
-$("gvProfileForm").addEventListener("submit",async event => {
-  event.preventDefault();
-
-  if (!supabaseClient || !currentUser) {
-    gvShowProfileMessage("Please sign in before saving your profile.","error");
-    return;
-  }
-
-  const user = currentUser;
-  const displayName = $("gvDisplayName").value.trim();
-  const avatarUrl = $("gvAvatarUrl").value.trim();
-
-  if (!displayName || displayName.length > 60) {
-    gvShowProfileMessage("Enter a display name of 1–60 characters.","error");
-    return;
-  }
-
-  if (avatarUrl) {
-    try {
-      const parsed = new URL(avatarUrl);
-      if (!["https:","http:"].includes(parsed.protocol)) throw new Error();
-    } catch (_) {
-      gvShowProfileMessage("Enter a valid HTTP or HTTPS avatar URL.","error");
-      return;
-    }
-  }
-
-  const {data:authData,error:authError} = await supabaseClient.auth.getUser();
-
-  if (authError || !authData.user || authData.user.id !== user.id) {
-    gvShowProfileMessage("Your session changed. Please sign in again.","error");
-    return;
-  }
-
-  const button = $("gvSaveProfileBtn");
-  button.disabled = true;
-  button.textContent = "Saving...";
-
-  try {
-    const {error} = await supabaseClient
-      .from("profiles")
-      .upsert({
-        id:user.id,
-        display_name:displayName,
-        avatar_url:avatarUrl || null,
-        updated_at:new Date().toISOString()
-      },{onConflict:"id"});
-
-    if (error) throw error;
-
-    $("gvProfileName").textContent = displayName;
-    gvRenderAvatar(displayName,avatarUrl);
-    gvShowProfileMessage("Your GameVault profile has been saved.","success");
-  } catch (error) {
-    console.error("Profile save error:",error);
-    gvShowProfileMessage(error.message || "Unable to save your profile. Check your database permissions.","error");
-  } finally {
-    button.disabled = false;
-    button.textContent = "Save Profile";
-  }
-});
-
-/* PROFILE PHOTO UPLOAD — FIXED BUCKET NAME */
-$("gvChangeAvatarBtn").addEventListener("click",() => {
-  if (!currentUser) {
-    openAuth("login");
-    return;
-  }
-  $("gvAvatarFile").click();
-});
-
-$("gvAvatarFile").addEventListener("change",async event => {
-  const file = event.target.files?.[0];
-  event.target.value = "";
-
-  if (!file) return;
-
-  if (!supabaseClient || !currentUser) {
-    gvShowProfileMessage("Please log in before uploading a profile photo.","error");
-    return;
-  }
-
-  const allowedTypes = ["image/jpeg","image/png","image/webp"];
-
-  if (!allowedTypes.includes(file.type)) {
-    gvShowProfileMessage("Choose a JPG, PNG or WebP image.","error");
-    return;
-  }
-
-  if (file.size > 2 * 1024 * 1024) {
-    gvShowProfileMessage("Your photo must be 2 MB or smaller.","error");
-    return;
-  }
-
-  const user = currentUser;
-  const button = $("gvChangeAvatarBtn");
-  button.disabled = true;
-  button.textContent = "Uploading...";
-
-  try {
-    const {data:authData,error:authError} = await supabaseClient.auth.getUser();
-
-    if (authError || !authData.user || authData.user.id !== user.id) {
-      throw new Error("Your session changed. Please sign in again.");
-    }
-
-    const safeFileName = file.name.replace(/[^\w.-]/g,"_");
-    const storagePath = `${user.id}/${Date.now()}-${safeFileName}`;
-
-    const {error:uploadError} = await supabaseClient
-      .storage
-      .from("avatar")
-      .upload(storagePath,file,{
-        cacheControl:"3600",
-        upsert:false,
-        contentType:file.type
-      });
-
-    if (uploadError) throw uploadError;
-
-    /* IMPORTANT: use "avatar", not "avatars" */
-    const {data:publicData} = supabaseClient
-      .storage
-      .from("avatar")
-      .getPublicUrl(storagePath);
-
-    const publicUrl = publicData?.publicUrl;
-
-    if (!publicUrl) throw new Error("Could not create the image URL.");
-
-    const displayName =
-      $("gvDisplayName").value.trim() ||
-      user.email?.split("@")[0] ||
-      "GameVault Member";
-
-    const {error:profileError} = await supabaseClient
-      .from("profiles")
-      .upsert({
-        id:user.id,
-        display_name:displayName,
-        avatar_url:publicUrl,
-        updated_at:new Date().toISOString()
-      },{onConflict:"id"});
-
-    if (profileError) throw profileError;
-    if (currentUser?.id !== user.id) return;
-
-    $("gvAvatarUrl").value = publicUrl;
-    $("gvProfileName").textContent = displayName;
-    gvRenderAvatar(displayName,publicUrl);
-
-    gvShowProfileMessage("Your profile photo has been uploaded and saved!","success");
-  } catch (error) {
-    console.error("Avatar upload error:",error);
-    gvShowProfileMessage(error.message || "Photo upload failed. Check the avatar bucket and its storage policies.","error");
-  } finally {
-    button.disabled = false;
-    button.textContent = "Change Photo";
-  }
-});
-
-/* PASSWORD RESET EMAIL */
-$("gvPasswordResetBtn").addEventListener("click",async () => {
-  if (!supabaseClient || !currentUser?.email) {
-    gvShowProfileMessage("Please log in before requesting a password reset.","error");
-    return;
-  }
-
-  const button = $("gvPasswordResetBtn");
-  button.disabled = true;
-  button.textContent = "Sending...";
-
-  try {
-    const {error} = await supabaseClient.auth.resetPasswordForEmail(
-      currentUser.email,
-      {redirectTo:location.origin + location.pathname}
-    );
-
-    if (error) throw error;
-
-    gvShowProfileMessage("Password reset instructions have been sent to your email.","success");
-  } catch (error) {
-    console.error("Password reset error:",error);
-    gvShowProfileMessage(error.message || "Could not send the password reset email.","error");
-  } finally {
-    button.disabled = false;
-    button.textContent = "Send Password Reset Email";
-  }
-});
-
-$("gvViewOrdersBtn").addEventListener("click",() => {
-  $("gvOrdersMessage").textContent =
-    "Order history is not connected yet. Your actual order records are not being loaded.";
-});
-
-/* SECURE BACKEND FUNCTION CALLS */
-async function callFunction(name,payload) {
-  if (!supabaseClient) throw new Error("Supabase is not ready.");
-
-  const {data:{session},error} = await supabaseClient.auth.getSession();
-
-  if (error || !session) throw new Error("Please log in before continuing.");
-
-  const response = await fetch(`${SUPABASE_URL}/functions/v1/${name}`,{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      "apikey":SUPABASE_PUBLISHABLE_KEY,
-      "Authorization":`Bearer ${session.access_token}`
-    },
-    body:JSON.stringify(payload)
-  });
-
-  const result = await response.json().catch(()=>({}));
-
-  if (!response.ok) {
-    throw new Error(result.error || "The request failed. Please try again.");
-  }
-
-  return result;
-}
-
-/* WALLET DISPLAY */
-function resetWalletUI() {
-  $("walletBalance").textContent = "Sign in to view";
-  $("walletAccountState").textContent = "Your wallet is linked to your GameVault account.";
-  $("walletTransactions").innerHTML = '<p class="muted">Sign in to view your transaction history.</p>';
-}
-
-async function startWalletFunding() {
-  if (!currentUser) {
-    openAuth("login");
-    setStatus("walletMessage","Log in before funding your wallet.","error");
-    return;
-  }
-
-  const amount = Number($("walletAmount").value);
-
-  if (!Number.isSafeInteger(amount) || amount < 100 || amount > 500000) {
-    setStatus("walletMessage","Enter an amount from ₦100 to ₦500,000.","error");
-    return;
-  }
-
-  $("walletFundButton").disabled = true;
-  setStatus("walletMessage","Preparing secure Paystack checkout...");
-
-  try {
-    const result = await callFunction(INIT_FUNCTION,{
-      amount,
-      callback_url:location.origin + location.pathname
-    });
-
-    if (!result.authorization_url || !result.reference) {
-      throw new Error("Checkout did not return a payment link.");
-    }
-
-    window.location.assign(result.authorization_url);
-  } catch (error) {
-    setStatus("walletMessage",error.message || "Could not start checkout.","error");
-    $("walletFundButton").disabled = false;
-  }
-}
-
-async function verifyReturnedPayment() {
-  const params = new URLSearchParams(location.search);
-  const reference = params.get("reference") || params.get("trxref");
-
-  if (!reference || !currentUser || paymentVerificationRunning) return;
-
-  paymentVerificationRunning = true;
-  setStatus("walletMessage","Checking your payment with the payment verification service...");
-
-  try {
-    const result = await callFunction(VERIFY_FUNCTION,{reference});
-
-    if (result.credited) {
-      setStatus("walletMessage","Payment verified. Your wallet was credited.","success");
-    } else if (result.alreadyCredited) {
-      setStatus("walletMessage","This payment was already credited. No duplicate credit was made.","success");
-    } else {
-      setStatus("walletMessage",result.message || "Payment checked. Refresh your wallet shortly.");
-    }
-
-    if (result.credited || result.alreadyCredited) {
-      history.replaceState({},document.title,location.pathname);
-    }
-
-    await refreshWallet();
-  } catch (error) {
-    console.error("Payment verification error:",error);
-    setStatus("walletMessage",error.message || "Could not verify payment. Try again.","error");
-  } finally {
-    paymentVerificationRunning = false;
-  }
-}
-
-async function refreshWallet() {
-  if (!supabaseClient || !currentUser) {
-    resetWalletUI();
-    return;
-  }
-
-  const userId = currentUser.id;
-  $("walletBalance").textContent = "Loading...";
-
-  try {
-    const {data:wallet,error:walletError} = await supabaseClient
-      .from("gv_wallets")
-      .select("balance_kobo")
-      .eq("user_id",userId)
-      .maybeSingle();
-
-    if (walletError) throw walletError;
-    if (currentUser?.id !== userId) return;
-
-    $("walletBalance").textContent = money(wallet?.balance_kobo || 0);
-    $("walletAccountState").textContent = currentUser.email || "Signed in";
-
-    const {data:transactions,error:txError} = await supabaseClient
-      .from("gv_wallet_transactions")
-      .select("type,amount_kobo,status,description,created_at,reference")
-      .eq("user_id",userId)
-      .order("created_at",{ascending:false})
-      .limit(20);
-
-    if (txError) throw txError;
-    if (currentUser?.id !== userId) return;
-
-    $("walletTransactions").innerHTML = transactions?.length
-      ? transactions.map(tx => `
-        <div class="line">
-          <span>
-            <strong>${escapeHTML(tx.description || tx.type)}</strong><br>
-            <small class="muted">${escapeHTML(new Date(tx.created_at).toLocaleString())}</small><br>
-            <small class="muted">${escapeHTML(tx.reference || "")}</small>
-          </span>
-          <span>${money(tx.amount_kobo)}<br><span class="badge">${escapeHTML(tx.status)}</span></span>
-        </div>`).join("")
-      : '<p class="muted">No wallet transactions yet.</p>';
-  } catch (error) {
-    console.error("Wallet loading error:",error);
-    $("walletBalance").textContent = "Unavailable";
-    $("walletTransactions").innerHTML = '<p class="muted">Could not load wallet information. Check your database tables and security policies.</p>';
-  }
-}
-
-async function signOut() {
-  if (!supabaseClient) return;
-
-  const {error} = await supabaseClient.auth.signOut();
-
-  if (error) {
-    alert("Could not sign out. Please try again.");
-    return;
-  }
-
-  currentUser = null;
-  updateAccountUI();
-  resetWalletUI();
-  clearProfileUI();
-  goHome();
-}
-
-/* STOREFRONT — ORIGINAL CATALOG AND HIDDEN PRICES */
-function goHome() {
-  viewMode = "home";
-  activeGroup = "";
-  activeGame = "";
-  $("searchInput").value = "";
-  $("cartSection").classList.add("hidden");
-  $("storeSection").classList.remove("hidden");
-  renderStore();
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-
-function openGroup(group) {
-  activeGroup = group;
-  activeGame = "";
-  viewMode = ["topups","accounts","skins"].includes(group) ? "games" : "products";
-  $("searchInput").value = "";
-  renderStore();
-}
-
-function openGame(group,game) {
-  activeGroup = group;
-  activeGame = game;
-  viewMode = "products";
-  renderStore();
-}
-
-function clearSearch() {
-  $("searchInput").value = "";
-  viewMode = activeGroup
-    ? (["topups","accounts","skins"].includes(activeGroup) && !activeGame ? "games" : "products")
-    : "home";
-  renderStore();
-}
-
-function searchProducts() {
-  viewMode = $("searchInput").value.trim()
-    ? "search"
-    : (activeGroup
-      ? (["topups","accounts","skins"].includes(activeGroup) && !activeGame ? "games" : "products")
-      : "home");
-  renderStore();
-}
-
-function breadcrumb() {
-  let out = '<div class="breadcrumbs"><button class="nav" onclick="goHome()">Home</button>';
-  const group = groups.find(x=>x.id===activeGroup);
-
-  if (group) out += `<span>›</span><span>${escapeHTML(group.title)}</span>`;
-  if (activeGame) out += `<span>›</span><span>${escapeHTML(activeGame)}</span>`;
-
-  return out + "</div>";
-}
-
-function renderHome() {
-  return `<div class="section-heading"><h2>Explore the Vault</h2></div>
-  <p class="muted">Choose a category to get started.</p>
-  <div class="category-grid">
-    ${groups.map(g=>`<button class="category-card" onclick="openGroup('${g.id}')">
-      <span class="category-icon">${g.icon}</span>
-      <strong>${escapeHTML(g.title)}</strong>
-      <small>${escapeHTML(g.desc)}</small>
-    </button>`).join("")}
-  </div>
-  <div class="notice">💜 Browse by category or search for a product.</div>`;
-}
-
-function renderGames() {
-  const list = activeGroup === "accounts"
-    ? games
-    : games.filter(game=>products.some(p=>p.group===activeGroup && p.game===game));
-
-  return `${breadcrumb()}<h2>Choose a game</h2>
-    <p class="muted">Select a game to browse listings.</p>
-    <div class="game-grid">
-      ${list.map(game=>`<button class="game-card" onclick="openGame('${activeGroup}','${game}')">🎮 <strong>${escapeHTML(game)}</strong></button>`).join("") || '<p class="muted">No products listed here yet.</p>'}
-    </div>`;
-}
-
-function productCard(p) {
-  const image = p.image
-    ? `<img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.classList.remove('hidden')">`
-    : "";
-
-  return `<article class="card">
-    <div class="art">
-      ${image}
-      <span class="${p.image?'hidden':''}">${escapeHTML(p.icon)}</span>
-      <small>GAMEVAULT</small>
-    </div>
-    <div class="info">
-      <h3>${escapeHTML(p.name)}</h3>
-      <p>${escapeHTML(p.desc)} · ${escapeHTML(p.game)}</p>
-      <button onclick="addToCart(${p.id})">Add to Cart</button>
-    </div>
-  </article>`;
-}
-
-function renderProducts() {
-  const group = groups.find(x=>x.id===activeGroup);
-  let list = products.filter(p=>p.group===activeGroup);
-
-  if (activeGame) list = list.filter(p=>p.game===activeGame);
-
-  return `${breadcrumb()}
-    <h2>${escapeHTML(activeGame || group?.title || "Products")}</h2>
-    <p class="muted">Browse available listings.</p>
-    <div class="grid">${list.map(productCard).join("") || '<p class="muted">No products listed here yet.</p>'}</div>`;
-}
-
-function renderSearch() {
-  const q = $("searchInput").value.trim().toLowerCase();
-
-  const list = products.filter(p =>
-    [p.name,p.game,p.group,p.desc,groups.find(g=>g.id===p.group)?.title]
-      .join(" ").toLowerCase().includes(q)
-  );
-
-  return `<h2>Search Results</h2>
-    <p class="muted">${list.length} matching products.</p>
-    <div class="grid">${list.map(productCard).join("") || '<p class="muted">No products found.</p>'}</div>`;
-}
-
-function renderStore() {
-  $("storeView").innerHTML = viewMode==="home"
-    ? renderHome()
-    : viewMode==="games"
-      ? renderGames()
-      : viewMode==="search"
-        ? renderSearch()
-        : renderProducts();
-}
-
 function addToCart(id) {
-  const product = products.find(x=>x.id===id);
+  const product = PRODUCTS.find(item=>item.id===Number(id));
   if (!product) return;
-
-  const item = cart.find(x=>x.id===id);
-
-  if (item) item.qty++;
-  else cart.push({...product,qty:1});
-
-  $("cartCount").textContent = cart.reduce((n,x)=>n+x.qty,0);
+  const existing = cart.find(item=>item.id===product.id);
+  if (existing) existing.qty = Math.min(99,existing.qty+1);
+  else cart.push({id:product.id,qty:1});
+  saveCart();
+  notify(product.name+" added to cart");
 }
-
-function showCart() {
-  $("storeSection").classList.add("hidden");
-  $("cartSection").classList.remove("hidden");
-
-  $("cartItems").innerHTML = cart.length
-    ? cart.map(x=>`<div class="line">
-        <span>${escapeHTML(x.name)} × ${x.qty}</span>
-        <button class="nav" onclick="removeFromCart(${x.id})">Remove one</button>
-      </div>`).join("")
-    : '<p class="muted">Your cart is empty.</p>';
-
-  $("cartSection").scrollIntoView({behavior:"smooth"});
-}
-
 function removeFromCart(id) {
-  const item = cart.find(x=>x.id===id);
-
-  if (item) {
-    item.qty--;
-    if (item.qty<=0) cart = cart.filter(x=>x.id!==id);
+  const item = cart.find(row=>row.id===Number(id));
+  if (!item) return;
+  if (item.qty > 1) item.qty--;
+  else cart = cart.filter(row=>row.id!==Number(id));
+  saveCart();
+  renderCart();
+}
+function renderCart() {
+  updateCartCounts();
+  const holder = $("cartItems");
+  if (!cart.length) {
+    holder.innerHTML = '<div class="empty-state"><div class="big">🛒</div><strong>Your cart is empty</strong><p>Browse the store to add digital products.</p><button class="btn primary" onclick="navigate(\\'browse\\')">Browse products</button></div>';
+    return;
   }
-
-  $("cartCount").textContent = cart.reduce((n,x)=>n+x.qty,0);
-  showCart();
+  holder.innerHTML = cart.map(row=>{
+    const p = PRODUCTS.find(product=>product.id===row.id);
+    if (!p) return "";
+    return `<div class="line">
+      <div><strong>${safeText(p.name)}</strong><small>${safeText(p.game)} · Price on request</small></div>
+      <div style="display:flex;align-items:center;gap:8px"><span>×${row.qty}</span><button class="btn" onclick="removeFromCart(${p.id})">Remove</button></div>
+    </div>`;
+  }).join("");
+}
+function checkoutNotice() {
+  notify("Live checkout is not connected yet. No payment has been taken.");
+}
+function renderCategoryCards() {
+  return `<div class="grid">${Object.entries(GROUPS).map(([key,g])=>`
+    <button class="category-card" onclick="navigate('${key}')">
+      <div class="category-icon">${g.icon}</div>
+      <strong>${g.title}</strong>
+      <p>${g.description}</p>
+    </button>`).join("")}</div>`;
+}
+function renderGameCards(group) {
+  const games = group === "accounts" ? GAMES : GAMES.filter(game =>
+    PRODUCTS.some(p=>p.group===group && p.game===game)
+  );
+  return `<div class="grid">${games.map(game=>`
+    <button class="category-card" onclick="navigate('${group}',{game:${JSON.stringify(game)}})">
+      <div class="category-icon">${game==="Free Fire"?"🔥":game==="COD Mobile"?"🎯":game==="PUBG Mobile"?"🎮":game==="Mobile Legends"?"💠":"🕹️"}</div>
+      <strong>${safeText(game)}</strong>
+      <p>View ${group==="topups"?"top-ups":"account"} listings</p>
+    </button>`).join("")}</div>`;
+}
+function renderProductCards(products) {
+  if (!products.length) return '<div class="empty-state"><div class="big">🔎</div><strong>No products found</strong><p>Try another category or search term.</p></div>';
+  return `<div class="grid">${products.map(p=>`
+    <article class="product-card">
+      <div class="product-image">
+        ${p.image ? `<img src="${safeText(p.image)}" alt="${safeText(p.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.classList.remove('hidden')"><span class="product-placeholder ${p.image?'hidden':''}">${p.icon}</span>` : `<span class="product-placeholder">${p.icon}</span>`}
+      </div>
+      <div class="product-info">
+        <div class="product-meta"><span class="tag">${safeText(p.game)}</span><span class="small muted">Digital</span></div>
+        <h3>${safeText(p.name)}</h3>
+        <p>${safeText(p.desc)}</p>
+        <div class="product-meta"><strong class="small">Price on request</strong></div>
+        <button class="btn primary" onclick="addToCart(${p.id})">Add to cart</button>
+      </div>
+    </article>`).join("")}</div>`;
+}
+function renderStore() {
+  const holder = $("storeView");
+  const back = $("backToStore");
+  back.classList.toggle("hidden",viewMode==="home");
+  if (viewMode==="home") {
+    $("storeHeading").textContent = "Explore GameVault";
+    $("storeSubtitle").textContent = "Choose a category to get started.";
+    holder.innerHTML = renderCategoryCards() +
+      '<div class="section-heading" style="margin-top:32px"><div><h2>Popular products</h2><p>Explore available digital product listings.</p></div></div>' +
+      renderProductCards(PRODUCTS.filter(p=>p.id!==8&&p.id!==9));
+    return;
+  }
+  if (viewMode==="games") {
+    const group = GROUPS[activeGroup];
+    $("storeHeading").textContent = group.title;
+    $("storeSubtitle").textContent = group.subtitle;
+    holder.innerHTML = renderGameCards(activeGroup);
+    return;
+  }
+  if (viewMode==="products") {
+    const group = GROUPS[activeGroup];
+    $("storeHeading").textContent = group ? group.title : "Products";
+    $("storeSubtitle").textContent = activeGame ? "Listings for "+activeGame : "Browse the available listings.";
+    const products = PRODUCTS.filter(p=>p.group===activeGroup&&(!activeGame||p.game===activeGame));
+    holder.innerHTML = (activeGame ? `<button class="btn ghost" onclick="navigate('${activeGroup}')">← All games</button><div style="height:15px"></div>` : "")+renderProductCards(products);
+    return;
+  }
+  if (viewMode==="all") {
+    $("storeHeading").textContent = "Browse all products";
+    $("storeSubtitle").textContent = "Explore the complete GameVault catalogue.";
+    holder.innerHTML = renderProductCards(PRODUCTS);
+    return;
+  }
+  if (viewMode==="search") {
+    $("storeHeading").textContent = "Search results";
+    $("storeSubtitle").textContent = searchQuery ? "Results for “"+searchQuery+"”" : "Enter a product or game name.";
+    const q = searchQuery.toLowerCase();
+    holder.innerHTML = renderProductCards(PRODUCTS.filter(p=>
+      [p.name,p.group,p.game,p.desc].join(" ").toLowerCase().includes(q)
+    ));
+  }
+}
+function searchProducts() {
+  searchQuery = $("searchInput").value.trim();
+  navigate(searchQuery ? "search" : "home",searchQuery?{q:searchQuery}:{});
 }
 
-/* START APPLICATION */
-renderStore();
+const ROUTES = ["home","browse","topups","accounts","skins","subscriptions","search","cart","wallet","profile","orders","security"];
+function readRoute() {
+  const params = new URLSearchParams(location.search);
+  let page = params.get("page") || "home";
+  if (!ROUTES.includes(page)) page = "home";
+  return {page,game:params.get("game")||"",q:params.get("q")||""};
+}
+function navigate(page,extras={},replace=false) {
+  if (!ROUTES.includes(page)) page="home";
+  toggleDrawer(false);
+  const url = new URL(location.href);
+  url.search = "";
+  url.searchParams.set("page",page);
+  Object.entries(extras).forEach(([key,value])=>{
+    if (value!==undefined && value!==null && String(value)!=="") url.searchParams.set(key,String(value));
+  });
+  history[replace?"replaceState":"pushState"]({}, "",url.pathname+url.search+url.hash);
+  applyRoute(readRoute());
+}
+function gvLink(event,page) {
+  event.preventDefault();
+  navigate(page);
+  return false;
+}
+function applyRoute(route=readRoute()) {
+  const page=route.page;
+  const sections=["storeSection","cartSection","walletSection","profileSection","ordersSection","securitySection","aboutSection"];
+  sections.forEach(id=>$(id).classList.add("hidden"));
+  $("hero").classList.add("hidden");
+
+  if (["home","browse","topups","accounts","skins","subscriptions","search"].includes(page)) {
+    $("storeSection").classList.remove("hidden");
+    $("hero").classList.remove("hidden");
+    if(page==="home") {
+      viewMode="home";activeGroup="";activeGame="";searchQuery="";
+      $("searchInput").value="";
+    } else if(page==="browse") {
+      viewMode="all";activeGroup="";activeGame="";
+    } else if(["topups","accounts","skins","subscriptions"].includes(page)) {
+      activeGroup=page;activeGame=route.game;searchQuery="";
+      $("searchInput").value="";
+      viewMode=(page!=="subscriptions"&&!activeGame)?"games":"products";
+    } else if(page==="search") {
+      viewMode="search";searchQuery=route.q;$("searchInput").value=route.q;
+    }
+    renderStore();
+    if(page==="home") $("aboutSection").classList.remove("hidden");
+  } else if(page==="cart") {
+    $("cartSection").classList.remove("hidden");renderCart();
+  } else if(page==="wallet") {
+    $("walletSection").classList.remove("hidden");loadWallet();
+  } else if(page==="profile") {
+    $("profileSection").classList.remove("hidden");
+    if(currentUser) loadProfile();
+    else {setNotice("profileMessage","Sign in to view and edit your profile.");}
+  } else if(page==="orders") {
+    $("ordersSection").classList.remove("hidden");loadOrders();
+  } else if(page==="security") {
+    $("securitySection").classList.remove("hidden");
+    setNotice("securityMessage",currentUser?"You are signed in. You can request a password reset email.":"Sign in to manage your account security.");
+  }
+  const titles={home:"GameVault | Digital Gaming Store",browse:"Browse | GameVault",topups:"Game Top-Ups | GameVault",accounts:"Gaming Accounts | GameVault",skins:"Skins & Bundles | GameVault",subscriptions:"Subscriptions | GameVault",search:"Search | GameVault",cart:"Shopping Cart | GameVault",wallet:"My Wallet | GameVault",profile:"My Profile | GameVault",orders:"My Orders | GameVault",security:"Security | GameVault"};
+  document.title=titles[page]||titles.home;
+  document.querySelectorAll("[data-nav]").forEach(el=>el.classList.toggle("active",el.dataset.nav===page));
+  const bottom=["topups","accounts","skins","subscriptions","search"].includes(page)?"browse":page;
+  document.querySelectorAll("[data-bottom]").forEach(el=>el.classList.toggle("active",el.dataset.bottom===bottom));
+  window.scrollTo({top:0,behavior:"instant"});
+}
+window.addEventListener("popstate",()=>applyRoute(readRoute()));
+
+async function initializeSupabase() {
+  if (!window.supabase?.createClient) {
+    notify("Supabase library could not load.");
+    applyRoute(readRoute());
+    return;
+  }
+  supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+  try {
+    const {data,error}=await supabaseClient.auth.getSession();
+    if(error) throw error;
+    currentUser=data.session?.user||null;
+    setSignedInUI();
+    supabaseClient.auth.onAuthStateChange((event,session)=>{
+      currentUser=session?.user||null;
+      setSignedInUI();
+      if(currentUser) {
+        ensureProfile();
+      }
+      applyRoute(readRoute());
+    });
+  } catch(error) {
+    console.error(error);
+    notify("Could not restore your session. Please try logging in.");
+  }
+  applyRoute(readRoute());
+}
+async function ensureProfile() {
+  if(!currentUser||!supabaseClient)return;
+  try {
+    const {error}=await supabaseClient.from("profiles").upsert({
+      id:currentUser.id,
+      updated_at:new Date().toISOString()
+    },{onConflict:"id",ignoreDuplicates:true});
+    if(error) console.warn("Profile setup:",error.message);
+  } catch(error) {console.warn(error);}
+}
+$("authForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  if(!supabaseClient){setNotice("authMessage","Authentication service is unavailable.","error");return;}
+  const email=$("authEmail").value.trim();
+  const password=$("authPassword").value;
+  const name=$("authName").value.trim();
+  $("authSubmit").disabled=true;
+  $("authSubmit").textContent="Please wait…";
+  setNotice("authMessage","Connecting securely…");
+  try {
+    if(authMode==="signup") {
+      const {data,error}=await supabaseClient.auth.signUp({
+        email,password,
+        options:{data:{display_name:name||email.split("@")[0]}}
+      });
+      if(error)throw error;
+      if(data.session) {
+        currentUser=data.user;
+        await ensureProfile();
+        closeAuth();
+        notify("Account created successfully.");
+      } else {
+        setNotice("authMessage","Account created. Check your email for the verification link before logging in.","success");
+      }
+    } else {
+      const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+      if(error)throw error;
+      currentUser=data.user;
+      await ensureProfile();
+      closeAuth();
+      notify("Welcome back to GameVault.");
+    }
+  } catch(error) {
+    setNotice("authMessage",error.message||"Authentication failed.","error");
+  } finally {
+    $("authSubmit").disabled=false;
+    $("authSubmit").textContent=authMode==="signup"?"Create account":"Login";
+  }
+});
+async function signOut() {
+  if(!supabaseClient||!currentUser){openAuth("login");return;}
+  const {error}=await supabaseClient.auth.signOut();
+  if(error){notify(error.message);return;}
+  currentUser=null;
+  setSignedInUI();
+  navigate("home");
+  notify("You have signed out.");
+}
+async function loadProfile() {
+  if(!currentUser||!supabaseClient)return;
+  $("profileEmail").textContent=currentUser.email||"";
+  $("profileHeading").textContent="Your profile";
+  $("profileName").value=currentUser.user_metadata?.display_name||"";
+  $("profileAvatarUrl").value=currentUser.user_metadata?.avatar_url||"";
+  try {
+    const {data,error}=await supabaseClient.from("profiles")
+      .select("display_name,avatar_url")
+      .eq("id",currentUser.id).maybeSingle();
+    if(error)throw error;
+    if(data) {
+      $("profileName").value=data.display_name||currentUser.user_metadata?.display_name||"";
+      $("profileAvatarUrl").value=data.avatar_url||currentUser.user_metadata?.avatar_url||"";
+      showAvatar(data.avatar_url);
+    } else showAvatar(currentUser.user_metadata?.avatar_url);
+    $("profileHeading").textContent=$("profileName").value||"GameVault member";
+    setNotice("profileMessage","Your profile is ready.","success");
+  } catch(error) {
+    console.warn("Profile loading:",error.message);
+    showAvatar(currentUser.user_metadata?.avatar_url);
+    setNotice("profileMessage","Could not load the profiles table. Check your Supabase table and Row Level Security policies.","error");
+  }
+}
+function showAvatar(url) {
+  const img=$("profileAvatar");
+  const fallback=$("profileAvatarFallback");
+  if(url && /^https:\/\//i.test(url)) {
+    img.src=url;img.classList.remove("hidden");fallback.classList.add("hidden");
+    img.onerror=()=>{img.classList.add("hidden");fallback.classList.remove("hidden");};
+  } else {
+    img.classList.add("hidden");fallback.classList.remove("hidden");
+  }
+}
+$("profileForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  if(!currentUser||!supabaseClient){openAuth("login");return;}
+  const displayName=$("profileName").value.trim();
+  const avatarUrl=$("profileAvatarUrl").value.trim();
+  if(avatarUrl && !/^https:\/\//i.test(avatarUrl)) {
+    setNotice("profileMessage","Avatar URL must start with https://.","error");return;
+  }
+  setNotice("profileMessage","Saving profile…");
+  try {
+    const {error}=await supabaseClient.from("profiles").upsert({
+      id:currentUser.id,
+      display_name:displayName||null,
+      avatar_url:avatarUrl||null,
+      updated_at:new Date().toISOString()
+    },{onConflict:"id"});
+    if(error)throw error;
+    const {error:metaError}=await supabaseClient.auth.updateUser({
+      data:{display_name:displayName,avatar_url:avatarUrl}
+    });
+    if(metaError)console.warn("Metadata update:",metaError.message);
+    showAvatar(avatarUrl);
+    $("profileHeading").textContent=displayName||"GameVault member";
+    setNotice("profileMessage","Profile saved successfully.","success");
+    notify("Profile saved.");
+  } catch(error) {
+    setNotice("profileMessage","Could not save profile: "+error.message,"error");
+  }
+});
+async function sendPasswordReset() {
+  if(!supabaseClient){notify("Authentication is unavailable.");return;}
+  const email=currentUser?.email||$("authEmail").value.trim();
+  if(!email){openAuth("login");notify("Enter your account email first.");return;}
+  try {
+    const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{
+      redirectTo:location.origin+location.pathname
+    });
+    if(error)throw error;
+    notify("If the account exists, a password reset email has been requested.");
+    if(!$("securitySection").classList.contains("hidden"))setNotice("securityMessage","Password reset email requested. Check your inbox and spam folder.","success");
+  } catch(error) {
+    notify("Password reset request failed: "+error.message);
+  }
+}
+function forgotPassword() {
+  closeAuth();
+  if(!$("authEmail").value.trim()) {
+    openAuth("login");
+    notify("Enter your email address first.");
+    return;
+  }
+  sendPasswordReset();
+}
+
+/* WALLET: reads existing tables if their schema and RLS permit it.
+   Funding must be implemented in a secure Edge Function. */
+async function loadWallet() {
+  if(!currentUser||!supabaseClient) {
+    $("walletBalance").textContent="₦—";
+    $("walletStatus").textContent="Login required";
+    setNotice("walletMessage","Sign in to view your wallet balance.","error");
+    $("walletTransactions").textContent="Sign in to view wallet activity.";
+    return;
+  }
+  $("walletStatus").textContent="Loading…";
+  setNotice("walletMessage","Loading wallet information…");
+  try {
+    const {data,error}=await supabaseClient.from("gv_wallets")
+      .select("balance_kobo").eq("user_id",currentUser.id).maybeSingle();
+    if(error)throw error;
+    if(!data) {
+      $("walletBalance").textContent="₦—";
+      $("walletStatus").textContent="Not initialized";
+      setNotice("walletMessage","No wallet record was found. Your backend must create the wallet securely.","error");
+    } else {
+      $("walletBalance").textContent=money(Number(data.balance_kobo)/100);
+      $("walletStatus").textContent="Connected";
+      setNotice("walletMessage","Wallet balance loaded from Supabase.","success");
+    }
+    const {data:txs,error:txError}=await supabaseClient.from("gv_wallet_transactions")
+      .select("*").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(10);
+    if(txError)throw txError;
+    $("walletTransactions").innerHTML=txs?.length?txs.map(tx=>`
+      <div class="line"><div><strong>${safeText(tx.description||tx.type||"Wallet transaction")}</strong><small>${safeText(tx.created_at||"")}</small></div>
+      <span>${tx.amount_kobo!=null?money(Number(tx.amount_kobo)/100):"—"}</span></div>`).join(""):"No wallet transactions found.";
+  } catch(error) {
+    console.warn("Wallet loading:",error.message);
+    $("walletBalance").textContent="₦—";
+    $("walletStatus").textContent="Not connected";
+    setNotice("walletMessage","Wallet data could not be loaded. Confirm the table names, columns, and Row Level Security policies in Supabase.","error");
+    $("walletTransactions").textContent="Transaction history unavailable.";
+  }
+}
+async function requestWalletFunding() {
+  if(!currentUser||!supabaseClient){openAuth("login");return;}
+  const amount=Number($("depositAmount").value);
+  if(!Number.isFinite(amount)||amount<100) {
+    setNotice("walletMessage","Enter an amount of at least ₦100.","error");return;
+  }
+  setNotice("walletMessage","Checking payment connection…");
+  try {
+    const {data,error}=await supabaseClient.functions.invoke(INIT_FUNCTION,{
+      body:{amount_ngn:amount}
+    });
+    if(error)throw error;
+    const url=data?.authorization_url||data?.checkout_url||data?.payment_url;
+    if(url && /^https:\/\//i.test(url)) {
+      location.href=url;
+    } else {
+      setNotice("walletMessage","The payment function responded, but did not return a valid checkout URL. No deposit was credited.","error");
+    }
+  } catch(error) {
+    console.error(error);
+    setNotice("walletMessage","Wallet funding is not available until the payment Edge Function is configured for this request. No money was charged.","error");
+  }
+}
+async function loadOrders() {
+  if(!currentUser||!supabaseClient) {
+    setNotice("ordersMessage","Sign in to view your order history.");
+    $("ordersList").innerHTML="";
+    return;
+  }
+  setNotice("ordersMessage","Your account is signed in. Order history needs a connected orders table and appropriate Row Level Security policies.");
+  $("ordersList").innerHTML="";
+  /* Intentionally do not invent a table schema or fake order records. */
+}
+
+$("year").textContent=new Date().getFullYear();
+updateCartCounts();
+setSignedInUI();
 initializeSupabase();
 </script>
-
-<!-- GAMEVAULT SLIDE-OUT MENU -->
-<style>
-  #gvMenuButton {
-    position: fixed;
-    top: 16px;
-    left: 14px;
-    z-index: 10001;
-    width: 44px;
-    height: 44px;
-    border: 1px solid #493263;
-    border-radius: 13px;
-    background: #171022;
-    color: #d8baff;
-    font-size: 25px;
-    cursor: pointer;
-    box-shadow: 0 4px 18px #0005;
-  }
-
-  #gvMenuOverlay {
-    position: fixed;
-    inset: 0;
-    z-index: 10002;
-    background: rgba(0, 0, 0, .68);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .25s, visibility .25s;
-  }
-
-  #gvMenuDrawer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: min(310px, 86vw);
-    z-index: 10003;
-    background: #10091d;
-    color: #f5edff;
-    border-right: 1px solid #352344;
-    transform: translateX(-105%);
-    transition: transform .28s ease;
-    overflow-y: auto;
-    padding: 24px 18px;
-    box-sizing: border-box;
-    font-family: inherit;
-  }
-
-  body.gv-menu-open #gvMenuOverlay {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  body.gv-menu-open #gvMenuDrawer {
-    transform: translateX(0);
-  }
-
-  #gvMenuDrawer .gv-menu-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 20px;
-    margin-bottom: 18px;
-    border-bottom: 1px solid #352344;
-  }
-
-  #gvMenuDrawer .gv-menu-brand {
-    color: #d8baff;
-    font-size: 21px;
-    font-weight: 800;
-    letter-spacing: 1px;
-  }
-
-  #gvMenuDrawer .gv-menu-close {
-    background: #251735;
-    color: #fff;
-    border: 0;
-    border-radius: 10px;
-    width: 38px;
-    height: 38px;
-    font-size: 24px;
-    cursor: pointer;
-  }
-
-  #gvMenuDrawer .gv-menu-label {
-    color: #a99ab9;
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    margin: 22px 0 10px;
-  }
-
-  #gvMenuDrawer .gv-menu-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 13px 12px;
-    margin: 4px 0;
-    border: 0;
-    border-radius: 11px;
-    background: transparent;
-    color: #f0e7fa;
-    font: inherit;
-    font-size: 14px;
-    text-align: left;
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  #gvMenuDrawer .gv-menu-link:hover,
-  #gvMenuDrawer .gv-menu-link:focus-visible {
-    background: #291b3b;
-    color: #d8baff;
-    outline: none;
-  }
-
-  #gvMenuDrawer .gv-menu-icon {
-    width: 23px;
-    text-align: center;
-    font-size: 18px;
-  }
-
-  body.gv-menu-open {
-    overflow: hidden;
-  }
-
-  @media (min-width: 700px) {
-    #gvMenuButton {
-      top: 20px;
-      left: 20px;
-    }
-  }
-</style>
-
-<button
-  id="gvMenuButton"
-  type="button"
-  aria-label="Open GameVault menu"
-  aria-controls="gvMenuDrawer"
-  aria-expanded="false">
-  ☰
-</button>
-
-<div id="gvMenuOverlay" aria-hidden="true"></div>
-
-<nav id="gvMenuDrawer" aria-label="GameVault navigation"
-     aria-hidden="true" inert>
-  <div class="gv-menu-header">
-    <div class="gv-menu-brand">GAMEVAULT</div>
-    <button class="gv-menu-close" id="gvMenuClose"
-            type="button" aria-label="Close menu">×</button>
-  </div>
-
-  <div class="gv-menu-label">MAIN MENU</div>
-
-  <a class="gv-menu-link" href="#" data-gv-action="home">
-    <span class="gv-menu-icon">⌂</span> Home
-  </a>
-  <a class="gv-menu-link" href="#categories">
-    <span class="gv-menu-icon">▦</span> All Categories
-  </a>
-  <a class="gv-menu-link" href="#products">
-    <span class="gv-menu-icon">🛍</span> All Products
-  </a>
-  <a class="gv-menu-link" href="#products">
-    <span class="gv-menu-icon">🎮</span> Game Top-Ups
-  </a>
-  <a class="gv-menu-link" href="#products">
-    <span class="gv-menu-icon">🔥</span> Trending Accounts
-  </a>
-  <a class="gv-menu-link" href="#products">
-    <span class="gv-menu-icon">💎</span> Skins & Bundles
-  </a>
-  <a class="gv-menu-link" href="#products">
-    <span class="gv-menu-icon">📱</span> App Subscriptions
-  </a>
-
-  <div class="gv-menu-label">YOUR ACCOUNT</div>
-
-  <a class="gv-menu-link" href="#accountSection">
-    <span class="gv-menu-icon">👤</span> My Profile
-  </a>
-  <a class="gv-menu-link" href="#accountSection"
-     data-gv-account="wallet">
-    <span class="gv-menu-icon">👛</span> My Wallet
-  </a>
-  <a class="gv-menu-link" href="#accountSection"
-     data-gv-account="orders">
-    <span class="gv-menu-icon">📦</span> My Orders
-  </a>
-  <a class="gv-menu-link" href="#accountSection"
-     data-gv-account="security">
-    <span class="gv-menu-icon">🛡</span> Security
-  </a>
-
-  <div class="gv-menu-label">SUPPORT</div>
-
-  <a class="gv-menu-link" href="mailto:support@gamevault.com">
-    <span class="gv-menu-icon">💬</span> Help & Support
-  </a>
-</nav>
-
-<script>
-(function () {
-  const button = document.getElementById("gvMenuButton");
-  const drawer = document.getElementById("gvMenuDrawer");
-  const overlay = document.getElementById("gvMenuOverlay");
-  const closeButton = document.getElementById("gvMenuClose");
-
-  if (!button || !drawer || !overlay || !closeButton) return;
-
-  function openMenu() {
-    document.body.classList.add("gv-menu-open");
-    drawer.inert = false;
-    drawer.setAttribute("aria-hidden", "false");
-    button.setAttribute("aria-expanded", "true");
-    closeButton.focus();
-  }
-
-  function closeMenu() {
-    document.body.classList.remove("gv-menu-open");
-    drawer.inert = true;
-    drawer.setAttribute("aria-hidden", "true");
-    button.setAttribute("aria-expanded", "false");
-  }
-
-  button.addEventListener("click", openMenu);
-  closeButton.addEventListener("click", closeMenu);
-  overlay.addEventListener("click", closeMenu);
-
-  document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") closeMenu();
-  });
-
-  drawer.addEventListener("click", function (event) {
-    const link = event.target.closest("a");
-    if (!link) return;
-
-    closeMenu();
-
-    if (link.dataset.gvAction === "home") {
-      event.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      return;
-    }
-
-    const accountSection = link.dataset.gvAccount;
-    if (accountSection) {
-      // Scroll to the existing profile without inventing
-      // wallet, orders, or security tab identifiers.
-      const profile = document.getElementById("accountSection");
-      if (profile) {
-        profile.classList.remove("hidden");
-        profile.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  });
-})();
-</script>
-<!-- END GAMEVAULT SLIDE-OUT MENU -->
-
 </body>
 </html>
