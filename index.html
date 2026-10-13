@@ -271,6 +271,7 @@ const SITE_URL="https://gamevault-hub.github.io/gamevault-site/";
 let supabaseClient=null,currentUser=null,currentProfile=null,authMode="login";
 let currentPage=new URLSearchParams(location.search).get("page")||"home";
 let searchTerm="",toastTimer=null,profileSaveInProgress=false;
+let recoveryMode=false;
 const view=document.getElementById("view");
 
 const products=[
@@ -415,9 +416,10 @@ function initSupabase(){
  if(!window.supabase){notify("Supabase library could not load. Check your internet connection.");return;}
  supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
  supabaseClient.auth.onAuthStateChange((_event,session)=>{
-  if(_event === "PASSWORD_RECOVERY"){
-    currentPage = "security";
-    renderPage();
+  if(_event==="PASSWORD_RECOVERY"){
+    currentUser=session?.user||null;
+    recoveryMode=true;
+    navigate("security",{replace:true});
     return;
   }
   currentUser=session?.user||null;if(!currentUser)currentProfile=null;
@@ -660,9 +662,17 @@ async function renderOrders(){
 }
 
 /* Security */
+async function setNewPassword(){
+ const p=document.getElementById("newPassword").value;
+ if(p.length<6)return notify("Use at least 6 characters.");
+ const {error}=await supabaseClient.auth.updateUser({password:p});
+ if(error)return notify(error.message);
+ recoveryMode=false;notify("Password updated.");renderSecurity();
+}
 function renderSecurity(){
  if(!requireLogin())return;
  view.innerHTML=`<div class="page-title"><div class="eyebrow">Protect your account</div><h1>Security</h1><p class="muted">Manage your sign-in and account access.</p></div>
+ ${recoveryMode?`<div class="panel"><h2>Set a new password</h2><div class="form-stack"><input type="password" id="newPassword" minlength="6" autocomplete="new-password" placeholder="New password"><button class="btn primary" onclick="setNewPassword()">Save password</button></div></div>`:""}
  <div class="panel"><h2>Email & Sign-In</h2><p class="muted">Signed in as ${escapeHTML(currentUser.email||"")}</p><div class="list-row"><span>Email verified</span><span class="status ${currentUser.email_confirmed_at?"success":""}">${currentUser.email_confirmed_at?"Confirmed":"Not confirmed"}</span></div></div>
  <div class="panel"><h2>Password</h2><p class="muted">Request a password reset email for your account.</p><button class="btn primary" onclick="sendSecurityReset()">Send Password Reset</button></div>
  <div class="panel"><h2>Sign Out</h2><p class="muted">Sign out of this device.</p><button class="btn danger" onclick="signOut()">Sign Out</button></div>`;
