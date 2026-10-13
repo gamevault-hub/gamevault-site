@@ -102,7 +102,7 @@ footer{text-align:center;padding:28px 5%;color:var(--muted);font-size:12px;line-
 .gv-avatar-area{width:105px;flex-shrink:0;text-align:center}
 .gv-avatar{width:84px;height:84px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at top,#b77aff,#5820a5 75%);border:2px solid #c59aff;box-shadow:0 0 0 4px #9b5cff20,0 0 25px #9b5cff55;font-size:29px;font-weight:800;transition:transform .2s,box-shadow .2s}
 .gv-avatar:hover{transform:scale(1.03);box-shadow:0 0 0 5px #9b5cff30,0 0 32px #b77aff90}
-.gv-avatar img{width:100%;height:100%;object-fit:cover}
+.gv-avatar img{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%}
 .gv-profile-name{font-size:20px;font-weight:800;overflow-wrap:anywhere}
 .gv-profile-email{color:#b9a9ca;font-size:12px;overflow-wrap:anywhere;margin-top:5px}
 .gv-member-badge{display:inline-block;color:#e4c9ff;background:#9b4dff29;border:1px solid #b77aff65;border-radius:30px;padding:6px 10px;font-size:10px;letter-spacing:.6px;margin-top:9px}
@@ -190,7 +190,6 @@ footer{text-align:center;padding:28px 5%;color:var(--muted);font-size:12px;line-
     <div class="panel" id="walletTransactions"><p class="muted">Sign in to view your transaction history.</p></div>
   </section>
 
-  <!-- CUSTOMER PROFILE -->
   <section id="accountSection" class="section hidden">
     <div class="section-heading">
       <h2>My GameVault Profile</h2>
@@ -287,7 +286,6 @@ footer{text-align:center;padding:28px 5%;color:var(--muted);font-size:12px;line-
 <script>
 "use strict";
 
-/* SUPABASE CONFIGURATION */
 const SUPABASE_URL = "https://hhopviwrhbebfkljzmiv.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_qzbuNv6A5xkxXTJH2rWYZQ__iDDAVwT";
 const INIT_FUNCTION = "gamevault-initialize-payment";
@@ -354,10 +352,7 @@ function initializeSupabase() {
     return;
   }
 
-  supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
+  supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 
   supabaseClient.auth.onAuthStateChange((event,session) => {
     currentUser = session?.user || null;
@@ -475,9 +470,7 @@ $("authForm").addEventListener("submit",async e => {
       ? await supabaseClient.auth.signUp({
           email,
           password,
-          options: {
-            data: { display_name: email.split("@")[0] }
-          }
+          options: {data:{display_name:email.split("@")[0]}}
         })
       : await supabaseClient.auth.signInWithPassword({email,password});
 
@@ -516,33 +509,27 @@ function gvShowProfileMessage(message,type="success") {
   box.className = "gv-profile-message show " + type;
 }
 
-
-function gvRenderAvatar(name, avatarUrl) {
+/* FIXED AVATAR DISPLAY */
+function gvRenderAvatar(name,avatarUrl) {
   const avatar = $("gvAvatar");
   if (!avatar) return;
 
-  const fallback =
-    (name || "G").trim().charAt(0).toUpperCase() || "G";
-
+  const fallback = (name || "G").trim().charAt(0).toUpperCase() || "G";
   avatar.replaceChildren();
   avatar.textContent = fallback;
 
   if (!avatarUrl || typeof avatarUrl !== "string") return;
 
   let parsed;
-
   try {
     parsed = new URL(avatarUrl);
   } catch (_) {
     return;
   }
 
-  if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
-    return;
-  }
+  if (parsed.protocol !== "https:" && parsed.protocol !== "http:") return;
 
   const img = document.createElement("img");
-  img.src = parsed.href;
   img.alt = "Profile avatar";
   img.referrerPolicy = "no-referrer";
 
@@ -555,10 +542,8 @@ function gvRenderAvatar(name, avatarUrl) {
     avatar.textContent = fallback;
   };
 
+  img.src = parsed.href;
   avatar.replaceChildren(img);
-}
-
-  avatar.textContent = (name || "G").trim().charAt(0).toUpperCase() || "G";
 }
 
 function clearProfileUI() {
@@ -679,7 +664,7 @@ $("gvProfileForm").addEventListener("submit",async event => {
   }
 });
 
-/* REAL PROFILE PHOTO UPLOAD — SUPABASE STORAGE */
+/* PROFILE PHOTO UPLOAD — FIXED BUCKET NAME */
 $("gvChangeAvatarBtn").addEventListener("click",() => {
   if (!currentUser) {
     openAuth("login");
@@ -737,9 +722,10 @@ $("gvAvatarFile").addEventListener("change",async event => {
 
     if (uploadError) throw uploadError;
 
+    /* IMPORTANT: use "avatar", not "avatars" */
     const {data:publicData} = supabaseClient
       .storage
-      .from("avatars")
+      .from("avatar")
       .getPublicUrl(storagePath);
 
     const publicUrl = publicData?.publicUrl;
@@ -770,7 +756,7 @@ $("gvAvatarFile").addEventListener("change",async event => {
     gvShowProfileMessage("Your profile photo has been uploaded and saved!","success");
   } catch (error) {
     console.error("Avatar upload error:",error);
-    gvShowProfileMessage(error.message || "Photo upload failed. Check the avatars bucket and its storage policies.","error");
+    gvShowProfileMessage(error.message || "Photo upload failed. Check the avatar bucket and its storage policies.","error");
   } finally {
     button.disabled = false;
     button.textContent = "Change Photo";
