@@ -1140,5 +1140,266 @@ function removeFromCart(id) {
 renderStore();
 initializeSupabase();
 </script>
+
+<!-- GAMEVAULT SLIDE-OUT MENU -->
+<style>
+  #gvMenuButton {
+    position: fixed;
+    top: 16px;
+    left: 14px;
+    z-index: 10001;
+    width: 44px;
+    height: 44px;
+    border: 1px solid #493263;
+    border-radius: 13px;
+    background: #171022;
+    color: #d8baff;
+    font-size: 25px;
+    cursor: pointer;
+    box-shadow: 0 4px 18px #0005;
+  }
+
+  #gvMenuOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10002;
+    background: rgba(0, 0, 0, .68);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .25s, visibility .25s;
+  }
+
+  #gvMenuDrawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: min(310px, 86vw);
+    z-index: 10003;
+    background: #10091d;
+    color: #f5edff;
+    border-right: 1px solid #352344;
+    transform: translateX(-105%);
+    transition: transform .28s ease;
+    overflow-y: auto;
+    padding: 24px 18px;
+    box-sizing: border-box;
+    font-family: inherit;
+  }
+
+  body.gv-menu-open #gvMenuOverlay {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  body.gv-menu-open #gvMenuDrawer {
+    transform: translateX(0);
+  }
+
+  #gvMenuDrawer .gv-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid #352344;
+  }
+
+  #gvMenuDrawer .gv-menu-brand {
+    color: #d8baff;
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+
+  #gvMenuDrawer .gv-menu-close {
+    background: #251735;
+    color: #fff;
+    border: 0;
+    border-radius: 10px;
+    width: 38px;
+    height: 38px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  #gvMenuDrawer .gv-menu-label {
+    color: #a99ab9;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    margin: 22px 0 10px;
+  }
+
+  #gvMenuDrawer .gv-menu-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 12px;
+    margin: 4px 0;
+    border: 0;
+    border-radius: 11px;
+    background: transparent;
+    color: #f0e7fa;
+    font: inherit;
+    font-size: 14px;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  #gvMenuDrawer .gv-menu-link:hover,
+  #gvMenuDrawer .gv-menu-link:focus-visible {
+    background: #291b3b;
+    color: #d8baff;
+    outline: none;
+  }
+
+  #gvMenuDrawer .gv-menu-icon {
+    width: 23px;
+    text-align: center;
+    font-size: 18px;
+  }
+
+  body.gv-menu-open {
+    overflow: hidden;
+  }
+
+  @media (min-width: 700px) {
+    #gvMenuButton {
+      top: 20px;
+      left: 20px;
+    }
+  }
+</style>
+
+<button
+  id="gvMenuButton"
+  type="button"
+  aria-label="Open GameVault menu"
+  aria-controls="gvMenuDrawer"
+  aria-expanded="false">
+  ☰
+</button>
+
+<div id="gvMenuOverlay" aria-hidden="true"></div>
+
+<nav id="gvMenuDrawer" aria-label="GameVault navigation"
+     aria-hidden="true" inert>
+  <div class="gv-menu-header">
+    <div class="gv-menu-brand">GAMEVAULT</div>
+    <button class="gv-menu-close" id="gvMenuClose"
+            type="button" aria-label="Close menu">×</button>
+  </div>
+
+  <div class="gv-menu-label">MAIN MENU</div>
+
+  <a class="gv-menu-link" href="#" data-gv-action="home">
+    <span class="gv-menu-icon">⌂</span> Home
+  </a>
+  <a class="gv-menu-link" href="#categories">
+    <span class="gv-menu-icon">▦</span> All Categories
+  </a>
+  <a class="gv-menu-link" href="#products">
+    <span class="gv-menu-icon">🛍</span> All Products
+  </a>
+  <a class="gv-menu-link" href="#products">
+    <span class="gv-menu-icon">🎮</span> Game Top-Ups
+  </a>
+  <a class="gv-menu-link" href="#products">
+    <span class="gv-menu-icon">🔥</span> Trending Accounts
+  </a>
+  <a class="gv-menu-link" href="#products">
+    <span class="gv-menu-icon">💎</span> Skins & Bundles
+  </a>
+  <a class="gv-menu-link" href="#products">
+    <span class="gv-menu-icon">📱</span> App Subscriptions
+  </a>
+
+  <div class="gv-menu-label">YOUR ACCOUNT</div>
+
+  <a class="gv-menu-link" href="#accountSection">
+    <span class="gv-menu-icon">👤</span> My Profile
+  </a>
+  <a class="gv-menu-link" href="#accountSection"
+     data-gv-account="wallet">
+    <span class="gv-menu-icon">👛</span> My Wallet
+  </a>
+  <a class="gv-menu-link" href="#accountSection"
+     data-gv-account="orders">
+    <span class="gv-menu-icon">📦</span> My Orders
+  </a>
+  <a class="gv-menu-link" href="#accountSection"
+     data-gv-account="security">
+    <span class="gv-menu-icon">🛡</span> Security
+  </a>
+
+  <div class="gv-menu-label">SUPPORT</div>
+
+  <a class="gv-menu-link" href="mailto:support@gamevault.com">
+    <span class="gv-menu-icon">💬</span> Help & Support
+  </a>
+</nav>
+
+<script>
+(function () {
+  const button = document.getElementById("gvMenuButton");
+  const drawer = document.getElementById("gvMenuDrawer");
+  const overlay = document.getElementById("gvMenuOverlay");
+  const closeButton = document.getElementById("gvMenuClose");
+
+  if (!button || !drawer || !overlay || !closeButton) return;
+
+  function openMenu() {
+    document.body.classList.add("gv-menu-open");
+    drawer.inert = false;
+    drawer.setAttribute("aria-hidden", "false");
+    button.setAttribute("aria-expanded", "true");
+    closeButton.focus();
+  }
+
+  function closeMenu() {
+    document.body.classList.remove("gv-menu-open");
+    drawer.inert = true;
+    drawer.setAttribute("aria-hidden", "true");
+    button.setAttribute("aria-expanded", "false");
+  }
+
+  button.addEventListener("click", openMenu);
+  closeButton.addEventListener("click", closeMenu);
+  overlay.addEventListener("click", closeMenu);
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") closeMenu();
+  });
+
+  drawer.addEventListener("click", function (event) {
+    const link = event.target.closest("a");
+    if (!link) return;
+
+    closeMenu();
+
+    if (link.dataset.gvAction === "home") {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    const accountSection = link.dataset.gvAccount;
+    if (accountSection) {
+      // Scroll to the existing profile without inventing
+      // wallet, orders, or security tab identifiers.
+      const profile = document.getElementById("accountSection");
+      if (profile) {
+        profile.classList.remove("hidden");
+        profile.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  });
+})();
+</script>
+<!-- END GAMEVAULT SLIDE-OUT MENU -->
+
 </body>
 </html>
