@@ -497,7 +497,7 @@ const categories=[
 
 function productCard(p){
   const img=p.image
-    ?`<img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.style.display='none'">`
+    ?`<img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.onerror=null;this.style.display='block';this.removeAttribute('src');this.alt='👤';this.classList.add('avatar-fallback')">`
     :`<div style="aspect-ratio:1.2;display:grid;place-items:center;background:var(--panel2)">${gvIcon("products")}</div>`;
   return `<article class="product">${img}<div class="product-info"><h3>${escapeHTML(p.name)}</h3><p>${escapeHTML(p.description)}</p><div class="product-bottom"><span class="price">View options</span><button class="btn primary" onclick="addToCart('${p.id}')">Add to cart</button></div></div></article>`
 }
