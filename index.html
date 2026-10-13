@@ -25,6 +25,7 @@ button:hover{filter:brightness(1.1)}
 button:disabled{opacity:.55;cursor:wait}
 input,select{max-width:100%}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--light);outline-offset:3px}
+
 .gv-header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 5%;background:linear-gradient(110deg,#10091d,#1d1033,#120b20);border-bottom:1px solid #52346d;flex-wrap:wrap}
 .logo{font-size:22px;font-weight:900;letter-spacing:1px;cursor:pointer}
 .logo span,.brand span{color:var(--light)}
@@ -33,6 +34,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .header-actions button{font-size:12px;padding:10px}
 .nav{background:#241637;border:1px solid #39254e;color:#e9ddff}
 .ghost{background:transparent;border:1px solid #9a63dc}
+
 .hero{text-align:center;padding:40px 5% 34px;background:radial-gradient(ellipse at top,#432068,#180d29 48%,#0b0712 82%)}
 .pill{display:inline-block;border:1px solid #68419a;border-radius:30px;padding:8px 13px;color:#d9bdff;font-size:11px;letter-spacing:1px}
 .hero h1{font-size:clamp(32px,7vw,55px);margin:17px 0 10px}
@@ -43,6 +45,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .search input{flex:1;min-width:0;background:transparent;border:0;color:white;padding:10px 0;outline:none}
 .search input::placeholder{color:var(--muted)}
 .search button{padding:7px 11px;background:#30203e}
+
 main{max-width:1200px;margin:auto;padding:24px 5%}
 h2{font-size:22px}
 .section{margin-top:30px;scroll-margin-top:90px}
@@ -77,6 +80,7 @@ h2{font-size:22px}
 .line button{padding:7px 10px}
 .badge{display:inline-block;padding:4px 8px;border-radius:20px;background:#30203e;color:#d9bdff;font-size:11px}
 footer{text-align:center;padding:28px 5%;color:var(--muted);font-size:12px;line-height:1.8;border-top:1px solid #30203e;margin-top:25px}
+
 .gv-modal{display:none;position:fixed;inset:0;z-index:100;padding:18px;align-items:center;justify-content:center;background:#05020be8;overflow:auto}
 .gv-modal.open{display:flex}
 .gv-modal-card{position:relative;width:100%;max-width:420px;margin:auto;padding:25px;background:linear-gradient(145deg,#21132f,#100a19);border:1px solid #7040a0;border-radius:20px}
@@ -91,34 +95,44 @@ footer{text-align:center;padding:28px 5%;color:var(--muted);font-size:12px;line-
 .hidden{display:none!important}
 
 /* PREMIUM PURPLE CUSTOMER PROFILE */
-.gv-profile{display:grid;gap:18px;margin-top:16px}
+.gv-profile{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:16px}
 .gv-profile-card{min-width:0;background:linear-gradient(145deg,#211333,#120b1c);border:1px solid rgba(174,111,255,.25);border-radius:20px;padding:20px;box-shadow:0 12px 35px #0003}
-.gv-profile-header{display:flex;align-items:center;gap:15px;margin-bottom:18px}
-.gv-avatar{width:68px;height:68px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:linear-gradient(135deg,#9b4dff,#5820a5);border:2px solid #b77aff;font-size:27px;font-weight:800}
+.gv-member-card{grid-column:1/-1;background:radial-gradient(ellipse at top right,#753cb333,transparent 60%),linear-gradient(145deg,#261439,#120b1c)}
+.gv-profile-header{display:flex;align-items:center;gap:18px;margin-bottom:18px}
+.gv-avatar-area{width:105px;flex-shrink:0;text-align:center}
+.gv-avatar{width:84px;height:84px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at top,#b77aff,#5820a5 75%);border:2px solid #c59aff;box-shadow:0 0 0 4px #9b5cff20,0 0 25px #9b5cff55;font-size:29px;font-weight:800;transition:transform .2s,box-shadow .2s}
+.gv-avatar:hover{transform:scale(1.03);box-shadow:0 0 0 5px #9b5cff30,0 0 32px #b77aff90}
 .gv-avatar img{width:100%;height:100%;object-fit:cover}
 .gv-profile-name{font-size:20px;font-weight:800;overflow-wrap:anywhere}
 .gv-profile-email{color:#b9a9ca;font-size:12px;overflow-wrap:anywhere;margin-top:5px}
-.gv-member-badge{display:inline-block;color:#e4c9ff;background:#9b4dff29;border:1px solid #b77aff4d;border-radius:30px;padding:5px 10px;font-size:11px;margin-top:9px}
-.gv-profile-title{font-size:16px;font-weight:800;margin:0 0 15px}
+.gv-member-badge{display:inline-block;color:#e4c9ff;background:#9b4dff29;border:1px solid #b77aff65;border-radius:30px;padding:6px 10px;font-size:10px;letter-spacing:.6px;margin-top:9px}
+.gv-profile-title{font-size:16px;font-weight:800;margin:0 0 15px;color:#ead9ff}
 .gv-profile-form{display:grid;gap:14px}
 .gv-profile-form label{display:block;font-size:12px;color:#cbbbdc;margin-bottom:7px}
 .gv-profile-form input{display:block;width:100%;min-width:0;padding:13px 14px;border-radius:11px;border:1px solid #443151;background:#100a18;color:#fff;font-size:14px;outline:none}
 .gv-profile-form input:focus{border-color:#a65cff;box-shadow:0 0 0 3px #a65cff1f}
-.gv-profile-form input:disabled{opacity:.65}
-.gv-profile-btn{width:100%;border:0;border-radius:12px;padding:14px;font-size:14px;font-weight:800;cursor:pointer;color:#fff;background:linear-gradient(100deg,#853bdb,#b15cff)}
-.gv-profile-btn.secondary{background:#251831;border:1px solid #493258}
+.gv-profile-form input:disabled,.gv-profile-form input:read-only{opacity:.75}
+.gv-profile-btn{width:100%;border:0;border-radius:12px;padding:13px 14px;font-size:13px;font-weight:800;cursor:pointer;color:#fff;background:linear-gradient(100deg,#853bdb,#b15cff);transition:filter .2s,transform .2s}
+.gv-profile-btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.gv-profile-btn.secondary{background:linear-gradient(135deg,#30203f,#21132f);border:1px solid #704a94;color:#e7d5ff}
 .gv-profile-btn.danger{background:#35151f;border:1px solid #6e293e;color:#ffb8ca}
+.gv-avatar-area .gv-profile-btn{padding:9px 8px;font-size:11px;letter-spacing:.2px}
 .gv-profile-links{display:grid;gap:10px}
 .gv-profile-link{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px;border-radius:12px;border:1px solid #3c294b;background:#190f24;color:#f7f2ff;font-size:13px}
-.gv-profile-link span:last-child{color:#b77aff;text-align:right;overflow-wrap:anywhere}
+.gv-profile-link span:last-child{color:#c49aff;text-align:right;overflow-wrap:anywhere}
 .gv-profile-message{display:none;padding:12px;border-radius:10px;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
 .gv-profile-message.show{display:block}
 .gv-profile-message.success{color:#b8f6d0;background:#102a20}
 .gv-profile-message.error{color:#ffc0cb;background:#35151f}
 .gv-profile-note{font-size:12px;color:#b9a9ca;line-height:1.6}
+.gv-security-note{margin-top:15px}
+.gv-orders-empty{padding:18px 12px;margin-top:12px;border:1px dashed #59416f;border-radius:13px;text-align:center;color:#b9a9ca;font-size:13px;line-height:1.6}
+.gv-orders-empty strong{display:block;color:#e7d5ff;margin-bottom:6px}
+
 @media(min-width:650px){.grid,.game-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.art{height:160px}}
 @media(min-width:950px){.category-grid,.grid,.game-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media(max-width:480px){.gv-header{padding:12px}.logo{font-size:19px}.header-actions{width:100%;justify-content:space-between}.header-actions button{padding:9px 8px;font-size:11px}.hero{padding-top:30px}.gv-profile-card{padding:16px;border-radius:16px}.gv-avatar{width:58px;height:58px}}
+@media(max-width:649px){.gv-profile{grid-template-columns:minmax(0,1fr)}.gv-profile-card{padding:17px;border-radius:16px}}
+@media(max-width:480px){.gv-header{padding:12px}.logo{font-size:19px}.header-actions{width:100%;justify-content:space-between}.header-actions button{padding:9px 8px;font-size:11px}.hero{padding-top:30px}.gv-profile-header{gap:12px;align-items:flex-start}.gv-avatar-area{width:78px}.gv-avatar{width:68px;height:68px;font-size:25px}.gv-profile-name{font-size:18px}}
 </style>
 </head>
 
@@ -147,9 +161,7 @@ footer{text-align:center;padding:28px 5%;color:var(--muted);font-size:12px;line-
 </section>
 
 <main>
-  <section id="storeSection">
-    <div id="storeView"></div>
-  </section>
+  <section id="storeSection"><div id="storeView"></div></section>
 
   <section id="cartSection" class="section hidden">
     <div class="section-heading"><h2>Your Cart</h2><button class="nav" onclick="goHome()">Continue shopping</button></div>
@@ -186,22 +198,25 @@ footer{text-align:center;padding:28px 5%;color:var(--muted);font-size:12px;line-
     </div>
 
     <div class="gv-profile">
-      <div class="gv-profile-card">
+      <div class="gv-profile-card gv-member-card">
         <div class="gv-profile-header">
-          <div class="gv-avatar" id="gvAvatar">G</div>
+          <div class="gv-avatar-area">
+            <div class="gv-avatar" id="gvAvatar">G</div>
+            <input type="file" id="gvAvatarFile" accept="image/png,image/jpeg,image/webp" hidden>
+            <button type="button" class="gv-profile-btn secondary" id="gvChangeAvatarBtn">Change Photo</button>
+          </div>
           <div>
             <div class="gv-profile-name" id="gvProfileName">GameVault Member</div>
             <div class="gv-profile-email" id="gvProfileEmail">Loading account...</div>
-            <span class="gv-member-badge">GAMEVAULT MEMBER</span>
+            <span class="gv-member-badge">✦ GAMEVAULT MEMBER</span>
           </div>
         </div>
-        <p class="gv-profile-note">Manage your personal GameVault account and membership details.</p>
+        <p class="gv-profile-note">Your gaming identity. Your account. Your GameVault.</p>
       </div>
 
       <div class="gv-profile-card">
         <h3 class="gv-profile-title">Personal Information</h3>
         <div id="gvProfileMessage" class="gv-profile-message" role="status" aria-live="polite"></div>
-
         <form id="gvProfileForm" class="gv-profile-form">
           <div>
             <label for="gvDisplayName">Display name</label>
@@ -213,8 +228,8 @@ footer{text-align:center;padding:28px 5%;color:var(--muted);font-size:12px;line-
           </div>
           <div>
             <label for="gvAvatarUrl">Avatar image URL (optional)</label>
-            <input id="gvAvatarUrl" name="avatar_url" type="url" maxlength="500" placeholder="https://example.com/avatar.png">
-            <p class="gv-profile-note">Use an image URL. File uploads are not enabled yet.</p>
+            <input id="gvAvatarUrl" name="avatar_url" type="url" maxlength="500" placeholder="Upload a photo above or paste an image URL">
+            <p class="gv-profile-note">Photo uploads accept JPG, PNG or WebP, up to 2 MB.</p>
           </div>
           <button type="submit" class="gv-profile-btn" id="gvSaveProfileBtn">Save Profile</button>
         </form>
@@ -226,14 +241,15 @@ footer{text-align:center;padding:28px 5%;color:var(--muted);font-size:12px;line-
           <div class="gv-profile-link"><span>Email verification</span><span id="gvVerificationStatus">Checking...</span></div>
           <div class="gv-profile-link"><span>Account ID</span><span id="gvAccountIdShort">—</span></div>
         </div>
-        <p class="gv-profile-note">Your email and password are managed by Supabase Authentication. Never share your password.</p>
+        <p class="gv-profile-note gv-security-note">Your email and password are managed by Supabase Authentication. Never share your password.</p>
+        <button type="button" class="gv-profile-btn secondary" id="gvPasswordResetBtn" style="margin-top:14px">Send Password Reset Email</button>
       </div>
 
       <div class="gv-profile-card">
         <h3 class="gv-profile-title">My Orders</h3>
         <p class="gv-profile-note">Your purchase history will appear here when order storage is connected.</p>
         <button type="button" class="gv-profile-btn secondary" id="gvViewOrdersBtn">View My Orders →</button>
-        <div id="gvOrdersMessage" class="gv-profile-note" style="margin-top:12px"></div>
+        <div id="gvOrdersMessage" class="gv-orders-empty">Order history is not connected yet.</div>
       </div>
     </div>
   </section>
@@ -271,7 +287,7 @@ footer{text-align:center;padding:28px 5%;color:var(--muted);font-size:12px;line-
 <script>
 "use strict";
 
-/* EXISTING SUPABASE CONFIGURATION */
+/* SUPABASE CONFIGURATION */
 const SUPABASE_URL = "https://hhopviwrhbebfkljzmiv.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_qzbuNv6A5xkxXTJH2rWYZQ__iDDAVwT";
 const INIT_FUNCTION = "gamevault-initialize-payment";
@@ -349,7 +365,10 @@ function initializeSupabase() {
 
     if (currentUser) {
       refreshWallet();
-      if (event === "SIGNED_IN") loadCustomerProfile();
+      if (event === "SIGNED_IN" || event === "USER_UPDATED") {
+        loadCustomerProfile();
+      }
+
       if (new URLSearchParams(location.search).has("reference") ||
           new URLSearchParams(location.search).has("trxref")) {
         verifyReturnedPayment();
@@ -468,11 +487,7 @@ $("authForm").addEventListener("submit",async e => {
     }
 
     if (authMode === "signup" && !result.data.session) {
-      setStatus(
-        "authMessage",
-        "Account created. Check your email to confirm it, then log in.",
-        "success"
-      );
+      setStatus("authMessage","Account created. Check your email to confirm it, then log in.","success");
       return;
     }
 
@@ -526,7 +541,7 @@ function gvRenderAvatar(name,avatarUrl) {
         return;
       }
     } catch (_) {
-      // Fall back to the member's initial.
+      // Use the member's initial if the URL is invalid.
     }
   }
 
@@ -543,6 +558,8 @@ function clearProfileUI() {
   $("gvVerificationStatus").textContent = "—";
   $("gvAvatar").replaceChildren();
   $("gvAvatar").textContent = "G";
+  $("gvOrdersMessage").textContent = "Sign in to view your account.";
+  $("gvProfileMessage").className = "gv-profile-message";
 }
 
 async function loadCustomerProfile() {
@@ -566,10 +583,7 @@ async function loadCustomerProfile() {
 
   if (error) {
     console.error("Profile loading error:",error);
-    gvShowProfileMessage(
-      "Could not load your saved profile. Check the profiles table and its security policies.",
-      "error"
-    );
+    gvShowProfileMessage("Could not load your saved profile. Check the profiles table and its security policies.","error");
   }
 
   const displayName =
@@ -589,6 +603,7 @@ async function loadCustomerProfile() {
   gvRenderAvatar(displayName,avatarUrl);
 }
 
+/* SAVE PROFILE */
 $("gvProfileForm").addEventListener("submit",async event => {
   event.preventDefault();
 
@@ -641,23 +656,146 @@ $("gvProfileForm").addEventListener("submit",async event => {
 
     $("gvProfileName").textContent = displayName;
     gvRenderAvatar(displayName,avatarUrl);
-
     gvShowProfileMessage("Your GameVault profile has been saved.","success");
   } catch (error) {
     console.error("Profile save error:",error);
-    gvShowProfileMessage(
-      "Unable to save. Check your table columns, permissions, and RLS policies.",
-      "error"
-    );
+    gvShowProfileMessage(error.message || "Unable to save your profile. Check your database permissions.","error");
   } finally {
     button.disabled = false;
     button.textContent = "Save Profile";
   }
 });
 
+/* REAL PROFILE PHOTO UPLOAD — SUPABASE STORAGE */
+$("gvChangeAvatarBtn").addEventListener("click",() => {
+  if (!currentUser) {
+    openAuth("login");
+    return;
+  }
+  $("gvAvatarFile").click();
+});
+
+$("gvAvatarFile").addEventListener("change",async event => {
+  const file = event.target.files?.[0];
+  event.target.value = "";
+
+  if (!file) return;
+
+  if (!supabaseClient || !currentUser) {
+    gvShowProfileMessage("Please log in before uploading a profile photo.","error");
+    return;
+  }
+
+  const allowedTypes = ["image/jpeg","image/png","image/webp"];
+
+  if (!allowedTypes.includes(file.type)) {
+    gvShowProfileMessage("Choose a JPG, PNG or WebP image.","error");
+    return;
+  }
+
+  if (file.size > 2 * 1024 * 1024) {
+    gvShowProfileMessage("Your photo must be 2 MB or smaller.","error");
+    return;
+  }
+
+  const user = currentUser;
+  const button = $("gvChangeAvatarBtn");
+  button.disabled = true;
+  button.textContent = "Uploading...";
+
+  try {
+    const {data:authData,error:authError} = await supabaseClient.auth.getUser();
+
+    if (authError || !authData.user || authData.user.id !== user.id) {
+      throw new Error("Your session changed. Please sign in again.");
+    }
+
+    const safeFileName = file.name.replace(/[^\w.-]/g,"_");
+    const storagePath = `${user.id}/${Date.now()}-${safeFileName}`;
+
+    const {error:uploadError} = await supabaseClient
+      .storage
+      .from("avatars")
+      .upload(storagePath,file,{
+        cacheControl:"3600",
+        upsert:false,
+        contentType:file.type
+      });
+
+    if (uploadError) throw uploadError;
+
+    const {data:publicData} = supabaseClient
+      .storage
+      .from("avatars")
+      .getPublicUrl(storagePath);
+
+    const publicUrl = publicData?.publicUrl;
+
+    if (!publicUrl) throw new Error("Could not create the image URL.");
+
+    const displayName =
+      $("gvDisplayName").value.trim() ||
+      user.email?.split("@")[0] ||
+      "GameVault Member";
+
+    const {error:profileError} = await supabaseClient
+      .from("profiles")
+      .upsert({
+        id:user.id,
+        display_name:displayName,
+        avatar_url:publicUrl,
+        updated_at:new Date().toISOString()
+      },{onConflict:"id"});
+
+    if (profileError) throw profileError;
+    if (currentUser?.id !== user.id) return;
+
+    $("gvAvatarUrl").value = publicUrl;
+    $("gvProfileName").textContent = displayName;
+    gvRenderAvatar(displayName,publicUrl);
+
+    gvShowProfileMessage("Your profile photo has been uploaded and saved!","success");
+  } catch (error) {
+    console.error("Avatar upload error:",error);
+    gvShowProfileMessage(error.message || "Photo upload failed. Check the avatars bucket and its storage policies.","error");
+  } finally {
+    button.disabled = false;
+    button.textContent = "Change Photo";
+  }
+});
+
+/* PASSWORD RESET EMAIL */
+$("gvPasswordResetBtn").addEventListener("click",async () => {
+  if (!supabaseClient || !currentUser?.email) {
+    gvShowProfileMessage("Please log in before requesting a password reset.","error");
+    return;
+  }
+
+  const button = $("gvPasswordResetBtn");
+  button.disabled = true;
+  button.textContent = "Sending...";
+
+  try {
+    const {error} = await supabaseClient.auth.resetPasswordForEmail(
+      currentUser.email,
+      {redirectTo:location.origin + location.pathname}
+    );
+
+    if (error) throw error;
+
+    gvShowProfileMessage("Password reset instructions have been sent to your email.","success");
+  } catch (error) {
+    console.error("Password reset error:",error);
+    gvShowProfileMessage(error.message || "Could not send the password reset email.","error");
+  } finally {
+    button.disabled = false;
+    button.textContent = "Send Password Reset Email";
+  }
+});
+
 $("gvViewOrdersBtn").addEventListener("click",() => {
   $("gvOrdersMessage").textContent =
-    "Order history is not connected yet. No order records are being loaded.";
+    "Order history is not connected yet. Your actual order records are not being loaded.";
 });
 
 /* SECURE BACKEND FUNCTION CALLS */
@@ -691,8 +829,7 @@ async function callFunction(name,payload) {
 function resetWalletUI() {
   $("walletBalance").textContent = "Sign in to view";
   $("walletAccountState").textContent = "Your wallet is linked to your GameVault account.";
-  $("walletTransactions").innerHTML =
-    '<p class="muted">Sign in to view your transaction history.</p>';
+  $("walletTransactions").innerHTML = '<p class="muted">Sign in to view your transaction history.</p>';
 }
 
 async function startWalletFunding() {
@@ -808,8 +945,7 @@ async function refreshWallet() {
   } catch (error) {
     console.error("Wallet loading error:",error);
     $("walletBalance").textContent = "Unavailable";
-    $("walletTransactions").innerHTML =
-      '<p class="muted">Could not load wallet information. Check your database tables and security policies.</p>';
+    $("walletTransactions").innerHTML = '<p class="muted">Could not load wallet information. Check your database tables and security policies.</p>';
   }
 }
 
