@@ -715,7 +715,7 @@ $("gvAvatarFile").addEventListener("change",async event => {
 
     const {error:uploadError} = await supabaseClient
       .storage
-      .from("avatars")
+      .from("avatar")
       .upload(storagePath,file,{
         cacheControl:"3600",
         upsert:false,
