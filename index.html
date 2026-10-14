@@ -437,7 +437,21 @@ function renderCart(){
   const line=o.price*i.qty;total+=line;
   return `<div class="cart-line"><div style="min-width:0;flex:1"><strong>${escapeHTML(p.name)}</strong><span class="muted small">${escapeHTML(o.label)} · ${money(o.price)}</span>${i.pid?`<span class="muted small" style="display:block">Player ID: ${escapeHTML(i.pid)}${i.server?" ("+escapeHTML(i.server)+")":""}</span>`:""}<div style="display:flex;align-items:center;gap:10px;margin-top:10px"><button class="btn" onclick="changeQty(${idx},-1)" aria-label="Decrease quantity">−</button><span>${i.qty}</span><button class="btn" onclick="changeQty(${idx},1)" aria-label="Increase quantity">+</button><strong style="margin-left:auto">${money(line)}</strong></div></div><button class="btn danger" onclick="removeFromCart(${idx})">Remove</button></div>`;
  }).join("");
- view.innerHTML=`<div class="page-title"><div class="eyebrow">Your selection</div><h1>Your Cart</h1><p class="muted">Review your selected products.</p></div><div class="panel">${rows||`<div class="empty">Your cart is empty.<br><br><button class="btn primary" onclick="navigate('products')">Browse products</button></div>`}${rows?`<div class="total"><span>Total</span><span>${money(total)}</span></div><div class="notice">Checkout is not enabled. Payment verification and delivery must be connected to a secure backend before orders can be placed.</div><button class="btn primary" style="width:100%;margin-top:14px" onclick="notify('Online checkout is not connected yet.')">Continue to Checkout</button>`:""}</div>`;
+ view.innerHTML=`<div class="page-title"><div class="eyebrow">Your selection</div><h1>Your Cart</h1><p class="muted">Review your selected products.</p></div><div class="panel">${rows||`<div class="empty">Your cart is empty.<br><br><button class="btn primary" onclick="navigate('products')">Browse products</button></div>`}${rows?`<div class="total"><span>Total</span><span>${money(total)}</span></div><div class="notice">You'll be taken to Paystack's secure page to pay. Double-check your player ID before paying, because top-ups sent to a wrong ID usually can't be reversed.</div><button id="checkoutBtn" class="btn primary" style="width:100%;margin-top:14px" onclick="checkout()">Pay ${money(total)}</button>`:""}</div>`;
+}
+async function checkout(){
+ if(!requireLogin())return;
+ if(!supabaseClient)return notify("Supabase is not ready yet.");
+ const items=cart.map(i=>({optionId:(productOptions[i.id]||[])[i.opt]?.id,qty:i.qty,pid:i.pid,server:i.server})).filter(i=>i.optionId);
+ if(!items.length)return notify("Your cart is empty.");
+ const btn=document.getElementById("checkoutBtn");
+ if(btn){btn.disabled=true;btn.textContent="Starting payment...";}
+ try{
+  const {data,error}=await supabaseClient.functions.invoke("shop-payments",{body:{action:"create",items}});
+  if(error){let m="Could not start payment.";try{const b=await error.context.json();if(b?.error)m=b.error;}catch{}throw new Error(m);}
+  if(data?.error)throw new Error(data.error);
+  location.href=data.url;
+ }catch(e){notify(e.message||"Could not start payment.");if(btn){btn.disabled=false;btn.textContent="Pay";}}
 }
 function renderPage(){
  saveCart();updateBottomNavigation();
@@ -468,7 +482,7 @@ async function loadCatalog(){
   Object.keys(productOptions).forEach(k=>delete productOptions[k]);
   needsPlayerId.clear();needsServer.clear();
   p.data.forEach(r=>{if(r.needs_player_id)needsPlayerId.add(r.id);if(r.needs_server)needsServer.add(r.id);});
-  o.data.forEach(r=>{(productOptions[r.product_id]??=[]).push({label:r.label,price:r.price_ngn});});
+  o.data.forEach(r=>{(productOptions[r.product_id]??=[]).push({id:r.id,label:r.label,price:r.price_ngn});});
  }catch(e){console.warn("Catalog load:",e.message);}
 }
 
@@ -716,12 +730,21 @@ async function renderWallet(){
 async function renderOrders(){
  if(!requireLogin())return;
  view.innerHTML=`<div class="page-title"><div class="eyebrow">Your purchases</div><h1>My Orders</h1><p class="muted">Your order history and delivery status.</p></div><div class="panel muted">Loading orders...</div>`;
+ const ref=new URLSearchParams(location.search).get("reference");
+ if(ref){
+  try{
+   const {data}=await supabaseClient.functions.invoke("shop-payments",{body:{action:"verify",reference:ref}});
+   if(data?.status==="paid"||data?.status==="delivered"){cart=[];saveCart();notify("Payment received. Thank you!");}
+   else notify("We haven't confirmed that payment yet. Refresh in a moment.");
+  }catch(e){console.warn("Verify:",e.message);}
+  history.replaceState({},"",location.pathname+"?page=orders");
+ }
  let orders=[];
  try{
-  const {data,error}=await supabaseClient.from("orders").select("*").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(50);
+  const {data,error}=await supabaseClient.from("gv_shop_orders").select("*").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(50);
   if(error)throw error;orders=data||[];
  }catch(e){console.warn("Orders lookup:",e.message);}
- view.innerHTML=`<div class="page-title"><div class="eyebrow">Your purchases</div><h1>My Orders</h1><p class="muted">Your order history and delivery status.</p></div><div class="panel">${orders.length?orders.map(o=>`<div class="list-row"><div style="min-width:0"><strong>Order ${escapeHTML(o.id||o.reference||"")}</strong><div class="muted small">${escapeHTML(o.created_at||"")}</div><div class="small muted">${escapeHTML(o.product_name||o.description||"Digital product")}</div></div><span class="status">${escapeHTML(o.status||"Pending")}</span></div>`).join(""):`<div class="empty">No orders to display yet, or the orders table is not configured for this account.</div>`}</div>`;
+ view.innerHTML=`<div class="page-title"><div class="eyebrow">Your purchases</div><h1>My Orders</h1><p class="muted">Your order history and delivery status.</p></div><div class="panel">${orders.length?orders.map(o=>`<div class="list-row"><div style="min-width:0"><strong>${escapeHTML(o.reference)}</strong><div class="muted small">${escapeHTML(new Date(o.created_at).toLocaleString())}</div><div class="small muted">${(o.items||[]).map(i=>escapeHTML(i.product+" · "+i.label+" ×"+i.qty+(i.pid?" · ID "+i.pid:"")+(i.server?" ("+i.server+")":""))).join("<br>")}</div><div class="small" style="margin-top:4px">${money(o.amount_ngn)}</div></div><span class="status ${o.status==="paid"||o.status==="delivered"?"success":""}">${escapeHTML(o.status)}</span></div>`).join(""):`<div class="empty">No orders yet.</div>`}</div>`;
 }
 
 /* Admin panel: only users listed in gv_shop_admins can use it (enforced by the database rules) */
@@ -759,12 +782,13 @@ async function refreshAdmin(){await loadAdminData();await loadCatalog();drawAdmi
 function adminOpen(id){adminEditId=id;drawAdmin();window.scrollTo(0,0);}
 function drawAdmin(){
  if(currentPage!=="admin")return;
+ if(adminEditId==="__orders__")return drawAdminOrders();
  if(adminEditId)return drawAdminForm();
  const rows=adminData.products.map(p=>{
   const n=adminData.options.filter(o=>o.product_id===p.id).length;
   return `<div class="list-row"><div style="min-width:0"><strong>${escapeHTML(p.name)}</strong><div class="muted small">${escapeHTML(p.game||"")} · ${n} amount${n===1?"":"s"}</div></div><div style="display:flex;gap:8px;align-items:center"><span class="status ${p.active?"success":""}">${p.active?"Live":"Hidden"}</span><button class="btn" onclick="adminOpen('${escapeHTML(p.id)}')">Edit</button></div></div>`;
  }).join("");
- view.innerHTML=`<div class="page-title"><div class="eyebrow">Store admin</div><h1>Admin Panel</h1><p class="muted">Add products and change amounts and prices. Changes show on the site right away.</p></div><button class="btn primary" style="width:100%;margin-bottom:17px" onclick="adminOpen('__new__')">+ Add product</button><div class="panel">${rows||`<div class="empty">No products yet.</div>`}</div>`;
+ view.innerHTML=`<div class="page-title"><div class="eyebrow">Store admin</div><h1>Admin Panel</h1><p class="muted">Add products and change amounts and prices. Changes show on the site right away.</p></div><div style="display:grid;gap:10px;margin-bottom:17px"><button class="btn primary" onclick="adminOpen('__new__')">+ Add product</button><button class="btn" onclick="adminOpen('__orders__')">📦 View orders</button></div><div class="panel">${rows||`<div class="empty">No products yet.</div>`}</div>`;
 }
 function drawAdminForm(){
  const isNew=adminEditId==="__new__";
@@ -790,6 +814,19 @@ function drawAdminForm(){
   <button class="btn primary" type="submit">Save product</button>
  </form>${isNew?"":`<button class="btn danger" style="width:100%;margin-top:12px" onclick="adminDeleteProduct('${escapeHTML(p.id)}')">Delete product</button>`}</div>${optionsPanel}`;
  document.getElementById("adminForm").addEventListener("submit",adminSaveProduct);
+}
+async function drawAdminOrders(){
+ view.innerHTML=`<button class="btn" onclick="adminOpen(null)">← All products</button><div class="page-title" style="margin-top:16px"><div class="eyebrow">Store admin</div><h1>Orders</h1></div><div class="panel muted">Loading orders...</div>`;
+ const {data,error}=await supabaseClient.from("gv_shop_orders").select("*").order("created_at",{ascending:false}).limit(100);
+ if(error)return adminError(error);
+ if(currentPage!=="admin"||adminEditId!=="__orders__")return;
+ const rows=(data||[]).map(o=>`<div class="list-row" style="align-items:flex-start"><div style="min-width:0"><strong>${escapeHTML(o.reference)}</strong><div class="muted small">${escapeHTML(o.email||"")} · ${escapeHTML(new Date(o.created_at).toLocaleString())}</div><div class="small muted" style="margin-top:4px">${(o.items||[]).map(i=>escapeHTML(i.product+" · "+i.label+" ×"+i.qty+(i.pid?" · ID "+i.pid:"")+(i.server?" ("+i.server+")":""))).join("<br>")}</div><div class="small" style="margin-top:4px">${money(o.amount_ngn)}</div></div><div style="display:grid;gap:8px;justify-items:end"><span class="status ${o.status==="paid"||o.status==="delivered"?"success":""}">${escapeHTML(o.status)}</span>${o.status==="paid"?`<button class="btn primary" onclick="adminSetOrder(${o.id},'delivered')">Mark delivered</button>`:""}</div></div>`).join("");
+ view.innerHTML=`<button class="btn" onclick="adminOpen(null)">← All products</button><div class="page-title" style="margin-top:16px"><div class="eyebrow">Store admin</div><h1>Orders</h1><p class="muted">Paid orders are waiting for you to deliver. Mark them delivered when done.</p></div><div class="panel">${rows||`<div class="empty">No orders yet.</div>`}</div>`;
+}
+async function adminSetOrder(id,status){
+ const r=await supabaseClient.from("gv_shop_orders").update({status,delivered_at:new Date().toISOString()}).eq("id",id);
+ if(r.error)return adminError(r.error);
+ notify("Order updated.");drawAdminOrders();
 }
 async function adminSaveProduct(event){
  event.preventDefault();
