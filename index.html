@@ -348,8 +348,10 @@ function updateBottomNavigation(){
  });
 }
 function loadCart(){
- try{const s=JSON.parse(localStorage.getItem("gv_cart")||"[]");return Array.isArray(s)?s.filter(i=>i&&typeof i.key==="string"&&typeof i.id==="string"&&Number.isFinite(i.qty)&&i.qty>0):[];}catch{return [];}
+ try{const s=JSON.parse(localStorage.getItem("gv_cart")||"[]");return Array.isArray(s)?s.filter(i=>i&&typeof i.key==="string"&&typeof i.id==="string"&&i.optId!=null&&Number.isFinite(i.qty)&&i.qty>0):[];}catch{return [];}
 }
+function cartOpt(i){return (productOptions[i.id]||[]).find(o=>o.id===i.optId);}
+
 function saveCart(){
  try{localStorage.setItem("gv_cart",JSON.stringify(cart));}catch(e){console.warn("Cart storage unavailable",e);}
  document.getElementById("cartCount").textContent=cart.reduce((s,i)=>s+i.qty,0);
@@ -377,9 +379,9 @@ function addToCart(){
    if(!/^[A-Za-z0-9_-]{1,10}$/.test(server))return notify("Enter a valid server / zone ID.");
   }
  }
- const key=[p.id,selectedOption,pid,server].join("|");
+ const key=[p.id,o.id,pid,server].join("|");
  const old=cart.find(i=>i.key===key);
- if(old)old.qty++;else cart.push({key,id:p.id,opt:selectedOption,pid,server,qty:1});
+ if(old)old.qty++;else cart.push({key,id:p.id,optId:o.id,pid,server,qty:1});
  saveCart();notify(p.name+" added to cart.");
 }
 function changeQty(idx,delta){
@@ -390,7 +392,7 @@ function removeFromCart(idx){cart.splice(idx,1);saveCart();renderPage();}
 function productCard(p){
  const opts=productOptions[p.id]||[];
  const from=opts.length?"From "+money(Math.min(...opts.map(o=>o.price))):"Price not set";
- const image=p.image?`<img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.style.display='none'">`:`<div style="aspect-ratio:1.2;display:grid;place-items:center;font-size:42px;background:var(--panel2)">🎮</div>`;
+ const image=p.image?`<img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.outerHTML='<div style=&quot;aspect-ratio:1.2;display:grid;place-items:center;font-size:42px;background:var(--panel2)&quot;>🎮</div>'">`:`<div style="aspect-ratio:1.2;display:grid;place-items:center;font-size:42px;background:var(--panel2)">🎮</div>`;
  return `<article class="product" style="cursor:pointer" onclick="openProduct('${escapeHTML(p.id)}')">${image}<div class="product-info"><h3>${escapeHTML(p.name)}</h3><div class="product-bottom"><span class="price">${from}</span><button class="btn primary" onclick="event.stopPropagation();openProduct('${escapeHTML(p.id)}')">Choose</button></div></div></article>`;
 }
 function renderProduct(){
@@ -438,7 +440,7 @@ function renderCategories(){
 function renderCart(){
  let total=0;
  const rows=cart.map((i,idx)=>{
-  const p=products.find(p=>p.id===i.id),o=(productOptions[i.id]||[])[i.opt];if(!p||!o)return "";
+  const p=products.find(p=>p.id===i.id),o=cartOpt(i);if(!p||!o)return "";
   const line=o.price*i.qty;total+=line;
   return `<div class="cart-line"><div style="min-width:0;flex:1"><strong>${escapeHTML(p.name)}</strong><span class="muted small">${escapeHTML(o.label)} · ${money(o.price)}</span>${i.pid?`<span class="muted small" style="display:block">Player ID: ${escapeHTML(i.pid)}${i.server?" ("+escapeHTML(i.server)+")":""}</span>`:""}<div style="display:flex;align-items:center;gap:10px;margin-top:10px"><button class="btn" onclick="changeQty(${idx},-1)" aria-label="Decrease quantity">−</button><span>${i.qty}</span><button class="btn" onclick="changeQty(${idx},1)" aria-label="Increase quantity">+</button><strong style="margin-left:auto">${money(line)}</strong></div></div><button class="btn danger" onclick="removeFromCart(${idx})">Remove</button></div>`;
  }).join("");
@@ -447,16 +449,16 @@ function renderCart(){
 async function checkout(){
  if(!requireLogin())return;
  if(!supabaseClient)return notify("Supabase is not ready yet.");
- const items=cart.map(i=>({optionId:(productOptions[i.id]||[])[i.opt]?.id,qty:i.qty,pid:i.pid,server:i.server})).filter(i=>i.optionId);
+ const items=cart.map(i=>({optionId:cartOpt(i)?.id,qty:i.qty,pid:i.pid,server:i.server})).filter(i=>i.optionId);
  if(!items.length)return notify("Your cart is empty.");
- const btn=document.getElementById("checkoutBtn");
+ const btn=document.getElementById("checkoutBtn"),payLabel=btn?.textContent;
  if(btn){btn.disabled=true;btn.textContent="Starting payment...";}
  try{
   const {data,error}=await supabaseClient.functions.invoke("shop-payments",{body:{action:"create",items}});
   if(error){let m="Could not start payment.";try{const b=await error.context.json();if(b?.error)m=b.error;}catch{}throw new Error(m);}
   if(data?.error)throw new Error(data.error);
   location.href=data.url;
- }catch(e){notify(e.message||"Could not start payment.");if(btn){btn.disabled=false;btn.textContent="Pay";}}
+ }catch(e){notify(e.message||"Could not start payment.");if(btn){btn.disabled=false;btn.textContent=payLabel;}}
 }
 function renderPage(){
  saveCart();updateBottomNavigation();
@@ -490,6 +492,7 @@ async function loadCatalog(){
   needsPlayerId.clear();needsServer.clear();
   p.data.forEach(r=>{if(r.needs_player_id)needsPlayerId.add(r.id);if(r.needs_server)needsServer.add(r.id);});
   o.data.forEach(r=>{(productOptions[r.product_id]??=[]).push({id:r.id,label:r.label,price:r.price_ngn});});
+  cart=cart.filter(i=>cartOpt(i));saveCart();
  }catch(e){console.warn("Catalog load failed:",e.message);notify("Could not load latest prices. Using default catalog.");}
 }
 
@@ -499,17 +502,18 @@ function initSupabase(){
  supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
  supabaseClient.auth.onAuthStateChange((_event,session)=>{
   if(_event==="PASSWORD_RECOVERY"){
-    currentUser=session?.user||null;
-    recoveryMode=true;
-    navigate("security",{replace:true});
-    return;
+   currentUser=session?.user||null;
+   recoveryMode=true;
+   navigate("security",{replace:true});
+   return;
   }
+  const prevId=currentUser?.id||null;
   currentUser=session?.user||null;if(!currentUser)currentProfile=null;
   setTimeout(async()=>{
    if(currentUser)await loadProfile();
    await checkAdmin();
    updateAuthButton();
-   if(["profile","wallet","orders","security"].includes(currentPage))renderPage();
+   if(currentUser?.id!==prevId&&["profile","wallet","orders","security"].includes(currentPage))renderPage();
   },0);
  });
  supabaseClient.auth.getSession().then(async({data,error})=>{
@@ -518,7 +522,7 @@ function initSupabase(){
   if(currentUser)await loadProfile();
   await checkAdmin();
   updateAuthButton();await loadCatalog();renderPage();
- }).catch(error=>{console.error("Session initialization:",error);updateAuthButton();});
+ }).catch(async error=>{console.error("Session initialization:",error);updateAuthButton();await loadCatalog();renderPage();});
 }
 function updateAuthButton(){
  const b=document.getElementById("authHeaderBtn");if(!b)return;
@@ -553,7 +557,7 @@ document.getElementById("authForm").addEventListener("submit",async event=>{
     if(r.error.message.toLowerCase().includes("invalid login credentials"))throw new Error("Email or password is incorrect. Check both, or use Forgot password to reset your password.");
     throw r.error;
    }
-   currentUser=r.data.user;await loadProfile();closeAuth();notify("Signed in successfully.");navigate("profile");
+   currentUser=r.data.user;await loadProfile();closeAuth();notify("Signed in successfully.");if(currentPage!=="cart")navigate("profile");else renderPage();
   }
  }catch(e){notify(e.message||"Authentication failed.");}
  finally{button.disabled=false;button.textContent=old;}
@@ -727,6 +731,7 @@ async function renderWallet(){
   const {data,error}=await supabaseClient.from("gv_wallet_transactions").select("*").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(10);
   if(error)throw error;transactions=data||[];
  }catch(e){console.warn("Wallet transactions:",e.message);}
+   if(currentPage!=="wallet")return;
  view.innerHTML=`<div class="page-title"><div class="eyebrow">GameVault Tokens</div><h1>My Wallet</h1><p class="muted">Your wallet overview and recent transactions.</p></div>
  <div class="profile-hero"><div class="muted small">WALLET BALANCE</div><div style="font-size:34px;font-weight:900;margin:10px 0;color:var(--light)">${escapeHTML(balanceText)}</div><span class="member-tag">GAMEVAULT WALLET</span></div>
  <div class="notice">This page displays recorded wallet data only. Wallet funding and balance credits must be processed by a verified server-side payment flow.</div>
@@ -751,6 +756,7 @@ async function renderOrders(){
   const {data,error}=await supabaseClient.from("gv_shop_orders").select("*").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(50);
   if(error)throw error;orders=data||[];
  }catch(e){console.warn("Orders lookup:",e.message);}
+   if(currentPage!=="orders")return;
  view.innerHTML=`<div class="page-title"><div class="eyebrow">Your purchases</div><h1>My Orders</h1><p class="muted">Your order history and delivery status.</p></div><div class="panel">${orders.length?orders.map(o=>`<div class="list-row"><div style="min-width:0"><strong>${escapeHTML(o.reference)}</strong><div class="muted small">${escapeHTML(new Date(o.created_at).toLocaleString())}</div><div class="small muted">${(o.items||[]).map(i=>escapeHTML(i.product+" · "+i.label+" ×"+i.qty+(i.pid?" · ID "+i.pid:"")+(i.server?" ("+i.server+")":""))).join("<br>")}</div><div class="small" style="margin-top:4px">${money(o.amount_ngn)}</div></div><span class="status ${o.status==="paid"||o.status==="delivered"?"success":""}">${escapeHTML(o.status)}</span></div>`).join(""):`<div class="empty">No orders yet.</div>`}</div>`;
 }
 
