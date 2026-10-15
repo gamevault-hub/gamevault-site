@@ -266,7 +266,7 @@ hr{border:0;border-top:1px solid #a855f72b;margin:15px 0}
 
 const SUPABASE_URL="https://hhopviwrhbebfkljzmiv.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_qzbuNv6A5xkxXTJH2rWYZQ__iDDAVwT";
-const SITE_URL="https://gamevault-hub.github.io/gamevault-site/";
+const SITE_URL = location.origin + location.pathname.replace(/[^/]*$/, "");
 
 let supabaseClient=null,currentUser=null,currentProfile=null,authMode="login";
 let currentPage=new URLSearchParams(location.search).get("page")||"home";
@@ -362,7 +362,7 @@ function pickOption(i){
 }
 function addToCart(){
  const p=products.find(p=>p.id===currentProductId());if(!p)return;
- const o=(productOptions[p.id]||[])[selectedOption];if(!o)return notify("Choose an option first.");
+ const o=(productOptions[p.id]||[])[selectedOption];if(!o)return notify("This product has no pricing options available yet. Please try again later or contact support.");
  let pid="",server="";
  if(needsPlayerId.has(p.id)){
   pid=(document.getElementById("playerId")?.value||"").trim();
@@ -483,7 +483,7 @@ async function loadCatalog(){
   needsPlayerId.clear();needsServer.clear();
   p.data.forEach(r=>{if(r.needs_player_id)needsPlayerId.add(r.id);if(r.needs_server)needsServer.add(r.id);});
   o.data.forEach(r=>{(productOptions[r.product_id]??=[]).push({id:r.id,label:r.label,price:r.price_ngn});});
- }catch(e){console.warn("Catalog load:",e.message);}
+ }catch(e){console.warn("Catalog load failed:",e.message);notify("Could not load latest prices. Using default catalog.");}
 }
 
 /* Supabase authentication */
