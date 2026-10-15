@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#090510">
 <meta name="description" content="GameVault gaming top-ups, accounts, skins and digital subscriptions.">
+<meta property="og:title" content="GameVault | Digital Gaming Store">
+<meta property="og:description" content="Gaming top-ups, accounts, skins and digital subscriptions.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎮%3C/text%3E%3C/svg%3E">
 <title>GameVault | Digital Gaming Store</title>
 
 <style>
@@ -260,7 +264,7 @@ hr{border:0;border-top:1px solid #a855f72b;margin:15px 0}
 </div>
 <div id="toast" class="hidden" role="status" aria-live="polite"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
 <script>
 "use strict";
 
@@ -271,7 +275,7 @@ const SITE_URL="https://gamevault-hub.github.io/gamevault-site/";
 let supabaseClient=null,currentUser=null,currentProfile=null,authMode="login";
 let currentPage=new URLSearchParams(location.search).get("page")||"home";
 let searchTerm="",toastTimer=null,profileSaveInProgress=false;
-let recoveryMode=false;
+let recoveryMode=false,authReady=false;
 const view=document.getElementById("view");
 
 const products=[
@@ -343,7 +347,7 @@ function updateBottomNavigation(){
  });
 }
 function loadCart(){
- try{const s=JSON.parse(localStorage.getItem("gv_cart")||"[]");return Array.isArray(s)?s.filter(i=>i&&typeof i.key==="string"&&typeof i.id==="string"&&Number.isFinite(i.qty)&&i.qty>0):[];}catch{return [];}
+ try{const s=JSON.parse(localStorage.getItem("gv_cart")||"[]");return Array.isArray(s)?s.filter(i=>i&&typeof i.key==="string"&&typeof i.id==="string"&&i.oid!=null&&Number.isFinite(i.qty)&&i.qty>0):[];}catch{return [];}
 }
 function saveCart(){
  try{localStorage.setItem("gv_cart",JSON.stringify(cart));}catch(e){console.warn("Cart storage unavailable",e);}
@@ -372,9 +376,9 @@ function addToCart(){
    if(!/^[A-Za-z0-9_-]{1,10}$/.test(server))return notify("Enter a valid server / zone ID.");
   }
  }
- const key=[p.id,selectedOption,pid,server].join("|");
+ const key=[p.id,o.id,pid,server].join("|");
  const old=cart.find(i=>i.key===key);
- if(old)old.qty++;else cart.push({key,id:p.id,opt:selectedOption,pid,server,qty:1});
+ if(old)old.qty++;else cart.push({key,id:p.id,oid:o.id,pid,server,qty:1});
  saveCart();notify(p.name+" added to cart.");
 }
 function changeQty(idx,delta){
@@ -385,7 +389,7 @@ function removeFromCart(idx){cart.splice(idx,1);saveCart();renderPage();}
 function productCard(p){
  const opts=productOptions[p.id]||[];
  const from=opts.length?"From "+money(Math.min(...opts.map(o=>o.price))):"Price not set";
- const image=p.image?`<img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.style.display='none'">`:`<div style="aspect-ratio:1.2;display:grid;place-items:center;font-size:42px;background:var(--panel2)">🎮</div>`;
+ const image=p.image?`<img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}" loading="lazy" onerror="this.outerHTML='<div style=&quot;aspect-ratio:1.2;display:grid;place-items:center;font-size:42px;background:var(--panel2)&quot;>🎮</div>'">`:`<div style="aspect-ratio:1.2;display:grid;place-items:center;font-size:42px;background:var(--panel2)">🎮</div>`;
  return `<article class="product" style="cursor:pointer" onclick="openProduct('${escapeHTML(p.id)}')">${image}<div class="product-info"><h3>${escapeHTML(p.name)}</h3><div class="product-bottom"><span class="price">${from}</span><button class="btn primary" onclick="event.stopPropagation();openProduct('${escapeHTML(p.id)}')">Choose</button></div></div></article>`;
 }
 function renderProduct(){
@@ -393,515 +397,4 @@ function renderProduct(){
  if(!p){view.innerHTML=`<div class="empty">Product not found.<br><br><button class="btn primary" onclick="navigate('products')">Browse products</button></div>`;return;}
  const opts=productOptions[p.id]||[];
  const optionsHTML=opts.length?`<div class="form-stack">${opts.map((o,i)=>`<label style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px;border:1px solid ${i===selectedOption?"var(--purple)":"#38214e"};border-radius:12px;cursor:pointer"><span style="display:flex;align-items:center;gap:10px"><input type="radio" name="opt" style="width:auto" ${i===selectedOption?"checked":""} onchange="pickOption(${i})">${escapeHTML(o.label)}</span><strong>${money(o.price)}</strong></label>`).join("")}</div>`:`<div class="empty">Price not set yet.</div>`;
- const idHTML=needsPlayerId.has(p.id)?`<div class="form-stack" style="margin-top:16px"><label>Player ID<input id="playerId" maxlength="20" placeholder="Your in-game player ID" value="${escapeHTML(draftPid)}"></label>${needsServer.has(p.id)?`<label>Server / Zone ID<input id="playerServer" maxlength="10" placeholder="e.g. 2001" value="${escapeHTML(draftServer)}"></label>`:""}<p class="muted small">Double-check your ID. Top-ups sent to a wrong ID usually can't be reversed.</p></div>`:"";
- view.innerHTML=`<button class="btn" onclick="history.back()">← Back</button><div class="page-title" style="margin-top:16px"><div class="eyebrow">${escapeHTML(p.game)}</div><h1>${escapeHTML(p.name)}</h1><p class="muted">${escapeHTML(p.description)}</p></div><div class="panel"><h2>Choose an option</h2>${optionsHTML}${opts.length?idHTML:""}<button class="btn primary" style="width:100%;margin-top:16px" ${opts.length?"":"disabled"} onclick="addToCart()">Add to cart</button></div>`;
-}
-function categoryCards(){
- return `<div class="categories">${categories.map(c=>`<button class="category" onclick="navigate('${c.id}')"><span class="emoji">${c.emoji}</span><strong>${escapeHTML(c.name)}</strong><small>${escapeHTML(c.description)}</small></button>`).join("")}</div>`;
-}
-function productGrid(list){return list.length?`<div class="product-grid">${list.map(productCard).join("")}</div>`:`<div class="empty">No products found. Try another search.</div>`;}
-function renderHome(){
- const featured=products.filter(p=>p.category==="topups"||p.category==="subscriptions").slice(0,8);
- view.innerHTML=`<section class="hero"><div class="eyebrow">Your digital gaming store</div><h1>Level up with<br><span>GameVault.</span></h1><p>Explore gaming top-ups, accounts, skins, bundles and digital subscriptions in one place.</p><div class="search"><input id="storeSearch" placeholder="Search games and digital products..." value="${escapeHTML(searchTerm)}" oninput="searchTerm=this.value;renderSearchResults()"><button class="btn primary" onclick="runSearch()">Search</button></div><div id="searchResults"></div></section><div class="section-heading"><h2>Explore Categories</h2><button class="btn" onclick="navigate('categories')">View all</button></div>${categoryCards()}<div class="section-heading"><h2>Popular Products</h2><button class="btn" onclick="navigate('products')">View all</button></div>${productGrid(featured)}<div class="panel" style="margin-top:28px"><h2>Welcome to GameVault</h2><p class="muted">Sign in to manage your customer profile. Product pricing and fulfillment options must be configured before purchases can be completed.</p><button class="btn primary" onclick="openAuth()">Sign in / Create account</button></div>`;
- renderSearchResults();
-}
-function renderSearchResults(){
- const el=document.getElementById("searchResults");if(!el)return;
- const term=searchTerm.trim().toLowerCase();if(!term){el.innerHTML="";return;}
- const matches=products.filter(p=>(p.name+" "+p.game+" "+p.description+" "+p.category).toLowerCase().includes(term));
- el.innerHTML=`<div class="panel"><div class="section-heading"><h2>Search results</h2><button class="btn" onclick="searchTerm='';renderPage()">Clear</button></div>${productGrid(matches)}</div>`;
-}
-function runSearch(){searchTerm=document.getElementById("storeSearch")?.value||searchTerm;renderSearchResults();}
-function renderCategoryPage(category){
- const info=categories.find(c=>c.id===category),list=products.filter(p=>p.category===category);
- view.innerHTML=`<div class="page-title"><div class="eyebrow">GameVault Store</div><h1>${info?escapeHTML(info.name):"Products"}</h1><p class="muted">${info?escapeHTML(info.description):"Browse our digital product catalog."}</p></div><div class="search"><input id="categorySearch" placeholder="Search this catalog..." oninput="filterVisibleProducts(this.value,'${category}')"></div><div id="categoryProducts">${productGrid(list)}</div>`;
-}
-function filterVisibleProducts(value,category){
- const list=products.filter(p=>p.category===category&&(p.name+" "+p.game).toLowerCase().includes(value.toLowerCase()));
- document.getElementById("categoryProducts").innerHTML=productGrid(list);
-}
-function renderAllProducts(){
- const term=searchTerm.toLowerCase(),list=products.filter(p=>(p.name+" "+p.game+" "+p.description).toLowerCase().includes(term));
- view.innerHTML=`<div class="page-title"><div class="eyebrow">Browse Store</div><h1>All Products</h1><p class="muted">Explore the GameVault catalog.</p></div><div class="search"><input value="${escapeHTML(searchTerm)}" placeholder="Search products..." oninput="searchTerm=this.value;renderAllProductGrid()"></div><div id="allProductGrid">${productGrid(list)}</div>`;
-}
-function renderAllProductGrid(){
- const term=searchTerm.toLowerCase();document.getElementById("allProductGrid").innerHTML=productGrid(products.filter(p=>(p.name+" "+p.game+" "+p.description).toLowerCase().includes(term)));
-}
-function renderCategories(){
- view.innerHTML=`<div class="page-title"><div class="eyebrow">Find what you need</div><h1>All Categories</h1><p class="muted">Choose a category to explore.</p></div>${categoryCards()}`;
-}
-function renderCart(){
- let total=0;
- const rows=cart.map((i,idx)=>{
-  const p=products.find(p=>p.id===i.id),o=(productOptions[i.id]||[])[i.opt];if(!p||!o)return "";
-  const line=o.price*i.qty;total+=line;
-  return `<div class="cart-line"><div style="min-width:0;flex:1"><strong>${escapeHTML(p.name)}</strong><span class="muted small">${escapeHTML(o.label)} · ${money(o.price)}</span>${i.pid?`<span class="muted small" style="display:block">Player ID: ${escapeHTML(i.pid)}${i.server?" ("+escapeHTML(i.server)+")":""}</span>`:""}<div style="display:flex;align-items:center;gap:10px;margin-top:10px"><button class="btn" onclick="changeQty(${idx},-1)" aria-label="Decrease quantity">−</button><span>${i.qty}</span><button class="btn" onclick="changeQty(${idx},1)" aria-label="Increase quantity">+</button><strong style="margin-left:auto">${money(line)}</strong></div></div><button class="btn danger" onclick="removeFromCart(${idx})">Remove</button></div>`;
- }).join("");
- view.innerHTML=`<div class="page-title"><div class="eyebrow">Your selection</div><h1>Your Cart</h1><p class="muted">Review your selected products.</p></div><div class="panel">${rows||`<div class="empty">Your cart is empty.<br><br><button class="btn primary" onclick="navigate('products')">Browse products</button></div>`}${rows?`<div class="total"><span>Total</span><span>${money(total)}</span></div><div class="notice">You'll be taken to Paystack's secure page to pay. Double-check your player ID before paying, because top-ups sent to a wrong ID usually can't be reversed.</div><button id="checkoutBtn" class="btn primary" style="width:100%;margin-top:14px" onclick="checkout()">Pay ${money(total)}</button>`:""}</div>`;
-}
-async function checkout(){
- if(!requireLogin())return;
- if(!supabaseClient)return notify("Supabase is not ready yet.");
- const items=cart.map(i=>({optionId:(productOptions[i.id]||[])[i.opt]?.id,qty:i.qty,pid:i.pid,server:i.server})).filter(i=>i.optionId);
- if(!items.length)return notify("Your cart is empty.");
- const btn=document.getElementById("checkoutBtn");
- if(btn){btn.disabled=true;btn.textContent="Starting payment...";}
- try{
-  const {data,error}=await supabaseClient.functions.invoke("shop-payments",{body:{action:"create",items}});
-  if(error){let m="Could not start payment.";try{const b=await error.context.json();if(b?.error)m=b.error;}catch{}throw new Error(m);}
-  if(data?.error)throw new Error(data.error);
-  location.href=data.url;
- }catch(e){notify(e.message||"Could not start payment.");if(btn){btn.disabled=false;btn.textContent="Pay";}}
-}
-function renderPage(){
- saveCart();updateBottomNavigation();
- if(currentPage==="home")return renderHome();
- if(currentPage==="categories")return renderCategories();
- if(currentPage==="products")return renderAllProducts();
- if(["topups","accounts","skins","subscriptions"].includes(currentPage))return renderCategoryPage(currentPage);
- if(currentPage==="product")return renderProduct();
- if(currentPage==="cart")return renderCart();
- if(currentPage==="profile")return renderProfile();
- if(currentPage==="wallet")return renderWallet();
- if(currentPage==="orders")return renderOrders();
- if(currentPage==="security")return renderSecurity();
- if(currentPage==="admin")return renderAdmin();
- currentPage="home";renderHome();updateBottomNavigation();
-}
-
-/* Catalog from Supabase: edit products and prices in the database/admin, not here */
-async function loadCatalog(){
- if(!supabaseClient)return;
- try{
-  const [p,o]=await Promise.all([
-   supabaseClient.from("gv_shop_products").select("*").eq("active",true).order("sort"),
-   supabaseClient.from("gv_shop_options").select("*").eq("active",true).order("sort")
-  ]);
-  if(p.error||o.error||!p.data?.length)return; // keeps the built-in list
-  products.splice(0,products.length,...p.data.map(r=>({id:r.id,name:r.name,category:r.category,game:r.game||"",description:r.description||"",image:r.image||""})));
-  Object.keys(productOptions).forEach(k=>delete productOptions[k]);
-  needsPlayerId.clear();needsServer.clear();
-  p.data.forEach(r=>{if(r.needs_player_id)needsPlayerId.add(r.id);if(r.needs_server)needsServer.add(r.id);});
-  o.data.forEach(r=>{(productOptions[r.product_id]??=[]).push({id:r.id,label:r.label,price:r.price_ngn});});
- }catch(e){console.warn("Catalog load:",e.message);}
-}
-
-/* Supabase authentication */
-function initSupabase(){
- if(!window.supabase){notify("Supabase library could not load. Check your internet connection.");return;}
- supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
- supabaseClient.auth.onAuthStateChange((_event,session)=>{
-  if(_event==="PASSWORD_RECOVERY"){
-    currentUser=session?.user||null;
-    recoveryMode=true;
-    navigate("security",{replace:true});
-    return;
-  }
-  currentUser=session?.user||null;if(!currentUser)currentProfile=null;
-  setTimeout(async()=>{
-   if(currentUser)await loadProfile();
-   await checkAdmin();
-   updateAuthButton();
-   if(["profile","wallet","orders","security"].includes(currentPage))renderPage();
-  },0);
- });
- supabaseClient.auth.getSession().then(async({data,error})=>{
-  if(error)console.error("Session lookup:",error.message);
-  currentUser=data?.session?.user||null;
-  if(currentUser)await loadProfile();
-  await checkAdmin();
-  updateAuthButton();await loadCatalog();renderPage();
- }).catch(error=>{console.error("Session initialization:",error);updateAuthButton();});
-}
-function updateAuthButton(){
- const b=document.getElementById("authHeaderBtn");if(!b)return;
- b.textContent=currentUser?"My Account":"Login";
- b.onclick=()=>currentUser?navigate("profile"):openAuth();
-}
-function openAuth(mode="login"){authMode=mode;document.getElementById("authModal").classList.remove("hidden");updateAuthMode();}
-function closeAuth(){document.getElementById("authModal").classList.add("hidden");}
-function switchAuthMode(){authMode=authMode==="login"?"signup":"login";updateAuthMode();}
-function updateAuthMode(){
- const signup=authMode==="signup";
- document.getElementById("authTitle").textContent=signup?"Create your GameVault account":"Welcome to GameVault";
- document.getElementById("authDescription").textContent=signup?"Create an account to manage your profile.":"Sign in to your account.";
- document.getElementById("authSubmit").textContent=signup?"Create Account":"Sign In";
- document.getElementById("authSwitchText").textContent=signup?"Already have an account?":"New to GameVault?";
- document.getElementById("authSwitch").textContent=signup?"Sign In":"Create Account";
- document.getElementById("authPassword").autocomplete=signup?"new-password":"current-password";
-}
-document.getElementById("authForm").addEventListener("submit",async event=>{
- event.preventDefault();if(!supabaseClient)return notify("Supabase is not ready yet.");
- const email=document.getElementById("authEmail").value.trim(),password=document.getElementById("authPassword").value,button=document.getElementById("authSubmit");
- button.disabled=true;const old=button.textContent;button.textContent="Please wait...";
- try{
-  if(authMode==="signup"){
-   const r=await supabaseClient.auth.signUp({email,password,options:{emailRedirectTo:SITE_URL}});
-   if(r.error)throw r.error;
-   if(r.data.session){currentUser=r.data.user;await loadProfile();closeAuth();notify("Account created successfully.");navigate("profile");}
-   else notify("Account created. Check your email to confirm your account.");
-  }else{
-   const r=await supabaseClient.auth.signInWithPassword({email,password});
-   if(r.error){
-    if(r.error.message.toLowerCase().includes("invalid login credentials"))throw new Error("Email or password is incorrect. Check both, or use Forgot password to reset your password.");
-    throw r.error;
-   }
-   currentUser=r.data.user;await loadProfile();closeAuth();notify("Signed in successfully.");navigate("profile");
-  }
- }catch(e){notify(e.message||"Authentication failed.");}
- finally{button.disabled=false;button.textContent=old;}
-});
-async function resetPassword(){
- if(!supabaseClient)return notify("Supabase is not ready yet.");
- const email=document.getElementById("authEmail").value.trim();if(!email)return notify("Enter your email address first.");
- const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:SITE_URL});
- notify(error?error.message:"If the account exists, a password reset email will be sent.");
-}
-async function signOut(){
- if(!supabaseClient)return;
- const {error}=await supabaseClient.auth.signOut();if(error)return notify(error.message);
- currentUser=null;currentProfile=null;toggleMenu(false);updateAuthButton();navigate("home");notify("Signed out.");
-}
-
-/* Profile data */
-async function loadProfile(){
- if(!currentUser||!supabaseClient)return null;
- try{
-  const {data,error}=await supabaseClient.from("profiles").select("*").eq("id",currentUser.id).maybeSingle();
-  if(error)throw error;
-  if(data){currentProfile=data;return data;}
-  const meta=currentUser.user_metadata||{};
-  const {data:created,error:createError}=await supabaseClient.from("profiles").insert({
-   id:currentUser.id,display_name:meta.display_name||null,avatar_url:meta.avatar_url||null
-  }).select("*").maybeSingle();
-  if(createError){
-   const retry=await supabaseClient.from("profiles").select("*").eq("id",currentUser.id).maybeSingle();
-   if(retry.data){currentProfile=retry.data;return retry.data;}
-   console.warn("Profile creation:",createError.message);currentProfile=null;return null;
-  }
-  currentProfile=created;return created;
- }catch(e){console.error("Profile lookup:",e.message);currentProfile=null;return null;}
-}
-function requireLogin(){
- if(currentUser)return true;openAuth();notify("Sign in to view this page.");return false;
-}
-function renderProfile(){
- if(!requireLogin())return;
- const profile=currentProfile||{},meta=currentUser.user_metadata||{};
- const name=profile.display_name||meta.display_name||"GameVault Member";
- const avatar=profile.avatar_url||meta.avatar_url||"";
- const email=currentUser.email||"";
- const verified=!!currentUser.email_confirmed_at;
- const joined=currentUser.created_at?new Date(currentUser.created_at).toLocaleDateString(undefined,{month:"short",year:"numeric"}):"Member";
- const profileComplete=Boolean((profile.display_name||meta.display_name)&&avatar);
- const avatarHTML=avatar
-  ?`<img class="avatar" id="profileAvatarPreview" src="${escapeHTML(avatar)}" alt="Profile avatar" onerror="this.style.display='none';const f=document.getElementById('avatarFallback');if(f)f.style.display='grid'"><div class="avatar-placeholder" id="avatarFallback" style="display:none">♙</div>`
-  :`<div class="avatar-placeholder" id="avatarFallback">♙</div>`;
- view.innerHTML=`
- <div class="page-title"><div class="eyebrow">Your account</div><h1>My Profile</h1><p class="muted">Your personal GameVault dashboard.</p></div>
- <section class="profile-hero">
-  <div class="profile-top">${avatarHTML}<div style="min-width:0;flex:1">
-   <h2 style="margin:0 0 8px;overflow-wrap:anywhere">${escapeHTML(name)}</h2>
-   <span class="member-tag">GAMEVAULT MEMBER</span>
-   <div class="small muted" style="margin-top:9px;overflow-wrap:anywhere">${escapeHTML(email)}</div>
-   <div style="margin-top:10px"><span class="status ${verified?"success":""}">${verified?"✓ Email verified":"Email not verified"}</span></div>
-  </div></div>
-  <div class="profile-stats">
-   <div class="profile-stat"><span>MEMBERSHIP</span><strong>GameVault</strong></div>
-   <div class="profile-stat"><span>MEMBER SINCE</span><strong>${escapeHTML(joined)}</strong></div>
-   <div class="profile-stat"><span>PROFILE</span><strong>${profileComplete?"Complete":"In progress"}</strong></div>
-  </div>
- </section>
- <div class="profile-actions">
-  <div class="profile-action"><div class="action-icon">▣</div><strong>My Orders</strong><p>Check your purchases and delivery statuses.</p><button class="btn" style="width:100%" onclick="navigate('orders')">View Orders</button></div>
-  <div class="profile-action"><div class="action-icon">◉</div><strong>My Wallet</strong><p>View available wallet records and transactions.</p><button class="btn" style="width:100%" onclick="navigate('wallet')">Open Wallet</button></div>
-  <div class="profile-action"><div class="action-icon">⚿</div><strong>Security</strong><p>Manage password resets and account access.</p><button class="btn" style="width:100%" onclick="navigate('security')">Account Security</button></div>
- </div>
- <section class="panel">
-  <h2>Personal Details</h2><p class="muted small">Update the information shown on your GameVault profile.</p>
-  <form class="form-stack" id="profileForm">
-   <label>Display name<input id="profileName" maxlength="50" value="${escapeHTML(name==="GameVault Member"?"":name)}" placeholder="Your display name" required></label>
-   <label>Email address<input value="${escapeHTML(email)}" disabled></label>
-   <label>Avatar image URL<input id="profileAvatarUrl" type="url" value="${escapeHTML(avatar)}" placeholder="https://example.com/avatar.png"></label>
-   <label>Or upload an avatar<input id="profileAvatarFile" type="file" accept="image/png,image/jpeg,image/webp"></label>
-   <p class="muted small">Choose a JPG, PNG or WebP image up to 3 MB. Uploads require the Supabase Storage bucket and policies described below.</p>
-   <button class="btn primary" type="submit" id="saveProfileButton">Save Profile</button>
-   <div id="profileSaveMessage" class="small muted" aria-live="polite"></div>
-  </form>
- </section>
- <section class="panel">
-  <h2>Account Shortcuts</h2>
-  <div class="list-row"><div><strong>Account security</strong><div class="muted small">Password reset and sign-in status</div></div><button class="btn" onclick="navigate('security')">Manage</button></div>
-  <div class="list-row"><div><strong>Order history</strong><div class="muted small">View your recorded orders</div></div><button class="btn" onclick="navigate('orders')">Open</button></div>
-  <div class="list-row"><div><strong>Wallet history</strong><div class="muted small">View your recorded transactions</div></div><button class="btn" onclick="navigate('wallet')">Open</button></div>
-  <div class="list-row"><div><strong>Sign out</strong><div class="muted small">Sign out of this device</div></div><button class="btn danger" onclick="signOut()">Sign Out</button></div>
- </section>`;
- document.getElementById("profileForm").addEventListener("submit",saveProfile);
- document.getElementById("profileAvatarFile").addEventListener("change",previewAvatar);
-}
-function previewAvatar(){
- const input=document.getElementById("profileAvatarFile"),file=input.files?.[0];if(!file)return;
- if(file.size>3*1024*1024){input.value="";return notify("Avatar must be 3 MB or smaller.");}
- if(!["image/jpeg","image/png","image/webp"].includes(file.type)){input.value="";return notify("Use a JPG, PNG or WebP image.");}
- const url=URL.createObjectURL(file),preview=document.getElementById("profileAvatarPreview"),fallback=document.getElementById("avatarFallback");
- if(preview)preview.src=url;
- else{
-  const img=document.createElement("img");img.id="profileAvatarPreview";img.className="avatar";img.alt="Selected avatar preview";img.src=url;
-  fallback.replaceWith(img);
- }
- if(fallback)fallback.style.display="none";
-}
-async function saveProfile(event){
- event.preventDefault();
- if(!requireLogin()||profileSaveInProgress)return;
- if(!supabaseClient)return notify("Supabase is not ready yet.");
- const name=document.getElementById("profileName").value.trim();
- let avatarUrl=document.getElementById("profileAvatarUrl").value.trim();
- const file=document.getElementById("profileAvatarFile").files?.[0];
- const button=document.getElementById("saveProfileButton"),message=document.getElementById("profileSaveMessage");
- if(!name)return notify("Enter a display name.");
- if(name.length>50)return notify("Your display name must be 50 characters or fewer.");
- if(avatarUrl){
-  try{const u=new URL(avatarUrl);if(!["https:","http:"].includes(u.protocol))return notify("Enter a valid avatar URL.");}
-  catch{return notify("Enter a valid avatar URL.");}
- }
- profileSaveInProgress=true;button.disabled=true;button.textContent="Saving...";message.textContent="Saving your profile...";
- try{
-  if(file){
-   if(file.size>3*1024*1024)throw new Error("Avatar must be 3 MB or smaller.");
-   if(!["image/jpeg","image/png","image/webp"].includes(file.type))throw new Error("Use a JPG, PNG or WebP image.");
-   const ext=file.type==="image/jpeg"?"jpg":file.type.split("/")[1],path=`${currentUser.id}/${Date.now()}.${ext}`;
-   const {error}=await supabaseClient.storage.from("avatar").upload(path,file,{upsert:false,contentType:file.type,cacheControl:"3600"});
-   if(error)throw error;
-   const {data}=supabaseClient.storage.from("avatar").getPublicUrl(path);
-   avatarUrl=data?.publicUrl||"";if(!avatarUrl)throw new Error("Could not create an avatar URL.");
-  }
-  const changes={display_name:name,avatar_url:avatarUrl||null};
-  const updated=await supabaseClient.from("profiles").update(changes).eq("id",currentUser.id).select("*").maybeSingle();
-  if(updated.error)throw updated.error;
-  let saved=updated.data;
-  if(!saved){
-   const inserted=await supabaseClient.from("profiles").upsert({id:currentUser.id,...changes},{onConflict:"id"}).select("*").maybeSingle();
-   if(inserted.error)throw inserted.error;saved=inserted.data;
-  }
-  if(!saved)throw new Error("Profile wasn't returned by Supabase. Check your profiles table policies.");
-  currentProfile=saved;
-  const meta=await supabaseClient.auth.updateUser({data:{display_name:name,avatar_url:avatarUrl||null}});
-  if(meta.error)console.warn("Profile saved, metadata update failed:",meta.error.message);
-  message.textContent="Profile saved successfully.";notify("Profile saved successfully.");renderProfile();
- }catch(error){
-  console.error("Profile save error:",error);
-  let msg=error.message||"Unknown error.";
-  if(/row-level security|permission denied|policy/i.test(msg))msg="Supabase blocked this save. Check profiles table SELECT, UPDATE and INSERT policies.";
-  else if(/column .* does not exist|schema cache/i.test(msg))msg="Check that display_name and avatar_url exist in the profiles table.";
-  else if(/bucket|storage|object/i.test(msg))msg="Avatar upload failed. Check the avatar bucket and its upload policy.";
-  message.textContent="Save failed: "+msg;notify("Could not save profile: "+msg);
- }finally{
-  profileSaveInProgress=false;
-  const b=document.getElementById("saveProfileButton");if(b){b.disabled=false;b.textContent="Save Profile";}
- }
-}
-
-/* Wallet: read-only. Browser code never credits balances. */
-async function renderWallet(){
- if(!requireLogin())return;
- view.innerHTML=`<div class="page-title"><div class="eyebrow">GameVault Tokens</div><h1>My Wallet</h1><p class="muted">Wallet balance and transaction history.</p></div><div class="panel muted">Loading wallet information...</div>`;
- let balanceText="Unavailable",transactions=[],walletFound=false;
- try{
-  const {data,error}=await supabaseClient.from("gv_wallets").select("*").eq("user_id",currentUser.id).maybeSingle();
-  if(error)throw error;
-  if(data){
-   walletFound=true;
-   const value=data.balance??data.balance_kobo??data.tokens;
-   if(value!==undefined)balanceText=String(value);
-  }else balanceText="0";
- }catch(e){console.warn("Wallet lookup:",e.message);}
- try{
-  const {data,error}=await supabaseClient.from("gv_wallet_transactions").select("*").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(10);
-  if(error)throw error;transactions=data||[];
- }catch(e){console.warn("Wallet transactions:",e.message);}
- view.innerHTML=`<div class="page-title"><div class="eyebrow">GameVault Tokens</div><h1>My Wallet</h1><p class="muted">Your wallet overview and recent transactions.</p></div>
- <div class="profile-hero"><div class="muted small">WALLET BALANCE</div><div style="font-size:34px;font-weight:900;margin:10px 0;color:var(--light)">${escapeHTML(balanceText)}</div><span class="member-tag">GAMEVAULT WALLET</span></div>
- <div class="notice">This page displays recorded wallet data only. Wallet funding and balance credits must be processed by a verified server-side payment flow.</div>
- <div class="panel" style="margin-top:17px"><h2>Recent Transactions</h2>${transactions.length?transactions.map(tx=>`<div class="list-row"><div><strong>${escapeHTML(tx.description||tx.type||"Wallet transaction")}</strong><div class="muted small">${escapeHTML(tx.created_at||"")}</div></div><span class="status">${escapeHTML(tx.status||"Recorded")}</span></div>`).join(""):`<div class="empty">${walletFound?"No transactions recorded yet.":"No wallet record found, or the wallet table is not configured for this account."}</div>`}</div>`;
-}
-
-/* Orders: reads only the signed-in customer's rows */
-async function renderOrders(){
- if(!requireLogin())return;
- view.innerHTML=`<div class="page-title"><div class="eyebrow">Your purchases</div><h1>My Orders</h1><p class="muted">Your order history and delivery status.</p></div><div class="panel muted">Loading orders...</div>`;
- const ref=new URLSearchParams(location.search).get("reference");
- if(ref){
-  try{
-   const {data}=await supabaseClient.functions.invoke("shop-payments",{body:{action:"verify",reference:ref}});
-   if(data?.status==="paid"||data?.status==="delivered"){cart=[];saveCart();notify("Payment received. Thank you!");}
-   else notify("We haven't confirmed that payment yet. Refresh in a moment.");
-  }catch(e){console.warn("Verify:",e.message);}
-  history.replaceState({},"",location.pathname+"?page=orders");
- }
- let orders=[];
- try{
-  const {data,error}=await supabaseClient.from("gv_shop_orders").select("*").eq("user_id",currentUser.id).order("created_at",{ascending:false}).limit(50);
-  if(error)throw error;orders=data||[];
- }catch(e){console.warn("Orders lookup:",e.message);}
- view.innerHTML=`<div class="page-title"><div class="eyebrow">Your purchases</div><h1>My Orders</h1><p class="muted">Your order history and delivery status.</p></div><div class="panel">${orders.length?orders.map(o=>`<div class="list-row"><div style="min-width:0"><strong>${escapeHTML(o.reference)}</strong><div class="muted small">${escapeHTML(new Date(o.created_at).toLocaleString())}</div><div class="small muted">${(o.items||[]).map(i=>escapeHTML(i.product+" · "+i.label+" ×"+i.qty+(i.pid?" · ID "+i.pid:"")+(i.server?" ("+i.server+")":""))).join("<br>")}</div><div class="small" style="margin-top:4px">${money(o.amount_ngn)}</div></div><span class="status ${o.status==="paid"||o.status==="delivered"?"success":""}">${escapeHTML(o.status)}</span></div>`).join(""):`<div class="empty">No orders yet.</div>`}</div>`;
-}
-
-/* Admin panel: only users listed in gv_shop_admins can use it (enforced by the database rules) */
-let isAdmin=false,adminEditId=null,adminData={products:[],options:[]};
-async function checkAdmin(){
- isAdmin=false;
- if(currentUser&&supabaseClient){
-  try{
-   const {data}=await supabaseClient.from("gv_shop_admins").select("user_id").eq("user_id",currentUser.id).maybeSingle();
-   isAdmin=!!data;
-  }catch(e){console.warn("Admin check:",e.message);}
- }
- const link=document.getElementById("adminLink");if(link)link.classList.toggle("hidden",!isAdmin);
-}
-function adminError(error){
- const m=error?.message||"Unknown error.";
- notify(/row-level security|permission denied|policy/i.test(m)?"Blocked: your account is not listed as a store admin.":m);
-}
-async function loadAdminData(){
- const [p,o]=await Promise.all([
-  supabaseClient.from("gv_shop_products").select("*").order("sort"),
-  supabaseClient.from("gv_shop_options").select("*").order("sort").order("id")
- ]);
- if(p.error)return adminError(p.error);
- if(o.error)return adminError(o.error);
- adminData={products:p.data||[],options:o.data||[]};
-}
-async function renderAdmin(){
- if(!requireLogin())return;
- if(!isAdmin){view.innerHTML=`<div class="empty">This page is for store admins only.</div>`;return;}
- view.innerHTML=`<div class="panel muted">Loading admin panel...</div>`;
- await loadAdminData();drawAdmin();
-}
-async function refreshAdmin(){await loadAdminData();await loadCatalog();drawAdmin();}
-function adminOpen(id){adminEditId=id;drawAdmin();window.scrollTo(0,0);}
-function drawAdmin(){
- if(currentPage!=="admin")return;
- if(adminEditId==="__orders__")return drawAdminOrders();
- if(adminEditId)return drawAdminForm();
- const rows=adminData.products.map(p=>{
-  const n=adminData.options.filter(o=>o.product_id===p.id).length;
-  return `<div class="list-row"><div style="min-width:0"><strong>${escapeHTML(p.name)}</strong><div class="muted small">${escapeHTML(p.game||"")} · ${n} amount${n===1?"":"s"}</div></div><div style="display:flex;gap:8px;align-items:center"><span class="status ${p.active?"success":""}">${p.active?"Live":"Hidden"}</span><button class="btn" onclick="adminOpen('${escapeHTML(p.id)}')">Edit</button></div></div>`;
- }).join("");
- view.innerHTML=`<div class="page-title"><div class="eyebrow">Store admin</div><h1>Admin Panel</h1><p class="muted">Add products and change amounts and prices. Changes show on the site right away.</p></div><div style="display:grid;gap:10px;margin-bottom:17px"><button class="btn primary" onclick="adminOpen('__new__')">+ Add product</button><button class="btn" onclick="adminOpen('__orders__')">📦 View orders</button></div><div class="panel">${rows||`<div class="empty">No products yet.</div>`}</div>`;
-}
-function drawAdminForm(){
- const isNew=adminEditId==="__new__";
- const p=isNew?{id:"",name:"",category:"topups",game:"",description:"",image:"",needs_player_id:false,needs_server:false,active:true,sort:adminData.products.length+1}:adminData.products.find(x=>x.id===adminEditId);
- if(!p){adminEditId=null;return drawAdmin();}
- const catOpts=categories.map(c=>`<option value="${escapeHTML(c.id)}" ${c.id===p.category?"selected":""}>${escapeHTML(c.name)}</option>`).join("");
- const opts=isNew?[]:adminData.options.filter(o=>o.product_id===p.id);
- const optionsPanel=isNew
-  ?`<div class="notice">Save the product first, then add its amounts and prices here.</div>`
-  :`<div class="panel"><h2>Amounts &amp; prices (₦)</h2>${opts.map(o=>`<div class="form-stack" style="padding:12px 0;border-bottom:1px solid #a855f724"><input id="ol_${o.id}" value="${escapeHTML(o.label)}" placeholder="e.g. 100 Diamonds"><input id="op_${o.id}" type="number" min="0" inputmode="numeric" value="${o.price_ngn}"><label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="oa_${o.id}" style="width:auto" ${o.active?"checked":""}> Show on site</label><div style="display:flex;gap:8px"><button class="btn primary" style="flex:1" onclick="adminSaveOption(${o.id})">Save</button><button class="btn danger" onclick="adminDeleteOption(${o.id})">Delete</button></div></div>`).join("")||`<div class="empty">No amounts yet.</div>`}<h3 style="margin-top:18px">Add an amount</h3><div class="form-stack"><input id="newLabel" placeholder="e.g. 310 Diamonds"><input id="newPrice" type="number" min="0" inputmode="numeric" placeholder="Price in naira"><button class="btn primary" onclick="adminAddOption()">Add amount</button></div></div>`;
- view.innerHTML=`<button class="btn" onclick="adminOpen(null)">← All products</button><div class="page-title" style="margin-top:16px"><div class="eyebrow">Store admin</div><h1>${isNew?"New product":escapeHTML(p.name)}</h1></div>
- <div class="panel"><form class="form-stack" id="adminForm">
-  <label>Product ID (letters, numbers, dashes)<input id="adm_id" value="${escapeHTML(p.id)}" ${isNew?"":"disabled"} placeholder="e.g. ff-diamonds" required></label>
-  <label>Name<input id="adm_name" value="${escapeHTML(p.name)}" required></label>
-  <label>Category<select id="adm_category">${catOpts}</select></label>
-  <label>Game / brand<input id="adm_game" value="${escapeHTML(p.game||"")}"></label>
-  <label>Description<input id="adm_desc" value="${escapeHTML(p.description||"")}"></label>
-  <label>Image file name or link<input id="adm_image" value="${escapeHTML(p.image||"")}"></label>
-  <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="adm_pid" style="width:auto" ${p.needs_player_id?"checked":""}> Ask the customer for a player ID</label>
-  <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="adm_srv" style="width:auto" ${p.needs_server?"checked":""}> Also ask for a server / zone ID</label>
-  <label>Sort order<input id="adm_sort" type="number" value="${Number(p.sort)||0}"></label>
-  <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="adm_active" style="width:auto" ${p.active?"checked":""}> Show on site</label>
-  <button class="btn primary" type="submit">Save product</button>
- </form>${isNew?"":`<button class="btn danger" style="width:100%;margin-top:12px" onclick="adminDeleteProduct('${escapeHTML(p.id)}')">Delete product</button>`}</div>${optionsPanel}`;
- document.getElementById("adminForm").addEventListener("submit",adminSaveProduct);
-}
-async function drawAdminOrders(){
- view.innerHTML=`<button class="btn" onclick="adminOpen(null)">← All products</button><div class="page-title" style="margin-top:16px"><div class="eyebrow">Store admin</div><h1>Orders</h1></div><div class="panel muted">Loading orders...</div>`;
- const {data,error}=await supabaseClient.from("gv_shop_orders").select("*").order("created_at",{ascending:false}).limit(100);
- if(error)return adminError(error);
- if(currentPage!=="admin"||adminEditId!=="__orders__")return;
- const rows=(data||[]).map(o=>`<div class="list-row" style="align-items:flex-start"><div style="min-width:0"><strong>${escapeHTML(o.reference)}</strong><div class="muted small">${escapeHTML(o.email||"")} · ${escapeHTML(new Date(o.created_at).toLocaleString())}</div><div class="small muted" style="margin-top:4px">${(o.items||[]).map(i=>escapeHTML(i.product+" · "+i.label+" ×"+i.qty+(i.pid?" · ID "+i.pid:"")+(i.server?" ("+i.server+")":""))).join("<br>")}</div><div class="small" style="margin-top:4px">${money(o.amount_ngn)}</div></div><div style="display:grid;gap:8px;justify-items:end"><span class="status ${o.status==="paid"||o.status==="delivered"?"success":""}">${escapeHTML(o.status)}</span>${o.status==="paid"?`<button class="btn primary" onclick="adminSetOrder(${o.id},'delivered')">Mark delivered</button>`:""}</div></div>`).join("");
- view.innerHTML=`<button class="btn" onclick="adminOpen(null)">← All products</button><div class="page-title" style="margin-top:16px"><div class="eyebrow">Store admin</div><h1>Orders</h1><p class="muted">Paid orders are waiting for you to deliver. Mark them delivered when done.</p></div><div class="panel">${rows||`<div class="empty">No orders yet.</div>`}</div>`;
-}
-async function adminSetOrder(id,status){
- const r=await supabaseClient.from("gv_shop_orders").update({status,delivered_at:new Date().toISOString()}).eq("id",id);
- if(r.error)return adminError(r.error);
- notify("Order updated.");drawAdminOrders();
-}
-async function adminSaveProduct(event){
- event.preventDefault();
- const isNew=adminEditId==="__new__",g=id=>document.getElementById(id);
- const row={
-  name:g("adm_name").value.trim(),category:g("adm_category").value,
-  game:g("adm_game").value.trim()||null,description:g("adm_desc").value.trim()||null,image:g("adm_image").value.trim()||null,
-  needs_player_id:g("adm_pid").checked,needs_server:g("adm_srv").checked,
-  active:g("adm_active").checked,sort:parseInt(g("adm_sort").value,10)||0
- };
- if(!row.name)return notify("Enter a product name.");
- let r;
- if(isNew){
-  const id=g("adm_id").value.trim().toLowerCase();
-  if(!/^[a-z0-9-]{2,40}$/.test(id))return notify("Product ID: 2 to 40 letters, numbers or dashes only.");
-  r=await supabaseClient.from("gv_shop_products").insert({id,...row});
-  if(!r.error)adminEditId=id;
- }else r=await supabaseClient.from("gv_shop_products").update(row).eq("id",adminEditId);
- if(r.error)return adminError(r.error);
- notify("Product saved.");await refreshAdmin();
-}
-async function adminDeleteProduct(id){
- if(!confirm("Delete this product and all its amounts? This cannot be undone."))return;
- const r=await supabaseClient.from("gv_shop_products").delete().eq("id",id);
- if(r.error)return adminError(r.error);
- adminEditId=null;notify("Product deleted.");await refreshAdmin();
-}
-async function adminSaveOption(id){
- const label=document.getElementById("ol_"+id).value.trim(),price=parseInt(document.getElementById("op_"+id).value,10),active=document.getElementById("oa_"+id).checked;
- if(!label)return notify("Enter a name for this amount.");
- if(!Number.isInteger(price)||price<0)return notify("Enter a price in naira.");
- const r=await supabaseClient.from("gv_shop_options").update({label,price_ngn:price,active}).eq("id",id);
- if(r.error)return adminError(r.error);
- notify("Amount saved.");await refreshAdmin();
-}
-async function adminAddOption(){
- const label=document.getElementById("newLabel").value.trim(),price=parseInt(document.getElementById("newPrice").value,10);
- if(!label)return notify("Enter a name for this amount.");
- if(!Number.isInteger(price)||price<0)return notify("Enter a price in naira.");
- const count=adminData.options.filter(o=>o.product_id===adminEditId).length;
- const r=await supabaseClient.from("gv_shop_options").insert({product_id:adminEditId,label,price_ngn:price,sort:count+1});
- if(r.error)return adminError(r.error);
- notify("Amount added.");await refreshAdmin();
-}
-async function adminDeleteOption(id){
- if(!confirm("Delete this amount?"))return;
- const r=await supabaseClient.from("gv_shop_options").delete().eq("id",id);
- if(r.error)return adminError(r.error);
- notify("Amount deleted.");await refreshAdmin();
-}
-
-/* Security */
-async function setNewPassword(){
- const p=document.getElementById("newPassword").value;
- if(p.length<6)return notify("Use at least 6 characters.");
- const {error}=await supabaseClient.auth.updateUser({password:p});
- if(error)return notify(error.message);
- recoveryMode=false;notify("Password updated.");renderSecurity();
-}
-function renderSecurity(){
- if(!requireLogin())return;
- view.innerHTML=`<div class="page-title"><div class="eyebrow">Protect your account</div><h1>Security</h1><p class="muted">Manage your sign-in and account access.</p></div>
- ${recoveryMode?`<div class="panel"><h2>Set a new password</h2><div class="form-stack"><input type="password" id="newPassword" minlength="6" autocomplete="new-password" placeholder="New password"><button class="btn primary" onclick="setNewPassword()">Save password</button></div></div>`:""}
- <div class="panel"><h2>Email & Sign-In</h2><p class="muted">Signed in as ${escapeHTML(currentUser.email||"")}</p><div class="list-row"><span>Email verified</span><span class="status ${currentUser.email_confirmed_at?"success":""}">${currentUser.email_confirmed_at?"Confirmed":"Not confirmed"}</span></div></div>
- <div class="panel"><h2>Password</h2><p class="muted">Request a password reset email for your account.</p><button class="btn primary" onclick="sendSecurityReset()">Send Password Reset</button></div>
- <div class="panel"><h2>Sign Out</h2><p class="muted">Sign out of this device.</p><button class="btn danger" onclick="signOut()">Sign Out</button></div>`;
-}
-async function sendSecurityReset(){
- if(!supabaseClient||!currentUser?.email)return notify("Please sign in again.");
- const {error}=await supabaseClient.auth.resetPasswordForEmail(currentUser.email,{redirectTo:SITE_URL});
- notify(error?error.message:"If the account exists, a password reset email will be sent.");
-}
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeAuth();toggleMenu(false);}});
-document.getElementById("authModal").addEventListener("click",e=>{if(e.target.id==="authModal")closeAuth();});
-saveCart();updateBottomNavigation();renderPage();initSupabase();
-</script>
-</body>
-</html>
+ const idHTML=needsPlayerId.has(p.id)?`<div class="form-stack" style="margin-top:16px"><label>Player ID<input id="playerId" maxlength="20" placeholder="Your in-game player ID" value="${escapeHTML(draftPid)}"></label>${needsServer.has(p.id)?`<label>Server / Zone ID<input id="playerServer" maxlength="10" placeholder="e.g. 2001" value="${escapeHTML(draftServer)}"></label>`:""}
