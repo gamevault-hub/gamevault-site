@@ -228,12 +228,17 @@ hr{border:0;border-top:1px solid #a855f72b;margin:15px 0}
   <a href="?page=cart" data-page="cart">Cart</a>
   <a href="?page=admin" data-page="admin" id="adminLink" class="hidden">⚙ Admin Panel</a>
   <hr>
+  <a href="?page=privacy" data-page="privacy">Privacy Policy</a>
+  <a href="?page=terms" data-page="terms">Terms of Service</a>
+  <hr>
   <a href="mailto:support@gamevault.com">✉ Contact Support</a>
   <button onclick="signOut()">↪ Sign Out</button>
 </aside>
 
 <main><section id="view"></section></main>
-<footer class="footer">GameVault · Your digital gaming store<div style="margin-top:7px">Secure account access · Digital products · Customer support</div></footer>
+<footer class="footer">GameVault · Your digital gaming store<div style="margin-top:7px">Secure account access · Digital products · Customer support</div>
+<div style="margin-top:10px"><a href="?page=privacy" onclick="navigate('privacy');return false" style="margin:0 8px">Privacy Policy</a> · <a href="?page=terms" onclick="navigate('terms');return false" style="margin:0 8px">Terms of Service</a></div>
+</footer>
 
 <nav class="bottom-nav" aria-label="Main navigation">
   <a href="?page=home" data-bottom-page="home" onclick="navigate('home');return false" aria-label="Home"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7"></path><path d="M5 9v11h14V9"></path><path d="M9 20v-7h6v7"></path></svg></span><span>Home</span></a>
@@ -318,7 +323,7 @@ function toggleMenu(open){
  document.getElementById("menuBackdrop").classList.toggle("hidden",!open);
 }
 function navigate(page,options={}){
- const allowed=["home","categories","products","topups","accounts","skins","subscriptions","cart","wallet","profile","orders","security","admin"];
+ const allowed=["home","categories","products","topups","accounts","skins","subscriptions","cart","wallet","profile","orders","security","admin","privacy","terms"];
  if(!allowed.includes(page))page="home";
  currentPage=page;if(page==="admin")adminEditId=null;
  const url=new URL(location.href);url.searchParams.delete("id");
@@ -466,6 +471,8 @@ function renderPage(){
  if(currentPage==="orders")return renderOrders();
  if(currentPage==="security")return renderSecurity();
  if(currentPage==="admin")return renderAdmin();
+ if(currentPage==="privacy")return renderPrivacy();
+ if(currentPage==="terms")return renderTerms();
  currentPage="home";renderHome();updateBottomNavigation();
 }
 
@@ -899,6 +906,70 @@ async function sendSecurityReset(){
  const {error}=await supabaseClient.auth.resetPasswordForEmail(currentUser.email,{redirectTo:SITE_URL});
  notify(error?error.message:"If the account exists, a password reset email will be sent.");
 }
+
+function renderPrivacy(){
+ view.innerHTML=`
+ <div class="page-title">
+  <div class="eyebrow">Legal</div>
+  <h1>Privacy Policy</h1>
+ </div>
+ <div class="panel">
+  <p>Last updated: October 15, 2026</p>
+  <p>GameVault (“we”, “us”) respects your privacy. This policy explains what information we collect and how we use it.</p>
+  <h2>Information we collect</h2>
+  <ul>
+   <li>Account information (email address, display name, profile picture)</li>
+   <li>Order details (products purchased, player IDs you provide, payment status)</li>
+   <li>Basic usage data needed to run the site</li>
+  </ul>
+  <h2>How we use your information</h2>
+  <ul>
+   <li>To create and manage your account</li>
+   <li>To process orders and deliver digital products</li>
+   <li>To communicate with you about your orders or account</li>
+   <li>To improve the site</li>
+  </ul>
+  <h2>Payments</h2>
+  <p>Payments are processed by Paystack. We do not store your full card details. Paystack handles payment information according to their own privacy policy.</p>
+  <h2>Data storage</h2>
+  <p>Your account and order data are stored securely using Supabase. We take reasonable steps to protect your information.</p>
+  <h2>Your rights</h2>
+  <p>You can update your profile information or request account deletion by contacting us.</p>
+  <h2>Contact</h2>
+  <p>For privacy questions, email us at support@gamevault.com.</p>
+ </div>`;
+}
+
+function renderTerms(){
+ view.innerHTML=`
+ <div class="page-title">
+  <div class="eyebrow">Legal</div>
+  <h1>Terms of Service</h1>
+ </div>
+ <div class="panel">
+  <p>Last updated: October 15, 2026</p>
+  <p>By using GameVault you agree to these terms.</p>
+  <h2>What we offer</h2>
+  <p>GameVault sells digital products including game top-ups, account listings, skins, and subscriptions. All products are digital and delivered electronically.</p>
+  <h2>Your responsibilities</h2>
+  <ul>
+   <li>Provide accurate player IDs and account information</li>
+   <li>Keep your login details secure</li>
+   <li>Use the site for lawful purposes only</li>
+  </ul>
+  <h2>Orders and delivery</h2>
+  <p>Once payment is confirmed, we will process your order. Top-ups and digital items are usually delivered quickly, but delivery times can vary. Always double-check your player ID before paying — incorrect IDs usually cannot be reversed.</p>
+  <h2>Refunds</h2>
+  <p>Because these are digital products, refunds are limited. We may offer a refund or replacement if we are unable to deliver the product. Wrong player IDs or completed deliveries are generally not refundable.</p>
+  <h2>Accounts</h2>
+  <p>You are responsible for activity on your account. We may suspend accounts that break these terms or misuse the service.</p>
+  <h2>Changes</h2>
+  <p>We may update these terms from time to time. Continued use of the site means you accept the updated terms.</p>
+  <h2>Contact</h2>
+  <p>Questions about these terms? Email support@gamevault.com.</p>
+ </div>`;
+}
+
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeAuth();toggleMenu(false);}});
 document.getElementById("authModal").addEventListener("click",e=>{if(e.target.id==="authModal")closeAuth();});
 saveCart();updateBottomNavigation();renderPage();initSupabase();
